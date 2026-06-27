@@ -12,18 +12,22 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Configuration
 public class StorageConfig {
+
     @Bean
     public Map<Long, User> userStorage() {
         return new ConcurrentHashMap<>();
     }
+
     @Bean
     public Map<Long, Coach> mentorStorage() {
         return new ConcurrentHashMap<>();
     }
+
     @Bean
     public Map<Long, Trainee> traineeStorage() {
         return new ConcurrentHashMap<>();
     }
+
     @Bean
     public Map<Long, Session> sessionStorage() {
         return new ConcurrentHashMap<>();
