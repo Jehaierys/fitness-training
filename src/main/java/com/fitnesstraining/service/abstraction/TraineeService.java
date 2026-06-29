@@ -4,12 +4,12 @@ import com.fitnesstraining.domain.Trainee;
 
 public interface TraineeService {
 
-    public Trainee create(Trainee trainee);
+    Trainee create(Trainee trainee);
 
-    public Trainee getById(Long id);
+    Trainee getById(Long id);
 
-    public Trainee update(Trainee trainee);
+    Trainee update(Trainee trainee);
 
-    public void delete(Long id);
+    void delete(Long id);
 
 }
