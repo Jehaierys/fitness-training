@@ -1,12 +1,12 @@
 package com.fitnesstraining.service.exception;
 
-public class TraineeNotFoundException extends Throwable {
+public class TraineeNotFoundException extends RuntimeException {
 
     public TraineeNotFoundException() {
         super("Trainee not found");
     }
 
-    public TraineeNotFoundException(String s) {
-        super(s);
+    public TraineeNotFoundException(String message) {
+        super(message);
     }
 }
