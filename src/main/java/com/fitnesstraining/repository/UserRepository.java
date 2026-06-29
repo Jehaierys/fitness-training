@@ -53,7 +53,11 @@ public class UserRepository {
     }
 
     public boolean existsByUsername(String username) {
-        User user = userStorage.values().stream().filter(u -> u.getUsername().equals(username)).findFirst().orElse(null);
+        User user = userStorage
+                .values()
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst().orElse(null);
         return user != null;
     }
 }
