@@ -44,7 +44,7 @@ class DefaultTraineeServiceTest {
     void getById_WhenExists_ShouldReturnTrainee() {
         when(traineeRepository.findById(1L)).thenReturn(trainee);
         Trainee result = traineeService.getById(1L);
-        assertTrue(result != null);
+        assertNotNull(result);
         assertEquals("Test Address", result.getAddress());
     }
 

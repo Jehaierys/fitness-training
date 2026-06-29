@@ -46,7 +46,7 @@ class DefaultCoachServiceTest {
     void getById_WhenExists_ShouldReturnMentor() {
         when(coachRepository.findById(1L)).thenReturn(coach);
         Coach result = coachService.getById(1L);
-        assertTrue(result != null);
+        assertNotNull(result);
         assertEquals(1L, result.getId());
     }
 

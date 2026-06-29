@@ -42,7 +42,7 @@ class DefaultSessionServiceTest {
     void getById_WhenExists_ShouldReturnSession() {
         when(sessionRepository.findById(1L)).thenReturn(session);
         Session result = sessionService.getById(1L);
-        assertTrue(result != null);
+        assertNotNull(result);
         assertEquals(1L, result.getId());
     }
 }
