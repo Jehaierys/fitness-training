@@ -19,7 +19,7 @@ public class StorageConfig {
     }
 
     @Bean
-    public Map<Long, Coach> mentorStorage() {
+    public Map<Long, Coach> coachStorage() {
         return new ConcurrentHashMap<>();
     }
 

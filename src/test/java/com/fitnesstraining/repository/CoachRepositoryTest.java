@@ -14,10 +14,10 @@ class CoachRepositoryTest {
     private CoachRepository coachRepository;
 
     @Test
-    void saveAndFind_ShouldCreateAndRetrieveMentor() {
-        Coach mentor = new Coach();
-        mentor.setSpecialization("Java Backend");
-        Coach saved = coachRepository.save(mentor);
+    void saveAndFind_ShouldCreateAndRetrieveCoach() {
+        Coach coach = new Coach();
+        coach.setSpecialization("Java Backend");
+        Coach saved = coachRepository.save(coach);
         assertNotNull(saved.getId());
         Coach found = coachRepository.findById(saved.getId());
         assertNotNull(found);
@@ -25,9 +25,9 @@ class CoachRepositoryTest {
     }
 
     @Test
-    void save_WithExistingId_ShouldUpdateMentor() {Coach mentor = new Coach();
-        mentor.setSpecialization("Spring Core");
-        Coach saved = coachRepository.save(mentor);
+    void save_WithExistingId_ShouldUpdateCoach() {Coach coach = new Coach();
+        coach.setSpecialization("Spring Core");
+        Coach saved = coachRepository.save(coach);
         Long id = saved.getId();
         saved.setSpecialization("Spring Boot & Data");
         Coach updated = coachRepository.save(saved);
@@ -38,8 +38,8 @@ class CoachRepositoryTest {
 
     @Test
     void existsById_ShouldVerifyExistence() {
-        Coach mentor = new Coach();
-        Coach saved = coachRepository.save(mentor);
+        Coach coach = new Coach();
+        Coach saved = coachRepository.save(coach);
         assertTrue(coachRepository.existsById(saved.getId()));
     }
 }

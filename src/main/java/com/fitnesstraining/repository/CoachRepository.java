@@ -15,13 +15,13 @@ public class CoachRepository {
     private final Map<Long, Coach> coachStorage;
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    public Coach save(Coach mentor) {
-        if (mentor.getId() == null || mentor.getId() == 0) {
+    public Coach save(Coach coach) {
+        if (coach.getId() == null || coach.getId() == 0) {
             long id = idGenerator.getAndIncrement();
-            mentor.setId(id);
+            coach.setId(id);
         }
-        coachStorage.put(mentor.getId(), mentor);
-        return mentor;
+        coachStorage.put(coach.getId(), coach);
+        return coach;
     }
 
     public Coach findById(Long id) {

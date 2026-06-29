@@ -15,19 +15,19 @@ public class DefaultCoachService implements CoachService {
 
     private final CoachRepository coachRepository;
 
-    public Coach create(Coach mentor) {
-        return coachRepository.save(mentor);
+    public Coach create(Coach coach) {
+        return coachRepository.save(coach);
     }
 
     public Coach getById(Long id) {
         return coachRepository.findById(id);
     }
 
-    public Coach update(Coach mentor) {
-        if (coachRepository.existsById(mentor.getId())) {
-            return coachRepository.save(mentor);
+    public Coach update(Coach coach) {
+        if (coachRepository.existsById(coach.getId())) {
+            return coachRepository.save(coach);
         } else {
-            throw new CoachNotFoundException("Mentor not found with id: " + mentor.getId());
+            throw new CoachNotFoundException("Coach not found with id: " + coach.getId());
         }
     }
 }

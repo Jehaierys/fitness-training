@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class CoachFacade {
 
     private final UserService userService;
-    private final CoachService mentorService;
+    private final CoachService coachService;
 
     private static final SecureRandom random = new SecureRandom();
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -43,10 +43,10 @@ public class CoachFacade {
         user.setActive(true);
         User savedUser = userService.create(user);
 
-        Coach mentor = new Coach();
-        mentor.setUserId(savedUser.getId());
-        mentor.setSpecialization(specialization);
+        Coach coach = new Coach();
+        coach.setUserId(savedUser.getId());
+        coach.setSpecialization(specialization);
 
-        return mentorService.create(mentor);
+        return coachService.create(coach);
     }
 }

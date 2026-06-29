@@ -10,7 +10,7 @@ import java.time.Duration;
 @Setter
 public class Session {
     private Long id;
-    private Long mentorId;
+    private Long coachId;
     private Long traineeId;
     private String name;
     private SessionType type;

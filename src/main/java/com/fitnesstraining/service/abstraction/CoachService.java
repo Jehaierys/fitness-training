@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface CoachService {
 
-    public Coach create(Coach mentor);
+    public Coach create(Coach coach);
 
     public Coach getById(Long id);
 
-    public Coach update(Coach mentor);
+    public Coach update(Coach coach);
 }

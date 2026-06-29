@@ -33,7 +33,7 @@ class DefaultCoachServiceTest {
     }
 
     @Test
-    void create_ShouldReturnSavedMentor() {
+    void create_ShouldReturnSavedCoach() {
         when(coachRepository.save(coach)).thenReturn(coach);
         Coach result = coachService.create(coach);
         assertNotNull(result);
@@ -43,7 +43,7 @@ class DefaultCoachServiceTest {
 
 
     @Test
-    void getById_WhenExists_ShouldReturnMentor() {
+    void getById_WhenExists_ShouldReturnCoach() {
         when(coachRepository.findById(1L)).thenReturn(coach);
         Coach result = coachService.getById(1L);
         assertNotNull(result);
@@ -51,7 +51,7 @@ class DefaultCoachServiceTest {
     }
 
     @Test
-    void update_WhenExists_ShouldReturnUpdatedMentor() {
+    void update_WhenExists_ShouldReturnUpdatedCoach() {
         when(coachRepository.existsById(1L)).thenReturn(true);
         when(coachRepository.save(coach)).thenReturn(coach);
         Coach result = coachService.update(coach);
