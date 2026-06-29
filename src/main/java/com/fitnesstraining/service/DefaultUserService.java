@@ -25,12 +25,8 @@ public class DefaultUserService implements UserService {
         return userRepository.findById(id);
     }
 
-    public List<User> getAll() {
-        return userRepository.findAll();
-    }
-
     public User update(User user) throws UserNotFoundException {
-        if (userRepository.existById(user.getId())) {
+        if (userRepository.existsById(user.getId())) {
             return userRepository.save(user);
         } else {
             throw new UserNotFoundException();

@@ -12,8 +12,6 @@ public interface UserService {
 
     public User getById(Long id);
 
-    public List<User> getAll();
-
     public User update(User user) throws UserNotFoundException;
 
     public void delete(Long id);
