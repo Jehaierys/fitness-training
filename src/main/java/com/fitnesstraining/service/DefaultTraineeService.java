@@ -23,7 +23,7 @@ public class DefaultTraineeService implements TraineeService {
         return traineeRepository.findById(id);
     }
 
-    public Trainee update(Trainee trainee) throws TraineeNotFoundException {
+    public Trainee update(Trainee trainee) {
         if (traineeRepository.existsById(trainee.getId())) {
             return traineeRepository.save(trainee);
         } else {
@@ -31,7 +31,7 @@ public class DefaultTraineeService implements TraineeService {
         }
     }
 
-    public void delete(Long id) throws TraineeNotFoundException {
+    public void delete(Long id) {
         if (!traineeRepository.existsById(id)) {
             throw new TraineeNotFoundException("Trainee not found with id: " + id);
         }

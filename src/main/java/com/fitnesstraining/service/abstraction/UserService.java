@@ -12,7 +12,7 @@ public interface UserService {
 
     public User getById(Long id);
 
-    public User update(User user) throws UserNotFoundException;
+    public User update(User user);
 
     public void delete(Long id);
 

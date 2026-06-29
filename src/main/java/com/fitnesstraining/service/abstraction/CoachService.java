@@ -11,5 +11,5 @@ public interface CoachService {
 
     public Coach getById(Long id);
 
-    public Coach update(Coach mentor) throws CoachNotFoundException;
+    public Coach update(Coach mentor);
 }

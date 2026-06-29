@@ -11,8 +11,8 @@ public interface TraineeService {
 
     public Trainee getById(Long id);
 
-    public Trainee update(Trainee trainee) throws TraineeNotFoundException;
+    public Trainee update(Trainee trainee);
 
-    public void delete(Long id) throws TraineeNotFoundException;
+    public void delete(Long id);
 
 }

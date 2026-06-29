@@ -23,7 +23,7 @@ public class DefaultCoachService implements CoachService {
         return coachRepository.findById(id);
     }
 
-    public Coach update(Coach mentor) throws CoachNotFoundException {
+    public Coach update(Coach mentor) {
         if (coachRepository.existsById(mentor.getId())) {
             return coachRepository.save(mentor);
         } else {
