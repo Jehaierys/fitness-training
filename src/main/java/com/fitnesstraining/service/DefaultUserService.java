@@ -43,4 +43,8 @@ public class DefaultUserService implements UserService {
         }
         userRepository.deleteById(id);
     }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }

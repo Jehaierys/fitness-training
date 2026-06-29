@@ -51,4 +51,9 @@ public class UserRepository {
     public void deleteById(Long id) {
         userStorage.remove(id);
     }
+
+    public boolean existsByUsername(String username) {
+        User user = userStorage.values().stream().filter(u -> u.getUsername().equals(username)).findFirst().orElse(null);
+        return user != null;
+    }
 }
