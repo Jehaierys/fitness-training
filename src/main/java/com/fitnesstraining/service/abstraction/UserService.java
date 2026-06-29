@@ -10,7 +10,7 @@ public interface UserService {
 
     public User create(User user);
 
-    public Optional<User> getById(Long id);
+    public User getById(Long id);
 
     public List<User> getAll();
 

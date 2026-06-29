@@ -8,5 +8,5 @@ public interface SessionService {
 
     public Session create(Session session);
 
-    public Optional<Session> getById(Long id);
+    public Session getById(Long id);
 }

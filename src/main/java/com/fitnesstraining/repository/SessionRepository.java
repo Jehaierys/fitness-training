@@ -30,7 +30,7 @@ public class SessionRepository {
         }
     }
 
-    public Optional<Session> findById(Long id) {
-        return Optional.ofNullable(sessionStorage.get(id));
+    public Session findById(Long id) {
+        return sessionStorage.get(id);
     }
 }

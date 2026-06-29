@@ -24,8 +24,8 @@ public class TraineeRepository {
         return trainee;
     }
 
-    public Optional<Trainee> findById(Long id) {
-        return Optional.ofNullable(traineeStorage.get(id));
+    public Trainee findById(Long id) {
+        return traineeStorage.get(id);
     }
 
     public boolean existsById(Long id) {

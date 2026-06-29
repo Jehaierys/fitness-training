@@ -19,7 +19,7 @@ public class DefaultCoachService implements CoachService {
         return coachRepository.save(mentor);
     }
 
-    public Optional<Coach> getById(Long id) {
+    public Coach getById(Long id) {
         return coachRepository.findById(id);
     }
 

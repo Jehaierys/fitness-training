@@ -9,7 +9,7 @@ public interface TraineeService {
 
     public Trainee create(Trainee trainee);
 
-    public Optional<Trainee> getById(Long id);
+    public Trainee getById(Long id);
 
     public Trainee update(Trainee trainee) throws TraineeNotFoundException;
 

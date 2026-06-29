@@ -9,7 +9,7 @@ public interface CoachService {
 
     public Coach create(Coach mentor);
 
-    public Optional<Coach> getById(Long id);
+    public Coach getById(Long id);
 
     public Coach update(Coach mentor) throws CoachNotFoundException;
 }

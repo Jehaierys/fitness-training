@@ -19,7 +19,7 @@ public class DefaultTraineeService implements TraineeService {
         return traineeRepository.save(trainee);
     }
 
-    public Optional<Trainee> getById(Long id) {
+    public Trainee getById(Long id) {
         return traineeRepository.findById(id);
     }
 
