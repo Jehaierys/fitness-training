@@ -5,7 +5,6 @@ import com.fitnesstraining.repository.SessionRepository;
 import com.fitnesstraining.service.abstraction.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 
 @Service

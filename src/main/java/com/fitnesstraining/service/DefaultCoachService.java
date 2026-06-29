@@ -6,7 +6,6 @@ import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.exception.CoachNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 
 @Service

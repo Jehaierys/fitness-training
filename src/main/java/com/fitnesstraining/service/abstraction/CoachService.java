@@ -1,9 +1,6 @@
 package com.fitnesstraining.service.abstraction;
 
 import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.service.exception.CoachNotFoundException;
-
-import java.util.Optional;
 
 public interface CoachService {
 

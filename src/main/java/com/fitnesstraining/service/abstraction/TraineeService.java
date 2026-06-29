@@ -1,9 +1,6 @@
 package com.fitnesstraining.service.abstraction;
 
 import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.service.exception.TraineeNotFoundException;
-
-import java.util.Optional;
 
 public interface TraineeService {
 

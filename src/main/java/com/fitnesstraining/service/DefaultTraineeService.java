@@ -6,7 +6,6 @@ import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 
 @Service

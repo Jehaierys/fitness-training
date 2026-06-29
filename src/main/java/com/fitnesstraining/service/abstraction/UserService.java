@@ -1,10 +1,6 @@
 package com.fitnesstraining.service.abstraction;
 
 import com.fitnesstraining.domain.User;
-import com.fitnesstraining.service.exception.UserNotFoundException;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 

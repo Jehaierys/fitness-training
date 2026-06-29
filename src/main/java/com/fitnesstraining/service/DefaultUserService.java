@@ -7,8 +7,6 @@ import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
