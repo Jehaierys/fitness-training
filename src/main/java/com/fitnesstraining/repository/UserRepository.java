@@ -1,8 +1,6 @@
 package com.fitnesstraining.repository;
 
 
-import com.fitnesstraining.domain.Session;
-import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +30,7 @@ public class UserRepository {
     }
 
     public User findById(Long id) {
-        try {
-            checkUserExist(id);
-        } catch (UserNotFoundException ignored) { }
+        checkUserExist(id);
         return userStorage.get(id);
     }
 
