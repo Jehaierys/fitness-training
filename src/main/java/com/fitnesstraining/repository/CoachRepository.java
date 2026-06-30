@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.service.exception.CoachNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,11 @@ public class CoachRepository {
     }
 
     public Coach findById(Long id) {
-        return coachStorage.get(id);
+        Coach coach = coachStorage.get(id);
+        if (coach == null) {
+            throw new CoachNotFoundException("Coach not found with id: " + id);
+        }
+        return coach;
     }
 
     public boolean existsById(Long id) {
