@@ -6,9 +6,13 @@ import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CoachFacade {
@@ -22,6 +26,9 @@ public class CoachFacade {
             String lastName,
             String specialization
     ) {
+        UUID uuid = UUID.randomUUID();
+        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", firstName, lastName, specialization, uuid);
+
         String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
         String finalUsername = baseUsername;
         long suffix = 1;
@@ -44,6 +51,8 @@ public class CoachFacade {
                 .userId(user.getId())
                 .specialization(specialization)
                 .build();
+
+        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", firstName, lastName, specialization, user.getId(), uuid);
 
         return coachService.create(coach);
     }

@@ -6,9 +6,11 @@ import com.fitnesstraining.repository.UserRepository;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DefaultUserService implements UserService {
@@ -16,6 +18,7 @@ public class DefaultUserService implements UserService {
     private final UserRepository userRepository;
 
     public User create(User user) {
+        log.info("Creating user with username: {}", user.getUsername());
         return userRepository.save(user);
     }
 
@@ -25,16 +28,20 @@ public class DefaultUserService implements UserService {
 
     public User update(User user) {
         if (userRepository.existsById(user.getId())) {
+            log.info("Updating user with id: {}", user.getId());
             return userRepository.save(user);
         } else {
+            log.warn("User not found with id: {} to be updated", user.getId());
             throw new UserNotFoundException();
         }
     }
 
     public void delete(Long id) {
         if (!userRepository.existsById(id)) {
+            log.warn("User not found with id: {} to be deleted", id);
             throw new UserNotFoundException("User not found with id: " + id);
         }
+        log.info("Deleting user with id: {}", id);
         userRepository.deleteById(id);
     }
 

@@ -6,10 +6,13 @@ import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
+import java.util.UUID;
 
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TraineeFacade {
@@ -24,6 +27,9 @@ public class TraineeFacade {
             LocalDate birthDate,
             String address
     ) {
+        UUID uuid = UUID.randomUUID();
+        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", firstName, lastName, birthDate, address, uuid);
+
         String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
         String finalUsername = baseUsername;
         long suffix = 1;
@@ -47,6 +53,8 @@ public class TraineeFacade {
                 .birthDate(birthDate)
                 .address(address)
                 .build();
+
+        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", firstName, lastName, birthDate, address, user.getId(), uuid);
 
         return traineeService.create(trainee);
     }

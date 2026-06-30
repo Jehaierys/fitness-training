@@ -4,11 +4,13 @@ package com.fitnesstraining.repository;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
@@ -36,6 +38,7 @@ public class UserRepository {
 
     private void checkUserExist(Long id) throws UserNotFoundException {
         if (!existsById(id)) {
+            log.warn("User with id {} not found", id);
             throw new UserNotFoundException("User with id " + id + " not found");
         }
     }
