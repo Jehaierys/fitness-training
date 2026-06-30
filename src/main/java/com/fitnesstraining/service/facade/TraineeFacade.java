@@ -4,23 +4,19 @@ import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
+import com.fitnesstraining.utils.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.stream.Collectors;
 
 
 @Component
 @RequiredArgsConstructor
 public class TraineeFacade {
 
-    private static final SecureRandom random = new SecureRandom();
-    private static final String CHARACTERS =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
     private final UserService userService;
     private final TraineeService traineeService;
+    private final PasswordGenerator passwordGenerator;
 
     public Trainee signUp(
             String firstName,
@@ -37,21 +33,21 @@ public class TraineeFacade {
             suffix++;
         }
 
-        String generatedPassword = random.ints(10, 0, CHARACTERS.length())
-                .mapToObj(CHARACTERS::charAt)
-                .map(Object::toString)
-                .collect(Collectors.joining());
+        User user = User.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .username(finalUsername)
+                .password(passwordGenerator.generate())
+                .isActive(true)
+                .build();
+        userService.create(user);
 
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUsername(finalUsername);
-        user.setPassword(generatedPassword);
-        user.setActive(true);User savedUser = userService.create(user);
-        Trainee trainee = new Trainee();
-        trainee.setUserId(savedUser.getId());
-        trainee.setBirthDate(birthDate);
-        trainee.setAddress(address);
+        Trainee trainee = Trainee.builder()
+                .userId(user.getId())
+                .birthDate(birthDate)
+                .address(address)
+                .build();
+
         return traineeService.create(trainee);
     }
 }
