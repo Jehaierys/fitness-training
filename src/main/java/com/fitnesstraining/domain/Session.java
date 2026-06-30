@@ -1,5 +1,6 @@
 package com.fitnesstraining.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.time.Duration;
 
 @Getter
 @Setter
+@Builder
 public class Session {
     private Long id;
     private Long coachId;
