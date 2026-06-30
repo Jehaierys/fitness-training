@@ -1,35 +1,10 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.Session;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface SessionRepository extends JpaRepository<Session, Long> {
 
-@Repository
-@RequiredArgsConstructor
-public class SessionRepository {
+    boolean existsById(Long id);
 
-    private final Map<Long, Session> sessionStorage;
-    private final AtomicLong idGenerator = new AtomicLong(1);
-
-    private Session session;
-
-    public Session save(Session session) {
-        assignIdIfRequired(session);
-        sessionStorage.put(session.getId(), session);
-        return session;
-    }
-
-    private void assignIdIfRequired(Session session) {
-        if (session.getId() == null || session.getId() == 0) {
-            long id = idGenerator.getAndIncrement();
-            session.setId(id);
-        }
-    }
-
-    public Session findById(Long id) {
-        return sessionStorage.get(id);
-    }
 }
