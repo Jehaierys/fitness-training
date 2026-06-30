@@ -2,12 +2,16 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.repository.SessionRepository;
+import com.fitnesstraining.service.exception.NotFoundException; // Import NotFoundException
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -40,9 +44,17 @@ class DefaultSessionServiceTest {
 
     @Test
     void getById_WhenExists_ShouldReturnSession() {
-        when(sessionRepository.findById(1L)).thenReturn(session);
+        when(sessionRepository.findById(1L)).thenReturn(Optional.of(session));
         Session result = sessionService.getById(1L);
         assertNotNull(result);
         assertEquals(1L, result.getId());
+        verify(sessionRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void getById_WhenNotExists_ShouldThrowNotFoundException() {
+        when(sessionRepository.findById(99L)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> sessionService.getById(99L));
+        verify(sessionRepository, times(1)).findById(99L);
     }
 }
