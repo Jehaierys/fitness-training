@@ -3,6 +3,7 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.repository.SessionRepository;
 import com.fitnesstraining.service.abstraction.SessionService;
+import com.fitnesstraining.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class DefaultSessionService implements SessionService {
 
     public Session getById(Long id) {
         log.info("Retrieving training session with id: {}", id);
-        return sessionRepository.findById(id);
+        return sessionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Session not found with id: " + id));
     }
 }

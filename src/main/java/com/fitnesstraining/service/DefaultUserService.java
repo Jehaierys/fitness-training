@@ -4,6 +4,7 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.UserRepository;
 import com.fitnesstraining.service.abstraction.UserService;
+import com.fitnesstraining.service.exception.NotFoundException;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,8 @@ public class DefaultUserService implements UserService {
     }
 
     public User getById(Long id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
     }
 
     public User update(User user) {

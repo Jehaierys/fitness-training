@@ -4,6 +4,7 @@ import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.repository.CoachRepository;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.exception.CoachNotFoundException;
+import com.fitnesstraining.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class DefaultCoachService implements CoachService {
     }
 
     public Coach getById(Long id) {
-        return coachRepository.findById(id);
+        return coachRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Coach not found with id: " + id));
     }
 
     public Coach update(Coach coach) {
