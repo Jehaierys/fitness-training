@@ -1,6 +1,7 @@
 package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -24,7 +26,7 @@ public class CoachFacade {
     public Coach signUp(
             String firstName,
             String lastName,
-            String specialization
+            Set<SessionType> specialization
     ) {
         UUID uuid = UUID.randomUUID();
         log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", firstName, lastName, specialization, uuid);

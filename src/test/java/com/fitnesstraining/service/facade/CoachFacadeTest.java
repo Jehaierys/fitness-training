@@ -1,6 +1,7 @@
 package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
@@ -12,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +37,8 @@ class CoachFacadeTest {
 
     private User testUser;
     private Coach testCoach;
+    private SessionType testSessionType;
+    private Set<SessionType> testSpecializationSet;
 
     @BeforeEach
     void setUp() {
@@ -46,10 +51,16 @@ class CoachFacadeTest {
                 .isActive(true)
                 .build();
 
+        testSessionType = SessionType.builder()
+                .id(1L)
+                .name("Fitness")
+                .build();
+        testSpecializationSet = Set.of(testSessionType);
+
         testCoach = Coach.builder()
                 .id(10L)
                 .userId(1L)
-                .specialization("Fitness")
+                .specialization(testSpecializationSet)
                 .build();
     }
 
@@ -60,12 +71,12 @@ class CoachFacadeTest {
         when(userService.create(any(User.class))).thenReturn(testUser);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
-        Coach result = coachFacade.signUp("John", "Doe", "Fitness");
+        Coach result = coachFacade.signUp("John", "Doe", testSpecializationSet);
 
         assertNotNull(result);
         assertEquals(testCoach.getId(), result.getId());
         assertEquals(testCoach.getUserId(), result.getUserId());
-        assertEquals(testCoach.getSpecialization(), result.getSpecialization());
+        assertEquals(testSpecializationSet, result.getSpecialization());
 
         verify(userService, times(1)).existsByUsername("john.doe");
         verify(userService, times(1)).create(any(User.class));
@@ -80,12 +91,12 @@ class CoachFacadeTest {
         when(userService.existsByUsername("john.doe2")).thenReturn(false);
         when(userService.create(any(User.class))).thenAnswer(invocation -> {
             User user = invocation.getArgument(0);
-            user.setId(1L); // Simulate ID assignment
+            user.setId(1L);
             return user;
         });
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
-        Coach result = coachFacade.signUp("John", "Doe", "Fitness");
+        Coach result = coachFacade.signUp("John", "Doe", testSpecializationSet);
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername("john.doe");
@@ -102,7 +113,7 @@ class CoachFacadeTest {
         when(userService.create(any(User.class))).thenThrow(new RuntimeException("User creation failed"));
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            coachFacade.signUp("John", "Doe", "Fitness");
+            coachFacade.signUp("John", "Doe", testSpecializationSet);
         });
 
         assertEquals("User creation failed", thrown.getMessage());
@@ -115,11 +126,11 @@ class CoachFacadeTest {
     void signUp_coachServiceCreateFails_throwsExceptionAndUserIsCreated() {
         when(passwordGenerator.generate()).thenReturn("randompass");
         when(userService.existsByUsername("john.doe")).thenReturn(false);
-        when(userService.create(any(User.class))).thenReturn(testUser); // User is successfully created
+        when(userService.create(any(User.class))).thenReturn(testUser);
         when(coachService.create(any(Coach.class))).thenThrow(new CoachNotFoundException("Coach creation failed"));
 
         CoachNotFoundException thrown = assertThrows(CoachNotFoundException.class, () -> {
-            coachFacade.signUp("John", "Doe", "Fitness");
+            coachFacade.signUp("John", "Doe", testSpecializationSet);
         });
 
         assertEquals("Coach creation failed", thrown.getMessage());
@@ -139,7 +150,7 @@ class CoachFacadeTest {
         });
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
-        Coach result = coachFacade.signUp("", "", "Yoga");
+        Coach result = coachFacade.signUp("", "", testSpecializationSet);
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername(".");
@@ -160,7 +171,7 @@ class CoachFacadeTest {
         });
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
-        Coach result = coachFacade.signUp("", "", "Yoga");
+        Coach result = coachFacade.signUp("", "", testSpecializationSet);
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername(".");
@@ -177,7 +188,7 @@ class CoachFacadeTest {
         when(userService.create(any(User.class))).thenReturn(testUser);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
-        coachFacade.signUp("Jane", "Doe", "Pilates");
+        coachFacade.signUp("Jane", "Doe", testSpecializationSet);
 
         verify(passwordGenerator, times(1)).generate();
         verify(userService, times(1)).create(argThat(user -> user.getPassword().equals("securePass123")));
