@@ -59,7 +59,7 @@ class CoachFacadeTest {
 
         testCoach = Coach.builder()
                 .id(10L)
-                .userId(1L)
+                .user(testUser)
                 .specialization(testSpecializationSet)
                 .build();
     }
@@ -75,7 +75,7 @@ class CoachFacadeTest {
 
         assertNotNull(result);
         assertEquals(testCoach.getId(), result.getId());
-        assertEquals(testCoach.getUserId(), result.getUserId());
+        assertEquals(testCoach.getUser().getId(), result.getUser().getId());
         assertEquals(testSpecializationSet, result.getSpecialization());
 
         verify(userService, times(1)).existsByUsername("john.doe");

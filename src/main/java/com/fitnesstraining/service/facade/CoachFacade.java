@@ -50,7 +50,7 @@ public class CoachFacade {
         userService.create(user);
 
         Coach coach = Coach.builder()
-                .userId(user.getId())
+                .user(user)
                 .specialization(specialization)
                 .build();
 

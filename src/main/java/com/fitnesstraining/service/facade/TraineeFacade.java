@@ -49,7 +49,7 @@ public class TraineeFacade {
         userService.create(user);
 
         Trainee trainee = Trainee.builder()
-                .userId(user.getId())
+                .user(user)
                 .birthDate(birthDate)
                 .address(address)
                 .build();

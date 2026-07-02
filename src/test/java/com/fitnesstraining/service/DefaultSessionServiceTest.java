@@ -2,7 +2,7 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.repository.SessionRepository;
-import com.fitnesstraining.service.exception.NotFoundException; // Import NotFoundException
+import com.fitnesstraining.service.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -18,7 +18,7 @@ public class DefaultTraineeService implements TraineeService {
     private final TraineeRepository traineeRepository;
 
     public Trainee create(Trainee trainee) {
-        log.info("Creating trainee with userId: {}", trainee.getUserId());
+        log.info("Creating trainee with userId: {}", trainee.getUser().getId());
         return traineeRepository.save(trainee);
     }
 

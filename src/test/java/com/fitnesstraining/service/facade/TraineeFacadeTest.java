@@ -51,7 +51,7 @@ class TraineeFacadeTest {
 
         testTrainee = Trainee.builder()
                 .id(20L)
-                .userId(1L)
+                .user(testUser) // Updated to use User object
                 .birthDate(LocalDate.of(1990, 5, 15))
                 .address("123 Main St")
                 .build();
@@ -68,7 +68,7 @@ class TraineeFacadeTest {
 
         assertNotNull(result);
         assertEquals(testTrainee.getId(), result.getId());
-        assertEquals(testTrainee.getUserId(), result.getUserId());
+        assertEquals(testTrainee.getUser().getId(), result.getUser().getId());
         assertEquals(testTrainee.getBirthDate(), result.getBirthDate());
         assertEquals(testTrainee.getAddress(), result.getAddress());
 

@@ -1,6 +1,7 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.TraineeRepository;
 import com.fitnesstraining.service.exception.NotFoundException;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
@@ -27,12 +28,24 @@ class DefaultTraineeServiceTest {
     private DefaultTraineeService traineeService;
 
     private Trainee trainee;
+    private User testUser;
 
     @BeforeEach
     void setUp() {
-        trainee = new Trainee();
-        trainee.setId(1L);
-        trainee.setAddress("Test Address");
+        testUser = User.builder()
+                .id(1L)
+                .firstName("Jane")
+                .lastName("Doe")
+                .username("jane.doe")
+                .password("password123")
+                .isActive(true)
+                .build();
+
+        trainee = Trainee.builder()
+                .id(1L)
+                .user(testUser)
+                .address("Test Address")
+                .build();
     }
 
     @Test
@@ -41,6 +54,7 @@ class DefaultTraineeServiceTest {
         Trainee result = traineeService.create(trainee);
         assertNotNull(result);
         assertEquals(1L, result.getId());
+        assertEquals(testUser, result.getUser());
         verify(traineeRepository, times(1)).save(trainee);
     }
 
@@ -50,6 +64,7 @@ class DefaultTraineeServiceTest {
         Trainee result = traineeService.getById(1L);
         assertNotNull(result);
         assertEquals("Test Address", result.getAddress());
+        assertEquals(testUser, result.getUser());
         verify(traineeRepository, times(1)).findById(1L);
     }
 
@@ -68,6 +83,7 @@ class DefaultTraineeServiceTest {
         Trainee result = traineeService.update(trainee);
 
         assertNotNull(result);
+        assertEquals(testUser, result.getUser());
         verify(traineeRepository, times(1)).existsById(1L);
         verify(traineeRepository, times(1)).save(trainee);
     }
