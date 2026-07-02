@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "session_types")
 public class SessionType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "session_type_seq")
     @SequenceGenerator(name = "session_type_seq", sequenceName = "session_type_id_seq", allocationSize = 1)
@@ -26,12 +27,7 @@ public class SessionType {
             joinColumns = @JoinColumn(name = "session_type_id"),
             inverseJoinColumns = @JoinColumn(name = "coach_id")
     )
+    @Builder.Default
     private Set<Coach> coaches = new HashSet<>();
 
-   @OneToMany(
-           mappedBy = "sessionType",
-           cascade = CascadeType.ALL,
-           orphanRemoval = true
-   )
-    private Set<Session> sessions;
 }

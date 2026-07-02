@@ -19,10 +19,20 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "session_seq")
     @SequenceGenerator(name = "session_seq", sequenceName = "session_id_seq", allocationSize = 1)
     private Long id;
-    private Long coachId;
-    private Long traineeId;
+
+    @ManyToOne
+    @JoinColumn(name = "coach_id")
+    private Coach coach;
+
+    @ManyToOne
+    @JoinColumn(name = "trainee_id")
+    private Trainee trainee;
+
+    @ManyToOne
+    @JoinColumn(name = "session_type_id")
+    private SessionType sessionType;
+
     private String name;
-    private SessionType type;
     private LocalDateTime date;
     private Duration duration;
 }

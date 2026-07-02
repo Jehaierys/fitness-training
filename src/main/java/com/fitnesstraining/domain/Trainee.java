@@ -19,5 +19,12 @@ public class Trainee {
     private Long id;
     private LocalDate birthDate;
     private String address;
-    private Long userId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(
+            name = "user_id",
+            unique = true,
+            nullable = false
+    )
+    private User user;
 }

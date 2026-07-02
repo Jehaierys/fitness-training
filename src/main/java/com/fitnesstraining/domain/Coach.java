@@ -3,6 +3,9 @@ package com.fitnesstraining.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -16,6 +19,12 @@ public class Coach {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_seq")
     @SequenceGenerator(name = "coach_seq", sequenceName = "coach_id_seq", allocationSize = 1)
     private Long id;
-    private Long userId;
-    private String specialization;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
+    private User user;
+
+    @ManyToMany(mappedBy = "coaches")
+    @Builder.Default
+    private Set<SessionType> specialization = new HashSet<>();
 }
