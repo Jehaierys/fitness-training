@@ -114,4 +114,40 @@ class DefaultUserServiceTest {
         assertFalse(userService.existsByUsername("nonexistent"));
         verify(userRepository, times(1)).existsByUsername("nonexistent");
     }
+
+    @Test
+    void setActive_WhenUserExistsAndIsActiveIsTrue_ShouldSetUserActive() {
+        User activeUser = User.builder().id(1L).isActive(false).build();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(activeUser));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        userService.setActive(1L, true);
+
+        assertTrue(activeUser.isActive());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(activeUser);
+    }
+
+    @Test
+    void setActive_WhenUserExistsAndIsActiveIsFalse_ShouldSetUserInactive() {
+        User inactiveUser = User.builder().id(1L).isActive(true).build();
+        when(userRepository.findById(1L)).thenReturn(Optional.of(inactiveUser));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        userService.setActive(1L, false);
+
+        assertFalse(inactiveUser.isActive());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(inactiveUser);
+    }
+
+    @Test
+    void setActive_WhenUserDoesNotExist_ShouldThrowNotFoundException() {
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> userService.setActive(99L, true));
+
+        verify(userRepository, times(1)).findById(99L);
+        verify(userRepository, never()).save(any(User.class));
+    }
 }

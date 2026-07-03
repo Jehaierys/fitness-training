@@ -50,4 +50,17 @@ public class DefaultUserService implements UserService {
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
+
+    public void setActive(Long id, boolean isActive) {
+        userRepository.findById(id).ifPresentOrElse(user -> {
+            if (isActive) {
+                user.setActive(true);
+            } else {
+                user.setActive(false);
+            }
+            userRepository.save(user);
+        }, () -> {
+            throw new NotFoundException("User not found with id: " + id);
+        });
+    }
 }

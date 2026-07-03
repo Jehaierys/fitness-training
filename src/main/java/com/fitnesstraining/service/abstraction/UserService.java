@@ -13,4 +13,6 @@ public interface UserService {
     void delete(Long id);
 
     boolean existsByUsername(String finalUsername);
+
+    void setActive(Long id, boolean isActive);
 }
