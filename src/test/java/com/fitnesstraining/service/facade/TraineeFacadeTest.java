@@ -2,6 +2,7 @@ package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
@@ -64,7 +65,13 @@ class TraineeFacadeTest {
         when(userService.create(any(User.class))).thenReturn(testUser);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp("Jane", "Doe", LocalDate.of(1990, 5, 15), "123 Main St");
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .birthDate(LocalDate.of(1990, 5, 15))
+                .address("123 Main St")
+                .build();
+        Trainee result = traineeFacade.signUp(request);
 
         assertNotNull(result);
         assertEquals(testTrainee.getId(), result.getId());
@@ -91,7 +98,13 @@ class TraineeFacadeTest {
         });
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp("Jane", "Doe", LocalDate.of(1990, 5, 15), "123 Main St");
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .birthDate(LocalDate.of(1990, 5, 15))
+                .address("123 Main St")
+                .build();
+        Trainee result = traineeFacade.signUp(request);
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername("jane.doe");
@@ -109,7 +122,12 @@ class TraineeFacadeTest {
         when(userService.create(any(User.class))).thenThrow(new RuntimeException("User creation failed"));
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            traineeFacade.signUp("Jane", "Doe", LocalDate.of(1990, 5, 15), "123 Main St");
+            Trainee result = traineeFacade.signUp(TraineeSignUpRequest.builder()
+                    .firstName("Jane")
+                    .lastName("Doe")
+                    .birthDate(LocalDate.of(1990, 5, 15))
+                    .address("123 Main St")
+                    .build());
         });
 
         assertEquals("User creation failed", thrown.getMessage());
@@ -127,7 +145,13 @@ class TraineeFacadeTest {
         when(traineeService.create(any(Trainee.class))).thenThrow(new TraineeNotFoundException("Trainee creation failed"));
 
         TraineeNotFoundException thrown = assertThrows(TraineeNotFoundException.class, () -> {
-            traineeFacade.signUp("Jane", "Doe", LocalDate.of(1990, 5, 15), "123 Main St");
+            traineeFacade.signUp(
+                    TraineeSignUpRequest.builder()
+                    .firstName("Jane")
+                    .lastName("Doe")
+                    .birthDate(LocalDate.of(1990, 5, 15))
+                    .address("123 Main St")
+                    .build());
         });
 
         assertEquals("Trainee creation failed", thrown.getMessage());
@@ -148,7 +172,14 @@ class TraineeFacadeTest {
         });
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp("", "", LocalDate.of(2000, 1, 1), "456 Oak Ave");
+        Trainee result = traineeFacade.signUp(
+                TraineeSignUpRequest.builder()
+                .firstName("")
+                .lastName("")
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .address("456 Oak Ave")
+                .build()
+        );
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername(".");
@@ -170,7 +201,14 @@ class TraineeFacadeTest {
         });
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp("", "", LocalDate.of(2000, 1, 1), "456 Oak Ave");
+        Trainee result = traineeFacade.signUp(
+                TraineeSignUpRequest.builder()
+                .firstName("")
+                .lastName("")
+                .birthDate(LocalDate.of(2000, 1, 1))
+                .address("456 Oak Ave")
+                .build()
+        );
 
         assertNotNull(result);
         verify(userService, times(1)).existsByUsername(".");
@@ -188,7 +226,14 @@ class TraineeFacadeTest {
         when(userService.create(any(User.class))).thenReturn(testUser);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        traineeFacade.signUp("John", "Doe", LocalDate.of(1985, 1, 1), "789 Pine Ln");
+        traineeFacade.signUp(
+                TraineeSignUpRequest.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .birthDate(LocalDate.of(1985, 1, 1))
+                .address("789 Pine Ln")
+                .build()
+        );
 
         verify(passwordGenerator, times(1)).generate();
         verify(userService, times(1)).create(argThat(user -> user.getPassword().equals(GENERATED_PASSWORD)));

@@ -2,13 +2,14 @@ package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import java.time.LocalDate;
+
 import java.util.UUID;
 
 
@@ -21,16 +22,11 @@ public class TraineeFacade {
     private final TraineeService traineeService;
     private final PasswordGenerator passwordGenerator;
 
-    public Trainee signUp(
-            String firstName,
-            String lastName,
-            LocalDate birthDate,
-            String address
-    ) {
+    public Trainee signUp(TraineeSignUpRequest request) {
         UUID uuid = UUID.randomUUID();
-        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", firstName, lastName, birthDate, address, uuid);
+        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), uuid);
 
-        String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
+        String baseUsername = request.getFirstName().toLowerCase() + "." + request.getLastName().toLowerCase();
         String finalUsername = baseUsername;
         long suffix = 1;
 
@@ -40,8 +36,8 @@ public class TraineeFacade {
         }
 
         User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .username(finalUsername)
                 .password(passwordGenerator.generate())
                 .isActive(true)
@@ -50,11 +46,11 @@ public class TraineeFacade {
 
         Trainee trainee = Trainee.builder()
                 .user(user)
-                .birthDate(birthDate)
-                .address(address)
+                .birthDate(request.getBirthDate())
+                .address(request.getAddress())
                 .build();
 
-        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", firstName, lastName, birthDate, address, user.getId(), uuid);
+        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), user.getId(), uuid);
 
         return traineeService.create(trainee);
     }

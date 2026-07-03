@@ -1,8 +1,8 @@
 package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.CoachSignUpRequest;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.PasswordGenerator;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
 import java.util.UUID;
 
 
@@ -23,15 +22,11 @@ public class CoachFacade {
     private final CoachService coachService;
     private final PasswordGenerator passwordGenerator;
 
-    public Coach signUp(
-            String firstName,
-            String lastName,
-            Set<SessionType> specialization
-    ) {
+    public synchronized Coach signUp(CoachSignUpRequest request) {
         UUID uuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", firstName, lastName, specialization, uuid);
+        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), uuid);
 
-        String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
+        String baseUsername = request.getFirstName().toLowerCase() + "." + request.getLastName().toLowerCase();
         String finalUsername = baseUsername;
         long suffix = 1;
 
@@ -41,8 +36,8 @@ public class CoachFacade {
         }
 
         User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .username(finalUsername)
                 .password(passwordGenerator.generate())
                 .isActive(true)
@@ -51,10 +46,10 @@ public class CoachFacade {
 
         Coach coach = Coach.builder()
                 .user(user)
-                .specialization(specialization)
+                .specialization(request.getSpecialization())
                 .build();
 
-        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", firstName, lastName, specialization, user.getId(), uuid);
+        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), user.getId(), uuid);
 
         return coachService.create(coach);
     }
