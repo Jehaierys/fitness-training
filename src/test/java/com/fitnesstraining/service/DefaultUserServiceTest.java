@@ -2,7 +2,6 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.UserRepository;
-import com.fitnesstraining.service.exception.NotFoundException;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +25,8 @@ class DefaultUserServiceTest {
     private DefaultUserService userService;
 
     private User user;
+    private final String TEST_USERNAME = "john.doe";
+    private final String TEST_PASSWORD = "password123";
 
     @BeforeEach
     void setUp() {
@@ -33,20 +34,20 @@ class DefaultUserServiceTest {
                 .id(1L)
                 .firstName("John")
                 .lastName("Doe")
-                .username("john.doe")
-                .password("password123")
+                .username(TEST_USERNAME)
+                .password(TEST_PASSWORD)
                 .isActive(true)
                 .build();
     }
 
     @Test
     void create_ShouldReturnSavedUser() {
-        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.create(user)).thenReturn(user);
         User result = userService.create(user);
         assertNotNull(result);
         assertEquals(1L, result.getId());
-        assertEquals("john.doe", result.getUsername());
-        verify(userRepository, times(1)).save(user);
+        assertEquals(TEST_USERNAME, result.getUsername());
+        verify(userRepository, times(1)).create(user);
     }
 
     @Test
@@ -59,96 +60,91 @@ class DefaultUserServiceTest {
     }
 
     @Test
-    void getById_WhenNotExists_ShouldThrowNotFoundException() {
+    void getById_WhenNotExists_ShouldThrowUserNotFoundException() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> userService.getById(99L));
+        assertThrows(UserNotFoundException.class, () -> userService.getById(99L));
         verify(userRepository, times(1)).findById(99L);
     }
 
     @Test
     void update_WhenExists_ShouldReturnUpdatedUser() {
-        when(userRepository.existsById(1L)).thenReturn(true);
-        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.update(user)).thenReturn(user);
         User result = userService.update(user);
         assertNotNull(result);
-        verify(userRepository, times(1)).existsById(1L);
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).update(user);
     }
 
     @Test
-    void update_WhenNotExists_ShouldThrowUserNotFoundException() {
-        when(userRepository.existsById(1L)).thenReturn(false);
-        assertThrows(UserNotFoundException.class, () -> userService.update(user));
-        verify(userRepository, times(1)).existsById(1L);
-        verify(userRepository, never()).save(any());
+    void update_WhenNotExists_ShouldThrowIllegalArgumentException() {
+        when(userRepository.update(user)).thenThrow(new IllegalArgumentException("User must have an ID and exist in the database to be updated."));
+        assertThrows(IllegalArgumentException.class, () -> userService.update(user));
+        verify(userRepository, times(1)).update(user);
     }
 
     @Test
-    void delete_WhenExists_ShouldCallRepositoryDelete() {
+    void delete_WhenExists_ShouldCallRepositoryDeleteById() {
         long userId = 1L;
-        when(userRepository.existsById(userId)).thenReturn(true);
+        doNothing().when(userRepository).deleteById(userId);
         userService.delete(userId);
-        verify(userRepository, times(1)).existsById(userId);
         verify(userRepository, times(1)).deleteById(userId);
     }
 
     @Test
     void delete_WhenNotExists_ShouldThrowUserNotFoundException() {
         long userId = 99L;
-        when(userRepository.existsById(userId)).thenReturn(false);
+        doThrow(new UserNotFoundException("User not found with id: " + userId)).when(userRepository).deleteById(userId);
         assertThrows(UserNotFoundException.class, () -> userService.delete(userId));
-        verify(userRepository, times(1)).existsById(userId);
-        verify(userRepository, never()).deleteById(anyLong());
+        verify(userRepository, times(1)).deleteById(userId);
     }
 
     @Test
     void existsByUsername_WhenExists_ShouldReturnTrue() {
-        when(userRepository.existsByUsername("john.doe")).thenReturn(true);
-        assertTrue(userService.existsByUsername("john.doe"));
-        verify(userRepository, times(1)).existsByUsername("john.doe");
+        when(userRepository.existByUsername(TEST_USERNAME)).thenReturn(true);
+        assertTrue(userService.existsByUsername(TEST_USERNAME));
+        verify(userRepository, times(1)).existByUsername(TEST_USERNAME);
     }
 
     @Test
     void existsByUsername_WhenNotExists_ShouldReturnFalse() {
-        when(userRepository.existsByUsername("nonexistent")).thenReturn(false);
+        when(userRepository.existByUsername("nonexistent")).thenReturn(false);
         assertFalse(userService.existsByUsername("nonexistent"));
-        verify(userRepository, times(1)).existsByUsername("nonexistent");
+        verify(userRepository, times(1)).existByUsername("nonexistent");
     }
 
     @Test
     void setActive_WhenUserExistsAndIsActiveIsTrue_ShouldSetUserActive() {
         User activeUser = User.builder().id(1L).isActive(false).build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(activeUser));
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.update(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         userService.setActive(1L, true);
 
         assertTrue(activeUser.isActive());
         verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).save(activeUser);
+        verify(userRepository, times(1)).update(activeUser);
     }
 
     @Test
     void setActive_WhenUserExistsAndIsActiveIsFalse_ShouldSetUserInactive() {
         User inactiveUser = User.builder().id(1L).isActive(true).build();
         when(userRepository.findById(1L)).thenReturn(Optional.of(inactiveUser));
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.update(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         userService.setActive(1L, false);
 
         assertFalse(inactiveUser.isActive());
         verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).save(inactiveUser);
+        verify(userRepository, times(1)).update(inactiveUser);
     }
 
     @Test
-    void setActive_WhenUserDoesNotExist_ShouldThrowNotFoundException() {
+    void setActive_WhenUserDoesNotExist_ShouldThrowUserNotFoundException() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> userService.setActive(99L, true));
+        assertThrows(UserNotFoundException.class, () -> userService.setActive(99L, true));
 
         verify(userRepository, times(1)).findById(99L);
-        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository, never()).update(any(User.class));
     }
 
     @Test
@@ -156,23 +152,50 @@ class DefaultUserServiceTest {
         User userWithOldPassword = User.builder().id(1L).password("oldPass").build();
         String newPassword = "newSecurePassword";
         when(userRepository.findById(1L)).thenReturn(Optional.of(userWithOldPassword));
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(userRepository.update(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         userService.newPassword(1L, newPassword);
 
         assertEquals(newPassword, userWithOldPassword.getPassword());
         verify(userRepository, times(1)).findById(1L);
-        verify(userRepository, times(1)).save(userWithOldPassword);
+        verify(userRepository, times(1)).update(userWithOldPassword);
     }
 
     @Test
-    void newPassword_WhenUserDoesNotExist_ShouldThrowNotFoundException() {
+    void newPassword_WhenUserDoesNotExist_ShouldThrowUserNotFoundException() {
         String newPassword = "newSecurePassword";
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> userService.newPassword(99L, newPassword));
+        assertThrows(UserNotFoundException.class, () -> userService.newPassword(99L, newPassword));
 
         verify(userRepository, times(1)).findById(99L);
-        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository, never()).update(any(User.class));
+    }
+
+    @Test
+    void checkCredentials_WhenUserExistsAndPasswordsMatch_ShouldNotThrowException() {
+        when(userRepository.findByUsername(TEST_USERNAME)).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> userService.checkCredentials(TEST_USERNAME, TEST_PASSWORD));
+
+        verify(userRepository, times(1)).findByUsername(TEST_USERNAME);
+    }
+
+    @Test
+    void checkCredentials_WhenUserDoesNotExist_ShouldThrowUserNotFoundException() {
+        when(userRepository.findByUsername("nonexistent")).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.checkCredentials("nonexistent", TEST_PASSWORD));
+
+        verify(userRepository, times(1)).findByUsername("nonexistent");
+    }
+
+    @Test
+    void checkCredentials_WhenUserExistsAndPasswordsDoNotMatch_ShouldThrowRuntimeException() {
+        when(userRepository.findByUsername(TEST_USERNAME)).thenReturn(Optional.of(user));
+
+        assertThrows(RuntimeException.class, () -> userService.checkCredentials(TEST_USERNAME, "wrongPassword"));
+
+        verify(userRepository, times(1)).findByUsername(TEST_USERNAME);
     }
 }

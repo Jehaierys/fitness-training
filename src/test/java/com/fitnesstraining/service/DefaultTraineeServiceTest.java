@@ -3,7 +3,6 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.TraineeRepository;
-import com.fitnesstraining.service.exception.NotFoundException;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,17 +45,18 @@ class DefaultTraineeServiceTest {
                 .id(1L)
                 .user(testUser)
                 .address("Test Address")
+                .birthDate(LocalDate.of(1990, 1, 1))
                 .build();
     }
 
     @Test
     void create_ShouldReturnSavedTrainee() {
-        when(traineeRepository.save(trainee)).thenReturn(trainee);
+        when(traineeRepository.create(trainee)).thenReturn(trainee);
         Trainee result = traineeService.create(trainee);
         assertNotNull(result);
         assertEquals(1L, result.getId());
         assertEquals(testUser, result.getUser());
-        verify(traineeRepository, times(1)).save(trainee);
+        verify(traineeRepository, times(1)).create(trainee);
     }
 
     @Test
@@ -69,38 +70,34 @@ class DefaultTraineeServiceTest {
     }
 
     @Test
-    void getById_WhenNotExists_ShouldThrowNotFoundException() {
+    void getById_WhenNotExists_ShouldThrowTraineeNotFoundException() {
         when(traineeRepository.findById(99L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> traineeService.getById(99L));
+        assertThrows(TraineeNotFoundException.class, () -> traineeService.getById(99L));
         verify(traineeRepository, times(1)).findById(99L);
     }
 
     @Test
     void update_WhenExists_ShouldReturnUpdatedTrainee() {
-        when(traineeRepository.existsById(1L)).thenReturn(true);
-        when(traineeRepository.save(trainee)).thenReturn(trainee);
-
+        when(traineeRepository.update(trainee)).thenReturn(trainee);
         Trainee result = traineeService.update(trainee);
-
         assertNotNull(result);
         assertEquals(testUser, result.getUser());
-        verify(traineeRepository, times(1)).existsById(1L);
-        verify(traineeRepository, times(1)).save(trainee);
+        verify(traineeRepository, times(1)).update(trainee);
     }
 
     @Test
-    void update_WhenNotExists_ShouldThrowTraineeNotFoundException() {
-        when(traineeRepository.existsById(1L)).thenReturn(false);
-        assertThrows(TraineeNotFoundException.class, () -> traineeService.update(trainee));
-        verify(traineeRepository, times(1)).existsById(1L);
-        verify(traineeRepository, never()).save(any());
+    void update_WhenNotExists_ShouldThrowIllegalArgumentException() {
+        when(traineeRepository.update(trainee)).thenThrow(new IllegalArgumentException("Trainee must have an ID and exist in the database to be updated."));
+        assertThrows(IllegalArgumentException.class, () -> traineeService.update(trainee));
+        verify(traineeRepository, times(1)).update(trainee);
     }
 
 
     @Test
-    void delete_WhenExists_ShouldCallRepositoryDelete() {
+    void delete_WhenExists_ShouldCallRepositoryDeleteById() {
         long traineeId = 1L;
         when(traineeRepository.existsById(traineeId)).thenReturn(true);
+        doNothing().when(traineeRepository).deleteById(traineeId);
 
         traineeService.delete(traineeId);
 
@@ -116,6 +113,7 @@ class DefaultTraineeServiceTest {
         assertThrows(TraineeNotFoundException.class, () -> traineeService.delete(traineeId));
 
         verify(traineeRepository, times(1)).existsById(traineeId);
+        verify(traineeRepository, never()).delete(any(Trainee.class));
         verify(traineeRepository, never()).deleteById(anyLong());
     }
 }

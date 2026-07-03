@@ -2,9 +2,9 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.CoachRepository;
 import com.fitnesstraining.service.exception.CoachNotFoundException;
-import com.fitnesstraining.service.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +31,19 @@ class DefaultCoachServiceTest {
     private Coach coach;
     private SessionType testSessionType;
     private Set<SessionType> testSpecializationSet;
+    private User testUser;
 
     @BeforeEach
     void setUp() {
+        testUser = User.builder()
+                .id(1L)
+                .firstName("John")
+                .lastName("Doe")
+                .username("john.doe")
+                .password("password123")
+                .isActive(true)
+                .build();
+
         testSessionType = SessionType.builder()
                 .id(1L)
                 .name("Fitness")
@@ -42,17 +52,19 @@ class DefaultCoachServiceTest {
 
         coach = Coach.builder()
                 .id(1L)
+                .user(testUser)
                 .specialization(testSpecializationSet)
                 .build();
     }
 
     @Test
     void create_ShouldReturnSavedCoach() {
-        when(coachRepository.save(coach)).thenReturn(coach);
+        when(coachRepository.create(coach)).thenReturn(coach);
         Coach result = coachService.create(coach);
         assertNotNull(result);
         assertEquals(testSpecializationSet, result.getSpecialization());
-        verify(coachRepository, times(1)).save(coach);
+        assertEquals(testUser, result.getUser());
+        verify(coachRepository, times(1)).create(coach);
     }
 
 
@@ -62,31 +74,30 @@ class DefaultCoachServiceTest {
         Coach result = coachService.getById(1L);
         assertNotNull(result);
         assertEquals(1L, result.getId());
+        assertEquals(testUser, result.getUser());
         verify(coachRepository, times(1)).findById(1L);
     }
 
     @Test
-    void getById_WhenNotExists_ShouldThrowNotFoundException() {
+    void getById_WhenNotExists_ShouldThrowCoachNotFoundException() {
         when(coachRepository.findById(99L)).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> coachService.getById(99L));
+        assertThrows(CoachNotFoundException.class, () -> coachService.getById(99L));
         verify(coachRepository, times(1)).findById(99L);
     }
 
     @Test
     void update_WhenExists_ShouldReturnUpdatedCoach() {
-        when(coachRepository.existsById(1L)).thenReturn(true);
-        when(coachRepository.save(coach)).thenReturn(coach);
+        when(coachRepository.update(coach)).thenReturn(coach);
         Coach result = coachService.update(coach);
         assertNotNull(result);
-        verify(coachRepository, times(1)).existsById(1L);
-        verify(coachRepository, times(1)).save(coach);
+        assertEquals(testUser, result.getUser());
+        verify(coachRepository, times(1)).update(coach);
     }
 
     @Test
-    void update_WhenNotExists_ShouldThrowCoachNotFoundException() {
-        when(coachRepository.existsById(1L)).thenReturn(false);
-        assertThrows(CoachNotFoundException.class, () -> coachService.update(coach));
-        verify(coachRepository, times(1)).existsById(1L);
-        verify(coachRepository, never()).save(any());
+    void update_WhenNotExists_ShouldThrowIllegalArgumentException() {
+        when(coachRepository.update(coach)).thenThrow(new IllegalArgumentException("Coach must have an ID and exist in the database to be updated."));
+        assertThrows(IllegalArgumentException.class, () -> coachService.update(coach));
+        verify(coachRepository, times(1)).update(coach);
     }
 }
