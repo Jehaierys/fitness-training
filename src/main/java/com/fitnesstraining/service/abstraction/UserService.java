@@ -15,4 +15,6 @@ public interface UserService {
     boolean existsByUsername(String finalUsername);
 
     void setActive(Long id, boolean isActive);
+
+    void checkCredentials(String username, String password);
 }

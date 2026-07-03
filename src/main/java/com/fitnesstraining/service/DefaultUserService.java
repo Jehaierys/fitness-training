@@ -53,14 +53,22 @@ public class DefaultUserService implements UserService {
 
     public void setActive(Long id, boolean isActive) {
         userRepository.findById(id).ifPresentOrElse(user -> {
-            if (isActive) {
-                user.setActive(true);
-            } else {
-                user.setActive(false);
-            }
+            user.setActive(isActive);
             userRepository.save(user);
         }, () -> {
             throw new NotFoundException("User not found with id: " + id);
         });
+        log.info("Set active status for user with id: {} to {}", id, isActive);
+    }
+
+    public void checkCredentials(String username, String password) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new NotFoundException("User not found with username: " + username));
+
+        if (!user.getPassword().equals(password)) {
+            log.warn("User not found with username: {} and password: {}", username, user.getPassword());
+            // todo: assign appropriate exception
+            throw new RuntimeException("Invalid credentials for username: " + username);
+        }
     }
 }
