@@ -1,5 +1,6 @@
 package com.fitnesstraining.service.exception;
 
+@Deprecated
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException() {
