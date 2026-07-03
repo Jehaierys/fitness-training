@@ -17,4 +17,7 @@ public interface UserService {
     void setActive(Long id, boolean isActive);
 
     void checkCredentials(String username, String password);
+
+    void newPassword(Long id, String newPassword);
+
 }

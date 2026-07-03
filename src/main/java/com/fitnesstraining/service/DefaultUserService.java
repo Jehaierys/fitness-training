@@ -71,4 +71,14 @@ public class DefaultUserService implements UserService {
             throw new RuntimeException("Invalid credentials for username: " + username);
         }
     }
+
+    // this method may be called straight from controller.
+    // we can authenticate this request with UsernamePasswordAuthentication filter
+    // then check for ids matching by jwt
+    public void newPassword(Long id, String newPassword) {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        user.setPassword(newPassword);
+        userRepository.save(user);
+        log.info("Password updated for user with id: {}", id);
+    }
 }

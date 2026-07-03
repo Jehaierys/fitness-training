@@ -150,4 +150,29 @@ class DefaultUserServiceTest {
         verify(userRepository, times(1)).findById(99L);
         verify(userRepository, never()).save(any(User.class));
     }
+
+    @Test
+    void newPassword_WhenUserExists_ShouldUpdatePassword() {
+        User userWithOldPassword = User.builder().id(1L).password("oldPass").build();
+        String newPassword = "newSecurePassword";
+        when(userRepository.findById(1L)).thenReturn(Optional.of(userWithOldPassword));
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        userService.newPassword(1L, newPassword);
+
+        assertEquals(newPassword, userWithOldPassword.getPassword());
+        verify(userRepository, times(1)).findById(1L);
+        verify(userRepository, times(1)).save(userWithOldPassword);
+    }
+
+    @Test
+    void newPassword_WhenUserDoesNotExist_ShouldThrowNotFoundException() {
+        String newPassword = "newSecurePassword";
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> userService.newPassword(99L, newPassword));
+
+        verify(userRepository, times(1)).findById(99L);
+        verify(userRepository, never()).save(any(User.class));
+    }
 }
