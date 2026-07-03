@@ -1,10 +1,28 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.Session;
-import org.springframework.data.jpa.repository.JpaRepository;
+import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Repository;
 
-public interface SessionRepository extends JpaRepository<Session, Long> {
+import java.util.Optional;
 
-    boolean existsById(Long id);
 
+@Slf4j
+@Repository
+@RequiredArgsConstructor
+public class SessionRepository {
+
+    private final EntityManager entityManager;
+
+    public Session create(Session session) {
+        entityManager.persist(session);
+        log.info("Session with id: {} created", session.getId());
+        return session;
+    }
+
+    public Optional<Session> findById(Long id) {
+        return Optional.ofNullable(entityManager.find(Session.class, id));
+    }
 }
