@@ -12,4 +12,5 @@ public interface TraineeService {
 
     void delete(Long id);
 
+    void deleteByUsername(String username);
 }

@@ -3,13 +3,12 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.repository.SessionRepository;
 import com.fitnesstraining.service.abstraction.SessionService;
-import com.fitnesstraining.service.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.fitnesstraining.utils.ExceptionSuppliers.SessionNotFound;
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class DefaultSessionService implements SessionService {
@@ -17,13 +16,11 @@ public class DefaultSessionService implements SessionService {
     private final SessionRepository sessionRepository;
 
     public Session create(Session session) {
-        log.info("Creating training session with id: {}", session.getId());
-        return sessionRepository.save(session);
+        return sessionRepository.create(session);
     }
 
     public Session getById(Long id) {
-        log.info("Retrieving training session with id: {}", id);
         return sessionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Session not found with id: " + id));
+                .orElseThrow(SessionNotFound("Session not found with id: " + id + "."));
     }
 }
