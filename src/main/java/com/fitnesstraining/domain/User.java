@@ -31,4 +31,18 @@ public class User {
 
     @Column(nullable = false)
     private boolean isActive;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private Coach coach;
+
+    @OneToOne(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private Trainee trainee;
 }
