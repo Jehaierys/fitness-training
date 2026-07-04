@@ -8,7 +8,7 @@ import com.fitnesstraining.dto.CoachSignUpRequest;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.CoachNotFoundException;
-import com.fitnesstraining.utils.PasswordGenerator;
+import com.fitnesstraining.utils.CoachSignUpProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ class CoachFacadeTest {
     private CoachService coachService;
 
     @Mock
-    private PasswordGenerator passwordGenerator;
+    private CoachSignUpProcessor coachSignUpProcessor;
 
     @InjectMocks
     private CoachFacade coachFacade;
@@ -68,9 +68,7 @@ class CoachFacadeTest {
 
     @Test
     void signUp_successfulCreation_returnsCoach() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername("john.doe")).thenReturn(false);
-        when(userService.create(any(User.class))).thenReturn(testUser);
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenReturn(testCoach);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
@@ -85,22 +83,14 @@ class CoachFacadeTest {
         assertEquals(testCoach.getUser().getId(), result.getUser().getId());
         assertEquals(testSpecializationSet, result.getSpecialization());
 
-        verify(userService, times(1)).existsByUsername("john.doe");
-        verify(userService, times(1)).create(any(User.class));
-        verify(coachService, times(1)).create(any(Coach.class));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verify(coachService, times(1)).create(testCoach);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_usernameCollision_generatesUniqueUsername() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername("john.doe")).thenReturn(true);
-        when(userService.existsByUsername("john.doe1")).thenReturn(true);
-        when(userService.existsByUsername("john.doe2")).thenReturn(false);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenReturn(testCoach);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
@@ -111,18 +101,15 @@ class CoachFacadeTest {
         Coach result = coachFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername("john.doe");
-        verify(userService, times(1)).existsByUsername("john.doe1");
-        verify(userService, times(1)).existsByUsername("john.doe2");
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals("john.doe2")));
-        verify(coachService, times(1)).create(any(Coach.class));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verify(coachService, times(1)).create(testCoach);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_userServiceCreateFails_throwsException() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername("john.doe")).thenReturn(false);
-        when(userService.create(any(User.class))).thenThrow(new RuntimeException("User creation failed"));
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenThrow(new RuntimeException("User creation failed"));
+        verifyNoInteractions(coachService);
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
                 .firstName("John")
@@ -134,16 +121,13 @@ class CoachFacadeTest {
         });
 
         assertEquals("User creation failed", thrown.getMessage());
-        verify(userService, times(1)).existsByUsername("john.doe");
-        verify(userService, times(1)).create(any(User.class));
-        verify(coachService, never()).create(any(Coach.class));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_coachServiceCreateFails_throwsExceptionAndUserIsCreated() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername("john.doe")).thenReturn(false);
-        when(userService.create(any(User.class))).thenReturn(testUser);
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenReturn(testCoach);
         when(coachService.create(any(Coach.class))).thenThrow(new CoachNotFoundException("Coach creation failed"));
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
@@ -156,20 +140,14 @@ class CoachFacadeTest {
         });
 
         assertEquals("Coach creation failed", thrown.getMessage());
-        verify(userService, times(1)).existsByUsername("john.doe");
-        verify(userService, times(1)).create(any(User.class));
-        verify(coachService, times(1)).create(any(Coach.class));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verify(coachService, times(1)).create(testCoach);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_emptyFirstAndLastNames_generatesUsernameAndSaves() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername(".")).thenReturn(false);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenReturn(testCoach);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
@@ -180,22 +158,14 @@ class CoachFacadeTest {
         Coach result = coachFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername(".");
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals(".")));
-        verify(coachService, times(1)).create(any(Coach.class));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verify(coachService, times(1)).create(testCoach);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_emptyFirstAndLastNameWithCollision_generatesUniqueUsername() {
-        when(passwordGenerator.generate()).thenReturn("randompass");
-        when(userService.existsByUsername(".")).thenReturn(true);
-        when(userService.existsByUsername(".1")).thenReturn(true);
-        when(userService.existsByUsername(".2")).thenReturn(false);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(coachSignUpProcessor.process(any(CoachSignUpRequest.class))).thenReturn(testCoach);
         when(coachService.create(any(Coach.class))).thenReturn(testCoach);
 
         CoachSignUpRequest request = CoachSignUpRequest.builder()
@@ -206,29 +176,9 @@ class CoachFacadeTest {
         Coach result = coachFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername(".");
-        verify(userService, times(1)).existsByUsername(".1");
-        verify(userService, times(1)).existsByUsername(".2");
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals(".2")));
-        verify(coachService, times(1)).create(any(Coach.class));
-    }
-
-    @Test
-    void signUp_usesPasswordGenerator() {
-        when(passwordGenerator.generate()).thenReturn("securePass123");
-        when(userService.existsByUsername("jane.doe")).thenReturn(false);
-        when(userService.create(any(User.class))).thenReturn(testUser);
-        when(coachService.create(any(Coach.class))).thenReturn(testCoach);
-
-        CoachSignUpRequest request = CoachSignUpRequest.builder()
-                .firstName("Jane")
-                .lastName("Doe")
-                .specialization(testSpecializationSet)
-                .build();
-        coachFacade.signUp(request);
-
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(argThat(user -> user.getPassword().equals("securePass123")));
+        verify(coachSignUpProcessor, times(1)).process(request);
+        verify(coachService, times(1)).create(testCoach);
+        verifyNoInteractions(userService);
     }
 
     @Test

@@ -7,7 +7,7 @@ import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
-import com.fitnesstraining.utils.PasswordGenerator;
+import com.fitnesstraining.utils.TraineeSignUpProcessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ class TraineeFacadeTest {
     private TraineeService traineeService;
 
     @Mock
-    private PasswordGenerator passwordGenerator;
+    private TraineeSignUpProcessor traineeSignUpProcessor;
 
     @InjectMocks
     private TraineeFacade traineeFacade;
@@ -61,9 +61,7 @@ class TraineeFacadeTest {
 
     @Test
     void signUp_successfulCreation_returnsTrainee() {
-        when(userService.existsByUsername("jane.doe")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenReturn(testUser);
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
@@ -80,23 +78,14 @@ class TraineeFacadeTest {
         assertEquals(testTrainee.getBirthDate(), result.getBirthDate());
         assertEquals(testTrainee.getAddress(), result.getAddress());
 
-        verify(userService, times(1)).existsByUsername("jane.doe");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(any(User.class));
-        verify(traineeService, times(1)).create(any(Trainee.class));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verify(traineeService, times(1)).create(testTrainee);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_usernameCollision_generatesUniqueUsername() {
-        when(userService.existsByUsername("jane.doe")).thenReturn(true);
-        when(userService.existsByUsername("jane.doe1")).thenReturn(true);
-        when(userService.existsByUsername("jane.doe2")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
@@ -108,136 +97,88 @@ class TraineeFacadeTest {
         Trainee result = traineeFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername("jane.doe");
-        verify(userService, times(1)).existsByUsername("jane.doe1");
-        verify(userService, times(1)).existsByUsername("jane.doe2");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals("jane.doe2")));
-        verify(traineeService, times(1)).create(any(Trainee.class));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verify(traineeService, times(1)).create(testTrainee);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_userServiceCreateFails_throwsException() {
-        when(userService.existsByUsername("jane.doe")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenThrow(new RuntimeException("User creation failed"));
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenThrow(new RuntimeException("User creation failed"));
+        verifyNoInteractions(traineeService);
 
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .birthDate(LocalDate.of(1990, 5, 15))
+                .address("123 Main St")
+                .build();
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            traineeFacade.signUp(TraineeSignUpRequest.builder()
-                    .firstName("Jane")
-                    .lastName("Doe")
-                    .birthDate(LocalDate.of(1990, 5, 15))
-                    .address("123 Main St")
-                    .build());
+            traineeFacade.signUp(request);
         });
 
         assertEquals("User creation failed", thrown.getMessage());
-        verify(userService, times(1)).existsByUsername("jane.doe");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(any(User.class));
-        verify(traineeService, never()).create(any(Trainee.class));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_traineeServiceCreateFails_throwsExceptionAndUserIsCreated() {
-        when(userService.existsByUsername("jane.doe")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenReturn(testUser);
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
         when(traineeService.create(any(Trainee.class))).thenThrow(new TraineeNotFoundException("Trainee creation failed"));
 
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .birthDate(LocalDate.of(1990, 5, 15))
+                .address("123 Main St")
+                .build();
         TraineeNotFoundException thrown = assertThrows(TraineeNotFoundException.class, () -> {
-            traineeFacade.signUp(
-                    TraineeSignUpRequest.builder()
-                    .firstName("Jane")
-                    .lastName("Doe")
-                    .birthDate(LocalDate.of(1990, 5, 15))
-                    .address("123 Main St")
-                    .build());
+            traineeFacade.signUp(request);
         });
 
         assertEquals("Trainee creation failed", thrown.getMessage());
-        verify(userService, times(1)).existsByUsername("jane.doe");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(any(User.class));
-        verify(traineeService, times(1)).create(any(Trainee.class));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verify(traineeService, times(1)).create(testTrainee);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_emptyFirstAndLastNames_generatesUsernameAndSaves() {
-        when(userService.existsByUsername(".")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp(
-                TraineeSignUpRequest.builder()
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("")
                 .lastName("")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .address("456 Oak Ave")
-                .build()
-        );
+                .build();
+        Trainee result = traineeFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername(".");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals(".")));
-        verify(traineeService, times(1)).create(any(Trainee.class));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verify(traineeService, times(1)).create(testTrainee);
+        verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_emptyFirstAndLastNameWithCollision_generatesUniqueUsername() {
-        when(userService.existsByUsername(".")).thenReturn(true);
-        when(userService.existsByUsername(".1")).thenReturn(true);
-        when(userService.existsByUsername(".2")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenAnswer(invocation -> {
-            User user = invocation.getArgument(0);
-            user.setId(1L);
-            return user;
-        });
+        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
         when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
-        Trainee result = traineeFacade.signUp(
-                TraineeSignUpRequest.builder()
+        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("")
                 .lastName("")
                 .birthDate(LocalDate.of(2000, 1, 1))
                 .address("456 Oak Ave")
-                .build()
-        );
+                .build();
+        Trainee result = traineeFacade.signUp(request);
 
         assertNotNull(result);
-        verify(userService, times(1)).existsByUsername(".");
-        verify(userService, times(1)).existsByUsername(".1");
-        verify(userService, times(1)).existsByUsername(".2");
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(argThat(user -> user.getUsername().equals(".2")));
-        verify(traineeService, times(1)).create(any(Trainee.class));
-    }
-
-    @Test
-    void signUp_passwordGeneratorCalled() {
-        when(userService.existsByUsername("john.doe")).thenReturn(false);
-        when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenReturn(testUser);
-        when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
-
-        traineeFacade.signUp(
-                TraineeSignUpRequest.builder()
-                .firstName("John")
-                .lastName("Doe")
-                .birthDate(LocalDate.of(1985, 1, 1))
-                .address("789 Pine Ln")
-                .build()
-        );
-
-        verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(argThat(user -> user.getPassword().equals(GENERATED_PASSWORD)));
+        verify(traineeSignUpProcessor, times(1)).process(request);
+        verify(traineeService, times(1)).create(testTrainee);
+        verifyNoInteractions(userService);
     }
 
     @Test
