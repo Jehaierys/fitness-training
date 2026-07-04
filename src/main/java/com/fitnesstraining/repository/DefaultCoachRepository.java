@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.repository.abstration.CoachRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultCoachRepository {
+public class DefaultCoachRepository implements CoachRepository {
 
     private final EntityManager entityManager;
 

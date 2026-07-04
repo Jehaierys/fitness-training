@@ -2,6 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.*;
 import com.fitnesstraining.dto.SessionSearchCriteria;
+import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,10 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultSessionRepository {
+public class DefaultSessionRepository implements SessionRepository {
 
     private final EntityManager entityManager;
+
 
     public Session create(Session session) {
         entityManager.persist(session);

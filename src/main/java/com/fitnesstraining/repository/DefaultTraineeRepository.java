@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.repository.abstration.TraineeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +12,10 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultTraineeRepository {
+public class DefaultTraineeRepository implements TraineeRepository {
 
     private final EntityManager entityManager;
+
 
     public Trainee create(Trainee trainee) {
         entityManager.persist(trainee);
