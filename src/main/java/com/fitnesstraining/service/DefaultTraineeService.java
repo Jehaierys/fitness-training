@@ -3,6 +3,7 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.repository.DefaultTraineeRepository;
 import com.fitnesstraining.service.abstraction.TraineeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class DefaultTraineeService implements TraineeService {
         }
     }
 
+    @Transactional
     public void deleteByUsername(String username) {
         traineeRepository.findByUsername(username).ifPresentOrElse(trainee -> {
             traineeRepository.delete(trainee);

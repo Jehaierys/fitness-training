@@ -7,6 +7,7 @@ import com.fitnesstraining.dto.CoachSignUpRequest;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.CoachSignUpProcessor;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,12 +26,14 @@ public class CoachFacade {
     private final CoachSignUpProcessor signUpProcessor;
 
 
+    @Transactional
     public synchronized Coach signUp(CoachSignUpRequest request) {
         Coach coach = signUpProcessor.process(request);
         return coachService.create(coach);
     }
 
 
+    @Transactional
     public Coach updateProfile(CoachProfileUpdateRequest request) {
         UUID uuid = UUID.randomUUID();
         log.info("Updating coach profile for id: {}, process's UUID: {}", request.getId(), uuid);

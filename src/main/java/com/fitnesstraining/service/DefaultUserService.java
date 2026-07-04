@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.DefaultUserRepository;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class DefaultUserService implements UserService {
         return userRepository.existByUsername(username);
     }
 
+    @Transactional
     public void setActive(Long id, boolean isActive) {
         userRepository.findById(id).ifPresentOrElse(user -> {
             user.setActive(isActive);

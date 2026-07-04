@@ -11,6 +11,7 @@ import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.SessionService;
 import com.fitnesstraining.service.abstraction.SessionTypeService;
 import com.fitnesstraining.service.abstraction.TraineeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

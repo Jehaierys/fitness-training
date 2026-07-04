@@ -9,6 +9,7 @@ import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.SessionService;
 import com.fitnesstraining.service.abstraction.SessionTypeService;
 import com.fitnesstraining.service.abstraction.TraineeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class SessionFacade {
     private final SessionTypeService sessionTypeService;
 
 
+    @Transactional
     public Session registerSession(SessionRegistrationRequest request) {
         Trainee trainee = traineeService.getById(request.getTraineeId());
         Coach coach = coachService.getById(request.getCoachId());

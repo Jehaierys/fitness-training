@@ -7,6 +7,7 @@ import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.TraineeSignUpProcessor;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -25,10 +26,12 @@ public class TraineeFacade {
     private final TraineeSignUpProcessor signUpProcessor;
 
 
+    @Transactional
     public Trainee signUp(TraineeSignUpRequest request) {
         return signUpProcessor.process(request);
     }
 
+    @Transactional
     public Trainee updateProfile(TraineeProfileUpdateRequest request) {
         UUID uuid = UUID.randomUUID();
         log.info("Updating trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
