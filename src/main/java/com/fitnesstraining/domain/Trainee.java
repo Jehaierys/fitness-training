@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,11 +27,20 @@ public class Trainee {
     @Column(nullable = true)
     private String address;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "user_id",
             unique = true,
             nullable = false
     )
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "trainee_coach",
+            joinColumns = @JoinColumn(name = "trainee_id"),
+            inverseJoinColumns = @JoinColumn(name = "coach_id")
+    )
+    @Builder.Default
+    private Set<Coach> coaches = new HashSet<>();
 }

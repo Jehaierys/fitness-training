@@ -21,11 +21,15 @@ public class Coach {
     @SequenceGenerator(name = "coach_seq", sequenceName = "coach_id_seq", allocationSize = 1)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
 
     @ManyToMany(mappedBy = "coaches")
     @Builder.Default
     private Set<SessionType> specialization = new HashSet<>();
+
+    @ManyToMany(mappedBy = "coaches")
+    @Builder.Default
+    private Set<Trainee> trainees = new HashSet<>();
 }
