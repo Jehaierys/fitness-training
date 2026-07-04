@@ -2,14 +2,18 @@ package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.TraineeProfileUpdateRequest;
+import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
-import com.fitnesstraining.utils.PasswordGenerator;
+import com.fitnesstraining.utils.TraineeSignUpProcessor;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import java.time.LocalDate;
+
 import java.util.UUID;
+
 
 
 @Slf4j
@@ -19,43 +23,31 @@ public class TraineeFacade {
 
     private final UserService userService;
     private final TraineeService traineeService;
-    private final PasswordGenerator passwordGenerator;
+    private final TraineeSignUpProcessor signUpProcessor;
 
-    public Trainee signUp(
-            String firstName,
-            String lastName,
-            LocalDate birthDate,
-            String address
-    ) {
+
+    @Transactional
+    public Trainee signUp(TraineeSignUpRequest request) {
+        return signUpProcessor.process(request);
+    }
+
+    @Transactional
+    public Trainee updateProfile(TraineeProfileUpdateRequest request) {
         UUID uuid = UUID.randomUUID();
-        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", firstName, lastName, birthDate, address, uuid);
+        log.info("Updating trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
 
-        String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
-        String finalUsername = baseUsername;
-        long suffix = 1;
+        Trainee existingTrainee = traineeService.getById(request.getId());
+        User existingUser = existingTrainee.getUser();
 
-        while (userService.existsByUsername(finalUsername)) {
-            finalUsername = baseUsername + suffix;
-            suffix++;
-        }
+        existingUser.setFirstName(request.getFirstName());
+        existingUser.setLastName(request.getLastName());
+        userService.update(existingUser);
 
-        User user = User.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .username(finalUsername)
-                .password(passwordGenerator.generate())
-                .isActive(true)
-                .build();
-        userService.create(user);
+        existingTrainee.setBirthDate(request.getBirthDate());
+        existingTrainee.setAddress(request.getAddress());
+        traineeService.update(existingTrainee);
 
-        Trainee trainee = Trainee.builder()
-                .userId(user.getId())
-                .birthDate(birthDate)
-                .address(address)
-                .build();
-
-        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", firstName, lastName, birthDate, address, user.getId(), uuid);
-
-        return traineeService.create(trainee);
+        log.info("Successfully updated trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
+        return existingTrainee;
     }
 }

@@ -1,27 +1,41 @@
 package com.fitnesstraining.service;
 
+import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.Session;
-import com.fitnesstraining.repository.SessionRepository;
+import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.dto.SessionRegistrationRequest;
+import com.fitnesstraining.dto.SessionSearchCriteria;
+import com.fitnesstraining.repository.DefaultSessionRepository;
+import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.SessionService;
+import com.fitnesstraining.service.abstraction.SessionTypeService;
+import com.fitnesstraining.service.abstraction.TraineeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
-@Slf4j
+import static com.fitnesstraining.utils.ExceptionSuppliers.SessionNotFound;
+
+
 @Service
 @RequiredArgsConstructor
 public class DefaultSessionService implements SessionService {
 
-    private final SessionRepository sessionRepository;
+    private final DefaultSessionRepository sessionRepository;
 
     public Session create(Session session) {
-        log.info("Creating training session with id: {}", session.getId());
-        return sessionRepository.save(session);
+        return sessionRepository.create(session);
     }
 
     public Session getById(Long id) {
-        log.info("Retrieving training session with id: {}", id);
-        return sessionRepository.findById(id);
+        return sessionRepository.findById(id)
+                .orElseThrow(SessionNotFound("Session not found with id: " + id + "."));
+    }
+
+    public List<Session> searchSessions(SessionSearchCriteria criteria) {
+        return sessionRepository.searchSessions(criteria);
     }
 }

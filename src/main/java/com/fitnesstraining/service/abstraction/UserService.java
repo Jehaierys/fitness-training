@@ -13,4 +13,11 @@ public interface UserService {
     void delete(Long id);
 
     boolean existsByUsername(String finalUsername);
+
+    void setActive(Long id, boolean isActive);
+
+    void checkCredentials(String username, String password);
+
+    void newPassword(Long id, String newPassword);
+
 }
