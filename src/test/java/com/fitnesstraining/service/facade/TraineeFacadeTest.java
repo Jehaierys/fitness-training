@@ -2,6 +2,7 @@ package com.fitnesstraining.service.facade;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.TraineeProfileUpdateRequest;
 import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
@@ -52,7 +53,7 @@ class TraineeFacadeTest {
 
         testTrainee = Trainee.builder()
                 .id(20L)
-                .user(testUser) // Updated to use User object
+                .user(testUser)
                 .birthDate(LocalDate.of(1990, 5, 15))
                 .address("123 Main St")
                 .build();
@@ -122,7 +123,7 @@ class TraineeFacadeTest {
         when(userService.create(any(User.class))).thenThrow(new RuntimeException("User creation failed"));
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            Trainee result = traineeFacade.signUp(TraineeSignUpRequest.builder()
+            traineeFacade.signUp(TraineeSignUpRequest.builder()
                     .firstName("Jane")
                     .lastName("Doe")
                     .birthDate(LocalDate.of(1990, 5, 15))
@@ -134,14 +135,14 @@ class TraineeFacadeTest {
         verify(userService, times(1)).existsByUsername("jane.doe");
         verify(passwordGenerator, times(1)).generate();
         verify(userService, times(1)).create(any(User.class));
-        verify(traineeService, never()).create(any(Trainee.class)); // Trainee service should not be called
+        verify(traineeService, never()).create(any(Trainee.class));
     }
 
     @Test
     void signUp_traineeServiceCreateFails_throwsExceptionAndUserIsCreated() {
         when(userService.existsByUsername("jane.doe")).thenReturn(false);
         when(passwordGenerator.generate()).thenReturn(GENERATED_PASSWORD);
-        when(userService.create(any(User.class))).thenReturn(testUser); // User is successfully created
+        when(userService.create(any(User.class))).thenReturn(testUser);
         when(traineeService.create(any(Trainee.class))).thenThrow(new TraineeNotFoundException("Trainee creation failed"));
 
         TraineeNotFoundException thrown = assertThrows(TraineeNotFoundException.class, () -> {
@@ -157,7 +158,7 @@ class TraineeFacadeTest {
         assertEquals("Trainee creation failed", thrown.getMessage());
         verify(userService, times(1)).existsByUsername("jane.doe");
         verify(passwordGenerator, times(1)).generate();
-        verify(userService, times(1)).create(any(User.class)); // User creation should still happen
+        verify(userService, times(1)).create(any(User.class));
         verify(traineeService, times(1)).create(any(Trainee.class));
     }
 
@@ -237,5 +238,70 @@ class TraineeFacadeTest {
 
         verify(passwordGenerator, times(1)).generate();
         verify(userService, times(1)).create(argThat(user -> user.getPassword().equals(GENERATED_PASSWORD)));
+    }
+
+    @Test
+    void updateProfile_SuccessfulUpdate_ReturnsUpdatedTrainee() {
+        User updatedUser = User.builder()
+                .id(1L)
+                .firstName("UpdatedJane")
+                .lastName("UpdatedDoe")
+                .username("jane.doe")
+                .password(GENERATED_PASSWORD)
+                .isActive(true)
+                .build();
+        Trainee updatedTrainee = Trainee.builder()
+                .id(20L)
+                .user(updatedUser)
+                .birthDate(LocalDate.of(1995, 10, 20))
+                .address("456 New St")
+                .build();
+
+        when(traineeService.getById(testTrainee.getId())).thenReturn(testTrainee);
+        when(userService.update(any(User.class))).thenReturn(updatedUser);
+        when(traineeService.update(any(Trainee.class))).thenReturn(updatedTrainee);
+
+        TraineeProfileUpdateRequest request = TraineeProfileUpdateRequest.builder()
+                .id(testTrainee.getId())
+                .firstName("UpdatedJane")
+                .lastName("UpdatedDoe")
+                .birthDate(LocalDate.of(1995, 10, 20))
+                .address("456 New St")
+                .build();
+
+        Trainee result = traineeFacade.updateProfile(request);
+
+        assertNotNull(result);
+        assertEquals(updatedTrainee.getId(), result.getId());
+        assertEquals(updatedUser.getFirstName(), result.getUser().getFirstName());
+        assertEquals(updatedUser.getLastName(), result.getUser().getLastName());
+        assertEquals(updatedTrainee.getBirthDate(), result.getBirthDate());
+        assertEquals(updatedTrainee.getAddress(), result.getAddress());
+
+        verify(traineeService, times(1)).getById(testTrainee.getId());
+        verify(userService, times(1)).update(argThat(user ->
+                user.getFirstName().equals("UpdatedJane") && user.getLastName().equals("UpdatedDoe")));
+        verify(traineeService, times(1)).update(argThat(trainee ->
+                trainee.getBirthDate().equals(LocalDate.of(1995, 10, 20)) && trainee.getAddress().equals("456 New St")));
+    }
+
+    @Test
+    void updateProfile_TraineeNotFound_ThrowsTraineeNotFoundException() {
+        Long nonExistentTraineeId = 99L;
+        when(traineeService.getById(nonExistentTraineeId)).thenThrow(new TraineeNotFoundException("Trainee not found"));
+
+        TraineeProfileUpdateRequest request = TraineeProfileUpdateRequest.builder()
+                .id(nonExistentTraineeId)
+                .firstName("Any")
+                .lastName("Name")
+                .birthDate(LocalDate.now())
+                .address("Any Address")
+                .build();
+
+        assertThrows(TraineeNotFoundException.class, () -> traineeFacade.updateProfile(request));
+
+        verify(traineeService, times(1)).getById(nonExistentTraineeId);
+        verify(userService, never()).update(any(User.class));
+        verify(traineeService, never()).update(any(Trainee.class));
     }
 }
