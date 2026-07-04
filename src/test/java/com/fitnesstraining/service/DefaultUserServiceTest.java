@@ -1,7 +1,7 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.User;
-import com.fitnesstraining.repository.UserRepository;
+import com.fitnesstraining.repository.DefaultUserRepository;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class DefaultUserServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+    private DefaultUserRepository userRepository;
 
     @InjectMocks
     private DefaultUserService userService;

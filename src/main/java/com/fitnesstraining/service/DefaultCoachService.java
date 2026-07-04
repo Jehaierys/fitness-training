@@ -1,7 +1,7 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.repository.CoachRepository;
+import com.fitnesstraining.repository.DefaultCoachRepository;
 import com.fitnesstraining.service.abstraction.CoachService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.CoachNotFound;
 @RequiredArgsConstructor
 public class DefaultCoachService implements CoachService {
 
-    private final CoachRepository coachRepository;
+    private final DefaultCoachRepository coachRepository;
 
     public Coach create(Coach coach) {
         return coachRepository.create(coach);

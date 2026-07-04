@@ -1,9 +1,8 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.repository.TraineeRepository;
+import com.fitnesstraining.repository.DefaultTraineeRepository;
 import com.fitnesstraining.service.abstraction.TraineeService;
-import com.fitnesstraining.service.exception.TraineeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.TraineeNotFound;
 @RequiredArgsConstructor
 public class DefaultTraineeService implements TraineeService {
 
-    private final TraineeRepository traineeRepository;
+    private final DefaultTraineeRepository traineeRepository;
 
     public Trainee create(Trainee trainee) {
         return traineeRepository.create(trainee);

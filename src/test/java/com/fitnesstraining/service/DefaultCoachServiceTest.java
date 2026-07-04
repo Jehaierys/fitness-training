@@ -3,7 +3,7 @@ package com.fitnesstraining.service;
 import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.User;
-import com.fitnesstraining.repository.CoachRepository;
+import com.fitnesstraining.repository.DefaultCoachRepository;
 import com.fitnesstraining.service.exception.CoachNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 class DefaultCoachServiceTest {
 
     @Mock
-    private CoachRepository coachRepository;
+    private DefaultCoachRepository coachRepository;
 
     @InjectMocks
     private DefaultCoachService coachService;

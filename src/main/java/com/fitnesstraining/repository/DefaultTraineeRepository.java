@@ -11,7 +11,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class TraineeRepository {
+public class DefaultTraineeRepository {
 
     private final EntityManager entityManager;
 

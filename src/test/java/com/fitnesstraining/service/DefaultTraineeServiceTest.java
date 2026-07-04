@@ -2,7 +2,7 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
-import com.fitnesstraining.repository.TraineeRepository;
+import com.fitnesstraining.repository.DefaultTraineeRepository;
 import com.fitnesstraining.service.exception.TraineeNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class DefaultTraineeServiceTest {
 
     @Mock
-    private TraineeRepository traineeRepository;
+    private DefaultTraineeRepository traineeRepository;
 
     @InjectMocks
     private DefaultTraineeService traineeService;

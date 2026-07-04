@@ -2,7 +2,7 @@ package com.fitnesstraining.service;
 
 
 import com.fitnesstraining.domain.User;
-import com.fitnesstraining.repository.UserRepository;
+import com.fitnesstraining.repository.DefaultUserRepository;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.service.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.UserNotFound;
 @RequiredArgsConstructor
 public class DefaultUserService implements UserService {
 
-    private final UserRepository userRepository;
+    private final DefaultUserRepository userRepository;
 
     public User create(User user) {
         return userRepository.create(user);

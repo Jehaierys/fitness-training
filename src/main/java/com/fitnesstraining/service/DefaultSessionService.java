@@ -2,7 +2,7 @@ package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.dto.SessionSearchCriteria;
-import com.fitnesstraining.repository.SessionRepository;
+import com.fitnesstraining.repository.DefaultSessionRepository;
 import com.fitnesstraining.service.abstraction.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.SessionNotFound;
 @RequiredArgsConstructor
 public class DefaultSessionService implements SessionService {
 
-    private final SessionRepository sessionRepository;
+    private final DefaultSessionRepository sessionRepository;
 
     public Session create(Session session) {
         return sessionRepository.create(session);

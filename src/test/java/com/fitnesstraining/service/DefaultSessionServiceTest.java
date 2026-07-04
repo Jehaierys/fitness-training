@@ -6,7 +6,7 @@ import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.SessionSearchCriteria;
-import com.fitnesstraining.repository.SessionRepository;
+import com.fitnesstraining.repository.DefaultSessionRepository;
 import com.fitnesstraining.service.exception.SessionNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 class DefaultSessionServiceTest {
 
     @Mock
-    private SessionRepository sessionRepository;
+    private DefaultSessionRepository sessionRepository;
 
     @InjectMocks
     private DefaultSessionService sessionService;
