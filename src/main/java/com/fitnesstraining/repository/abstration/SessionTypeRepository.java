@@ -6,10 +6,6 @@ import java.util.Optional;
 
 public interface SessionTypeRepository {
 
-    SessionType create(SessionType sessionType);
-
-    SessionType update(SessionType sessionType);
-
     Optional<SessionType> findById(Long id);
 
     void delete(SessionType sessionType);

@@ -17,22 +17,6 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
     private final EntityManager entityManager;
 
 
-    public SessionType create(SessionType sessionType) {
-        entityManager.persist(sessionType);
-        log.info("SessionType with id: {} created", sessionType.getId());
-        return sessionType;
-    }
-
-    public SessionType update(SessionType sessionType) {
-        if (sessionType.getId() == null || !existsById(sessionType.getId())) {
-            log.warn("SessionType with id: {} not found for update", sessionType.getId());
-            throw new IllegalArgumentException("SessionType must have an ID and exist in the database to be updated.");
-        }
-        SessionType mergedSessionType = entityManager.merge(sessionType);
-        log.info("SessionType with id: {} updated", sessionType.getId());
-        return mergedSessionType;
-    }
-
     public Optional<SessionType> findById(Long id) {
         return Optional.ofNullable(entityManager.find(SessionType.class, id));
     }
