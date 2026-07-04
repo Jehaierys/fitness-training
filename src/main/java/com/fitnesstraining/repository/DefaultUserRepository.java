@@ -38,7 +38,8 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     public void deleteById(Long id) {
-        findById(id).ifPresent(this::delete);
+        findById(id).ifPresentOrElse(this::delete,
+                () -> { log.warn("User with id: {} not found for deletion", id);});
     }
 
     public Optional<User> findById(Long id) {
