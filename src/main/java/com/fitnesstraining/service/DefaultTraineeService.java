@@ -34,9 +34,17 @@ public class DefaultTraineeService implements TraineeService {
     public void delete(Long id) {
         if (!traineeRepository.existsById(id)) {
             log.warn("Trainee not found with id: {} to be deleted", id);
-            throw new TraineeNotFoundException("Trainee not found with id: " + id);
+        } else {
+            traineeRepository.deleteById(id);
         }
-        log.info("Deleting trainee with id: {}", id);
-        traineeRepository.deleteById(id);
+    }
+
+    public void deleteByUsername(String username) {
+        traineeRepository.findByUsername(username).ifPresentOrElse(trainee -> {
+            traineeRepository.delete(trainee);
+            log.info("Trainee with username: {} deleted", username);
+        }, () -> {
+            log.warn("Trainee not found with username: {} to be deleted", username);
+        });
     }
 }

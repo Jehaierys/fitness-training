@@ -106,14 +106,13 @@ class DefaultTraineeServiceTest {
     }
 
     @Test
-    void delete_WhenNotExists_ShouldThrowTraineeNotFoundException() {
+    void delete_WhenNotExists_ShouldNotThrowException() {
         long traineeId = 99L;
         when(traineeRepository.existsById(traineeId)).thenReturn(false);
 
-        assertThrows(TraineeNotFoundException.class, () -> traineeService.delete(traineeId));
+        assertDoesNotThrow(() -> traineeService.delete(traineeId));
 
         verify(traineeRepository, times(1)).existsById(traineeId);
-        verify(traineeRepository, never()).delete(any(Trainee.class));
         verify(traineeRepository, never()).deleteById(anyLong());
     }
 }

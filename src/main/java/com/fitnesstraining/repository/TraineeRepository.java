@@ -42,7 +42,7 @@ public class TraineeRepository {
 
     public void deleteById(Long id) {
         findById(id).ifPresentOrElse(this::delete,
-                () -> {log.warn("Trainee with id: {} not found for deletion", id);});
+                () -> { log.warn("Trainee with id: {} not found for deletion", id);});
     }
 
     public boolean existsById(Long id) {
