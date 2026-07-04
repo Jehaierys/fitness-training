@@ -44,10 +44,10 @@ public class DefaultUserService implements UserService {
         userRepository.findById(id).ifPresentOrElse(user -> {
             user.setActive(isActive);
             userRepository.update(user);
+            log.info("Set active status for user with id: {} to {}", id, isActive);
         }, () -> {
             throw new UserNotFoundException("User not found with id: " + id);
         });
-        log.info("Set active status for user with id: {} to {}", id, isActive);
     }
 
     public void checkCredentials(String username, String password) {
