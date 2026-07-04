@@ -1,9 +1,6 @@
 package com.fitnesstraining.utils;
 
-import com.fitnesstraining.service.exception.CoachNotFoundException;
-import com.fitnesstraining.service.exception.SessionNotFoundException;
-import com.fitnesstraining.service.exception.TraineeNotFoundException;
-import com.fitnesstraining.service.exception.UserNotFoundException;
+import com.fitnesstraining.service.exception.*;
 
 import java.util.function.Supplier;
 
@@ -23,5 +20,9 @@ public class ExceptionSuppliers {
 
     public static Supplier<TraineeNotFoundException> TraineeNotFound(String message) {
         return () -> new TraineeNotFoundException(message);
+    }
+
+    public static Supplier<SessionTypeNotFoundException> SessionTypeNotFound(String message) {
+        return () -> new SessionTypeNotFoundException(message);
     }
 }
