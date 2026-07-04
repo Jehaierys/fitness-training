@@ -15,6 +15,7 @@ import java.time.Duration;
 @AllArgsConstructor
 @Table(name = "sessions")
 public class Session {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "session_seq")
     @SequenceGenerator(name = "session_seq", sequenceName = "session_id_seq", allocationSize = 1)
@@ -32,7 +33,12 @@ public class Session {
     @JoinColumn(name = "session_type_id")
     private SessionType sessionType;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private LocalDateTime date;
+
+    @Column(nullable = false)
     private Duration duration;
 }

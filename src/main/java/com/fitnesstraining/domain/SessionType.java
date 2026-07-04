@@ -19,6 +19,8 @@ public class SessionType {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "session_type_seq")
     @SequenceGenerator(name = "session_type_seq", sequenceName = "session_type_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
 
     @ManyToMany

@@ -13,11 +13,16 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "trainees")
 public class Trainee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trainees_seq")
     @SequenceGenerator(name = "trainees_seq", sequenceName = "trainees_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(nullable = true)
     private LocalDate birthDate;
+
+    @Column(nullable = true)
     private String address;
 
     @OneToOne(fetch = FetchType.EAGER)

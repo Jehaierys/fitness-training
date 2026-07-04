@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Table(name = "coachs")
 public class Coach {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_seq")
     @SequenceGenerator(name = "coach_seq", sequenceName = "coach_id_seq", allocationSize = 1)
