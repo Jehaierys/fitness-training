@@ -3,6 +3,7 @@ package com.fitnesstraining.utils;
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.TraineeSignUpRequest;
+import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +18,14 @@ public class TraineeSignUpProcessor {
 
     private final UserService userService;
     private final SignUpUtils utils;
+    private final TraineeService traineeService;
 
     private TraineeSignUpRequest request;
     private UUID logUuid;
     private String password;
     private String username;
     private User user;
+    private Trainee trainee;
 
     public Trainee process(TraineeSignUpRequest request) {
         this.request = request;
@@ -31,7 +34,7 @@ public class TraineeSignUpProcessor {
         generatePassword();
         generateUsername();
         createUser();
-        Trainee trainee = createTrainee();
+        createTrainee();
 
         finalLog();
         return trainee;
@@ -51,23 +54,23 @@ public class TraineeSignUpProcessor {
     }
 
     private void createUser() {
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .username(username)
-                .password(password)
-                .isActive(true)
-                .build();
-
-        this.user = userService.create(user);
+        this.user = userService
+                .create(User.builder()
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
+                        .username(username)
+                        .password(password)
+                        .isActive(true)
+                        .build());
     }
 
-    private Trainee createTrainee() {
-        return Trainee.builder()
-                .user(this.user)
-                .address(request.getAddress())
-                .birthDate(request.getBirthDate())
-                .build();
+    private void createTrainee() {
+        this.trainee = traineeService
+                .create(Trainee.builder()
+                        .user(this.user)
+                        .address(request.getAddress())
+                        .birthDate(request.getBirthDate())
+                        .build());
     }
 
     private void finalLog() {

@@ -26,8 +26,7 @@ public class TraineeFacade {
 
 
     public Trainee signUp(TraineeSignUpRequest request) {
-        Trainee trainee = signUpProcessor.process(request);
-        return traineeService.create(trainee);
+        return signUpProcessor.process(request);
     }
 
     public Trainee updateProfile(TraineeProfileUpdateRequest request) {

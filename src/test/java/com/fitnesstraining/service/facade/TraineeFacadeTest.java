@@ -62,7 +62,6 @@ class TraineeFacadeTest {
     @Test
     void signUp_successfulCreation_returnsTrainee() {
         when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
-        when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("Jane")
@@ -79,14 +78,13 @@ class TraineeFacadeTest {
         assertEquals(testTrainee.getAddress(), result.getAddress());
 
         verify(traineeSignUpProcessor, times(1)).process(request);
-        verify(traineeService, times(1)).create(testTrainee);
+        verify(traineeService, times(0)).create(testTrainee);
         verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_usernameCollision_generatesUniqueUsername() {
         when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
-        when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("Jane")
@@ -98,7 +96,7 @@ class TraineeFacadeTest {
 
         assertNotNull(result);
         verify(traineeSignUpProcessor, times(1)).process(request);
-        verify(traineeService, times(1)).create(testTrainee);
+        verify(traineeService, times(0)).create(testTrainee);
         verifyNoInteractions(userService);
     }
 
@@ -123,30 +121,8 @@ class TraineeFacadeTest {
     }
 
     @Test
-    void signUp_traineeServiceCreateFails_throwsExceptionAndUserIsCreated() {
-        when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
-        when(traineeService.create(any(Trainee.class))).thenThrow(new TraineeNotFoundException("Trainee creation failed"));
-
-        TraineeSignUpRequest request = TraineeSignUpRequest.builder()
-                .firstName("Jane")
-                .lastName("Doe")
-                .birthDate(LocalDate.of(1990, 5, 15))
-                .address("123 Main St")
-                .build();
-        TraineeNotFoundException thrown = assertThrows(TraineeNotFoundException.class, () -> {
-            traineeFacade.signUp(request);
-        });
-
-        assertEquals("Trainee creation failed", thrown.getMessage());
-        verify(traineeSignUpProcessor, times(1)).process(request);
-        verify(traineeService, times(1)).create(testTrainee);
-        verifyNoInteractions(userService);
-    }
-
-    @Test
     void signUp_emptyFirstAndLastNames_generatesUsernameAndSaves() {
         when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
-        when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("")
@@ -158,14 +134,13 @@ class TraineeFacadeTest {
 
         assertNotNull(result);
         verify(traineeSignUpProcessor, times(1)).process(request);
-        verify(traineeService, times(1)).create(testTrainee);
+        verify(traineeService, times(0)).create(testTrainee);
         verifyNoInteractions(userService);
     }
 
     @Test
     void signUp_emptyFirstAndLastNameWithCollision_generatesUniqueUsername() {
         when(traineeSignUpProcessor.process(any(TraineeSignUpRequest.class))).thenReturn(testTrainee);
-        when(traineeService.create(any(Trainee.class))).thenReturn(testTrainee);
 
         TraineeSignUpRequest request = TraineeSignUpRequest.builder()
                 .firstName("")
@@ -177,7 +152,7 @@ class TraineeFacadeTest {
 
         assertNotNull(result);
         verify(traineeSignUpProcessor, times(1)).process(request);
-        verify(traineeService, times(1)).create(testTrainee);
+        verify(traineeService, times(0)).create(testTrainee);
         verifyNoInteractions(userService);
     }
 
