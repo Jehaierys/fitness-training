@@ -1,9 +1,12 @@
 package com.fitnesstraining.service.facade;
 
+import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.TraineeProfileUpdateRequest;
 import com.fitnesstraining.dto.TraineeSignUpRequest;
+import com.fitnesstraining.dto.UpdateTraineeCoachesRequest;
+import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.TraineeSignUpProcessor;
@@ -12,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -24,6 +29,7 @@ public class TraineeFacade {
     private final UserService userService;
     private final TraineeService traineeService;
     private final TraineeSignUpProcessor signUpProcessor;
+    private final CoachService coachService;
 
 
     @Transactional
@@ -49,5 +55,19 @@ public class TraineeFacade {
 
         log.info("Successfully updated trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
         return existingTrainee;
+    }
+
+    @Transactional
+    public Trainee updateCoaches(UpdateTraineeCoachesRequest request) {
+        Trainee trainee = traineeService.getById(request.getTraineeId());
+
+        Set<Coach> newCoaches = new HashSet<>();
+        request.getCoachIds().forEach(coachId -> {
+            Coach coach = coachService.getById(coachId);
+            newCoaches.add(coach);
+        });
+
+        trainee.setCoaches(newCoaches);
+        return traineeService.update(trainee);
     }
 }
