@@ -1,10 +1,11 @@
 package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.dto.CoachSignUpRequest;
-import com.fitnesstraining.dto.CoachSignUpResponse;
+import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
+import com.fitnesstraining.dto.coach.request.CoachSignUpRequest;
+import com.fitnesstraining.dto.coach.response.CoachSignUpResponse;
 import com.fitnesstraining.service.abstraction.CoachService;
-import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,11 +25,11 @@ public class CoachSignUpProcessor {
     private String password;
     private String username;
     private Coach coach;
-    private CoachSignUpResponse response;
+    private UserSignUpResponse response;
 
 
-    public synchronized CoachSignUpResponse process(CoachSignUpRequest request) {
-        this.request = request;
+    public synchronized UserSignUpResponse process(UserSignUpRequest request) {
+        this.request = (CoachSignUpRequest) request;
         initialLog();
 
         generatePassword();
@@ -50,11 +51,11 @@ public class CoachSignUpProcessor {
     }
 
     private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName(), (UserService) coachService);
+        username = utils.generateUsername(request.getFirstName(), request.getLastName(), coachService);
     }
 
     private void createCoach() {
-        this.coach = coachService
+        this.coach = (Coach) coachService
                 .create(Coach.builder()
                         .firstName(request.getFirstName())
                         .lastName(request.getLastName())
@@ -67,7 +68,7 @@ public class CoachSignUpProcessor {
     }
 
     private void buildResponse() {
-        this.response = CoachSignUpResponse.builder()
+        this.response = UserSignUpResponse.builder()
                 .userId(coach.getId())
                 .username(username)
                 .password(password)

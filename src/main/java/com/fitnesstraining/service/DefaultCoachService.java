@@ -21,8 +21,9 @@ public class DefaultCoachService implements CoachService {
 
     private final DefaultCoachRepository coachRepository;
 
-    public Coach create(Coach coach) {
-        return coachRepository.create(coach);
+
+    public Coach create(User coach) {
+        return coachRepository.create((Coach) coach);
     }
 
     public Coach getById(Long id) {
@@ -30,8 +31,8 @@ public class DefaultCoachService implements CoachService {
                 .orElseThrow(CoachNotFound("Coach not found with id: " + id));
     }
 
-    public Coach update(Coach coach) {
-        return coachRepository.update(coach);
+    public Coach update(User coach) {
+        return coachRepository.update((Coach) coach);
     }
 
     public boolean existsByUsername(String username) {
