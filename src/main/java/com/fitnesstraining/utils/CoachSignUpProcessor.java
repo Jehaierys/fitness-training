@@ -4,7 +4,6 @@ import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.CoachSignUpRequest;
 import com.fitnesstraining.dto.CoachSignUpResponse;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
