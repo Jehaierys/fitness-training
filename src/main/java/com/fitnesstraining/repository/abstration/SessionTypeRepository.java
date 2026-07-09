@@ -1,6 +1,6 @@
 package com.fitnesstraining.repository.abstration;
 
-import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.domain.entity.SessionType;
 
 import java.util.Optional;
 

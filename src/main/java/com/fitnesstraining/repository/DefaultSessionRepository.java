@@ -1,7 +1,7 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.*;
-import com.fitnesstraining.dto.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.entity.*;
 import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;

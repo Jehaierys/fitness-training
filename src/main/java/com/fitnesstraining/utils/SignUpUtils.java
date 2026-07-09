@@ -1,6 +1,6 @@
 package com.fitnesstraining.utils;
 
-import com.fitnesstraining.service.abstraction.UserService;
+import com.fitnesstraining.logic.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

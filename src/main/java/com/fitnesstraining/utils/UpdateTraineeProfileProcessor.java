@@ -1,10 +1,10 @@
 package com.fitnesstraining.utils;
 
-import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.dto.trainee.request.UpdateTraineeProfileRequest;
-import com.fitnesstraining.dto.trainee.response.UpdateTraineeProfileResponse;
-import com.fitnesstraining.service.abstraction.TraineeService;
+import com.fitnesstraining.domain.entity.Trainee;
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
+import com.fitnesstraining.logic.abstraction.TraineeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

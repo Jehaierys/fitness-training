@@ -1,6 +1,6 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.repository.abstration.CoachRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

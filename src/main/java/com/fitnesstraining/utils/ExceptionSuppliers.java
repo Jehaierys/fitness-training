@@ -1,6 +1,6 @@
 package com.fitnesstraining.utils;
 
-import com.fitnesstraining.service.exception.*;
+import com.fitnesstraining.logic.exception.*;
 
 import java.util.function.Supplier;
 

@@ -1,11 +1,10 @@
 package com.fitnesstraining.utils;
 
-import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
-import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.dto.coach.response.CoachSignUpResponse;
-import com.fitnesstraining.service.abstraction.CoachService;
+import com.fitnesstraining.domain.entity.Coach;
+import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
+import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
+import com.fitnesstraining.logic.abstraction.CoachService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

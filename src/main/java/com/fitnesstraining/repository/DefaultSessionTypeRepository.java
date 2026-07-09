@@ -1,6 +1,6 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.repository.abstration.SessionTypeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
