@@ -1,10 +1,16 @@
 package com.fitnesstraining.service.facade;
 
-import com.fitnesstraining.dto.TraineeSignUpRequest;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
-import com.fitnesstraining.service.abstraction.CoachService;
+import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.dto.abstraction.UpdateUserProfileRequest;
+import com.fitnesstraining.dto.abstraction.UpdateUserProfileResponse;
+import com.fitnesstraining.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
+import com.fitnesstraining.dto.trainee.response.UpdateTraineeProfileResponse;
 import com.fitnesstraining.service.abstraction.TraineeService;
+import com.fitnesstraining.service.abstraction.UserFacade;
 import com.fitnesstraining.utils.TraineeSignUpProcessor;
+import com.fitnesstraining.utils.UpdateTraineeProfileProcessor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,38 +20,22 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TraineeFacade {
+public class TraineeFacade implements UserFacade {
 
-    private final TraineeService traineeService;
     private final TraineeSignUpProcessor signUpProcessor;
-    private final CoachService coachService;
+    private final UpdateTraineeProfileProcessor profileUpdateProcessor;
 
 
     @Transactional
-    public TraineeSignUpResponse signUp(TraineeSignUpRequest request) {
+    public UserSignUpResponse signUp(UserSignUpRequest request) {
         return signUpProcessor.process(request);
     }
-//
-//    @Transactional
-//    public Trainee updateProfile(TraineeProfileUpdateRequest request) {
-//        UUID uuid = UUID.randomUUID();
-//        log.info("Updating trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
-//
-//        Trainee existingTrainee = traineeService.getById(request.getId());
-//        User existingUser = existingTrainee.getUser();
-//
-//        existingUser.setFirstName(request.getFirstName());
-//        existingUser.setLastName(request.getLastName());
-//        userService.update(existingUser);
-//
-//        existingTrainee.setBirthDate(request.getBirthDate());
-//        existingTrainee.setAddress(request.getAddress());
-//        traineeService.update(existingTrainee);
-//
-//        log.info("Successfully updated trainee profile for id: {}, process's UUID: {}", request.getId(), uuid);
-//        return existingTrainee;
-//    }
-//
+
+    @Transactional
+    public UpdateTraineeProfileResponse updateProfile(UpdateUserProfileRequest request) {
+        return profileUpdateProcessor.process(request);
+    }
+
 //    @Transactional
 //    public Trainee updateCoaches(UpdateTraineeCoachesRequest request) {
 //        Trainee trainee = traineeService.getById(request.getTraineeId());

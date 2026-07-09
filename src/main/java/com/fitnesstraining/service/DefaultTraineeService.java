@@ -21,8 +21,9 @@ public class DefaultTraineeService implements TraineeService {
 
     private final DefaultTraineeRepository traineeRepository;
 
-    public Trainee create(Trainee trainee) {
-        return traineeRepository.create(trainee);
+
+    public Trainee create(User trainee) {
+        return traineeRepository.create((Trainee) trainee);
     }
 
     public Trainee getById(Long id) {
@@ -30,8 +31,8 @@ public class DefaultTraineeService implements TraineeService {
                 .orElseThrow(TraineeNotFound("Trainee not found with id: " + id));
     }
 
-    public Trainee update(Trainee trainee) {
-        return traineeRepository.update(trainee);
+    public Trainee update(User trainee) {
+        return traineeRepository.update((Trainee) trainee);
     }
 
     public void delete(Long id) {
@@ -56,8 +57,7 @@ public class DefaultTraineeService implements TraineeService {
         return traineeRepository.existByUsername(username);
     }
 
-    @Override
-    public User findByUsername(String username) {
+    public Trainee findByUsername(String username) {
         return null;
     }
 

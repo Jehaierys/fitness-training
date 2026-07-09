@@ -1,10 +1,10 @@
 package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
-import com.fitnesstraining.dto.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.service.abstraction.TraineeService;
-import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,11 +24,11 @@ public class TraineeSignUpProcessor {
     private String password;
     private String username;
     private Trainee trainee;
-    private TraineeSignUpResponse response;
+    private UserSignUpResponse response;
 
 
-    public synchronized TraineeSignUpResponse process(TraineeSignUpRequest request) {
-        this.request = request;
+    public synchronized UserSignUpResponse process(UserSignUpRequest request) {
+        this.request = (TraineeSignUpRequest) request;
         initialLog();
 
         generatePassword();
@@ -50,11 +50,11 @@ public class TraineeSignUpProcessor {
     }
 
     private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName(), (UserService) traineeService);
+        username = utils.generateUsername(request.getFirstName(), request.getLastName(), traineeService);
     }
 
     private void createTrainee() {
-        this.trainee = traineeService
+        this.trainee = (Trainee) traineeService
                 .create(Trainee.builder()
                         .firstName(request.getFirstName())
                         .lastName(request.getLastName())
@@ -68,7 +68,7 @@ public class TraineeSignUpProcessor {
     }
 
     private void buildResponse() {
-        this.response = TraineeSignUpResponse.builder()
+        this.response = UserSignUpResponse.builder()
                 .userId(trainee.getId())
                 .username(trainee.getUsername())
                 .password(trainee.getPassword())

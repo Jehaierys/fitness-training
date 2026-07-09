@@ -1,7 +1,7 @@
 package com.fitnesstraining.openapi;
 
-import com.fitnesstraining.dto.TraineeSignUpRequest;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
+import com.fitnesstraining.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,5 +27,5 @@ public interface TraineeControllerApi {
             @ApiResponse(responseCode = "400", description = "Invalid input data")
     })
     @PostMapping()
-    ResponseEntity<TraineeSignUpResponse> signUp(@Valid @RequestBody TraineeSignUpRequest request);
+    ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody TraineeSignUpRequest request);
 }

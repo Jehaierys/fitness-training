@@ -1,7 +1,7 @@
 package com.fitnesstraining.controller;
 
-import com.fitnesstraining.dto.TraineeSignUpRequest;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
+import com.fitnesstraining.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.openapi.TraineeControllerApi;
 import com.fitnesstraining.service.facade.TraineeFacade;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class TraineeController implements TraineeControllerApi {
     private final TraineeFacade traineeFacade;
 
 
-    public ResponseEntity<TraineeSignUpResponse> signUp(TraineeSignUpRequest request) {
+    public ResponseEntity<UserSignUpResponse> signUp(TraineeSignUpRequest request) {
         log.info("Received signup request for trainee: {}", request.getFirstName());
 
         return new ResponseEntity<>(
