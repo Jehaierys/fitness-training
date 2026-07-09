@@ -1,11 +1,10 @@
 package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.domain.User;
-import com.fitnesstraining.dto.TraineeSignUpResponse;
-import com.fitnesstraining.dto.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.service.abstraction.TraineeService;
-import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,26 +16,23 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TraineeSignUpProcessor {
 
-    private final UserService userService;
     private final SignUpUtils utils;
     private final TraineeService traineeService;
 
     private TraineeSignUpRequest request;
-    private UUID logUuid;
+    private UUID traineeUuid;
     private String password;
     private String username;
-    private User user;
     private Trainee trainee;
-    private TraineeSignUpResponse response;
+    private UserSignUpResponse response;
 
 
-    public synchronized TraineeSignUpResponse process(TraineeSignUpRequest request) {
-        this.request = request;
+    public synchronized UserSignUpResponse process(UserSignUpRequest request) {
+        this.request = (TraineeSignUpRequest) request;
         initialLog();
 
         generatePassword();
         generateUsername();
-        createUser();
         createTrainee();
         buildResponse();
 
@@ -45,8 +41,8 @@ public class TraineeSignUpProcessor {
     }
 
     private void initialLog() {
-        logUuid = UUID.randomUUID();
-        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), logUuid);
+        traineeUuid = UUID.randomUUID();
+        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), traineeUuid);
     }
 
     private void generatePassword() {
@@ -54,24 +50,17 @@ public class TraineeSignUpProcessor {
     }
 
     private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName());
+        username = utils.generateUsername(request.getFirstName(), request.getLastName(), traineeService);
     }
 
-    private void createUser() {
-        this.user = userService
-                .create(User.builder()
+    private void createTrainee() {
+        this.trainee = (Trainee) traineeService
+                .create(Trainee.builder()
                         .firstName(request.getFirstName())
                         .lastName(request.getLastName())
                         .username(username)
                         .password(password)
                         .isActive(true)
-                        .build());
-    }
-
-    private void createTrainee() {
-        this.trainee = traineeService
-                .create(Trainee.builder()
-                        .user(this.user)
                         .address(request.getAddress())
                         .birthDate(request.getBirthDate())
                         .build()
@@ -79,14 +68,14 @@ public class TraineeSignUpProcessor {
     }
 
     private void buildResponse() {
-        this.response = TraineeSignUpResponse.builder()
+        this.response = UserSignUpResponse.builder()
                 .userId(trainee.getId())
-                .username(trainee.getUser().getUsername())
-                .password(trainee.getUser().getPassword())
+                .username(trainee.getUsername())
+                .password(trainee.getPassword())
                 .build();
     }
 
     private void finalLog() {
-        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), user.getId(), logUuid);
+        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), trainee.getId(), traineeUuid);
     }
 }

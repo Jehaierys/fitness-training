@@ -2,11 +2,6 @@ package com.fitnesstraining.service.abstraction;
 
 import com.fitnesstraining.domain.Coach;
 
-public interface CoachService {
+public interface CoachService extends UserService {
 
-    Coach create(Coach coach);
-
-    Coach getById(Long id);
-
-    Coach update(Coach coach);
 }

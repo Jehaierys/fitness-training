@@ -1,7 +1,7 @@
 package com.fitnesstraining.service.abstraction;
 
 import com.fitnesstraining.domain.Session;
-import com.fitnesstraining.dto.SessionSearchCriteria;
+import com.fitnesstraining.dto.session.SessionSearchCriteria;
 
 import java.util.List;
 

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SignUpUtils {
 
-    private final UserService userService;
     private final SecureRandom random = new SecureRandom();
     private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -23,7 +22,7 @@ public class SignUpUtils {
                 .collect(Collectors.joining());
     }
 
-    public synchronized String generateUsername(String firstName, String lastName) {
+    public String generateUsername(String firstName, String lastName, UserService userService) {
         String baseUsername = firstName.toLowerCase() + "." + lastName.toLowerCase();
         String username = baseUsername;
         long suffix = 1;

@@ -1,14 +1,17 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.DefaultTraineeRepository;
 import com.fitnesstraining.service.abstraction.TraineeService;
+import com.fitnesstraining.service.abstraction.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static com.fitnesstraining.utils.ExceptionSuppliers.TraineeNotFound;
+import static com.fitnesstraining.utils.ExceptionSuppliers.UserNotFound;
 
 
 @Slf4j
@@ -18,8 +21,9 @@ public class DefaultTraineeService implements TraineeService {
 
     private final DefaultTraineeRepository traineeRepository;
 
-    public Trainee create(Trainee trainee) {
-        return traineeRepository.create(trainee);
+
+    public Trainee create(User trainee) {
+        return traineeRepository.create((Trainee) trainee);
     }
 
     public Trainee getById(Long id) {
@@ -27,8 +31,8 @@ public class DefaultTraineeService implements TraineeService {
                 .orElseThrow(TraineeNotFound("Trainee not found with id: " + id));
     }
 
-    public Trainee update(Trainee trainee) {
-        return traineeRepository.update(trainee);
+    public Trainee update(User trainee) {
+        return traineeRepository.update((Trainee) trainee);
     }
 
     public void delete(Long id) {
@@ -47,5 +51,42 @@ public class DefaultTraineeService implements TraineeService {
         }, () -> {
             log.warn("Trainee not found with username: {} to be deleted", username);
         });
+    }
+
+    public boolean existsByUsername(String username) {
+        return traineeRepository.existByUsername(username);
+    }
+
+    public Trainee findByUsername(String username) {
+        return null;
+    }
+
+    public void setActive(Long id, boolean isActive) {
+        traineeRepository.findById(id).ifPresentOrElse(trainee -> {
+            trainee.setActive(isActive);
+            traineeRepository.update(trainee);
+            log.info("Set active status for user with id: {} to {}", id, isActive);
+        }, () -> {
+            throw new RuntimeException("User not found with id: " + id);
+        });
+    }
+
+//
+//    public void checkCredentials(String username, String password) {
+//        User user = traineeRepository.findByUsername(username)
+//                .orElseThrow(UserNotFound("User not found with username: " + username));
+//
+//        if (!user.getPassword().equals(password)) {
+//            log.warn("User not found with username: {} and password: {}", username, user.getPassword());
+//            // todo: assign appropriate exception
+//            throw new RuntimeException("Invalid credentials for username: " + username);
+//        }
+//    }
+
+    public void newPassword(Long id, String newPassword) {
+        Trainee trainee = traineeRepository.findById(id).orElseThrow(UserNotFound("User not found with id:" + id));
+        trainee.setPassword(newPassword);
+        traineeRepository.update(trainee);
+        log.info("Password updated for user with id: {}", id);
     }
 }

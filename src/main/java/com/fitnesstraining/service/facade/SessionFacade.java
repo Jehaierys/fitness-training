@@ -4,7 +4,7 @@ import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.Session;
 import com.fitnesstraining.domain.SessionType;
 import com.fitnesstraining.domain.Trainee;
-import com.fitnesstraining.dto.SessionRegistrationRequest;
+import com.fitnesstraining.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.SessionService;
 import com.fitnesstraining.service.abstraction.SessionTypeService;
@@ -27,8 +27,8 @@ public class SessionFacade {
 
     @Transactional
     public Session registerSession(SessionRegistrationRequest request) {
-        Trainee trainee = traineeService.getById(request.getTraineeId());
-        Coach coach = coachService.getById(request.getCoachId());
+        Trainee trainee = (Trainee) traineeService.getById(request.getTraineeId());
+        Coach coach = (Coach) coachService.getById(request.getCoachId());
         SessionType sessionType = sessionTypeService.getById(request.getSessionTypeId());
 
         Session session = Session.builder()

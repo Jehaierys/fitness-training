@@ -1,4 +1,4 @@
-package com.fitnesstraining.dto;
+package com.fitnesstraining.dto.session;
 
 import lombok.Builder;
 import lombok.Value;

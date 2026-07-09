@@ -1,6 +1,7 @@
-package com.fitnesstraining.dto;
+package com.fitnesstraining.dto.coach.request;
 
 import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.dto.abstraction.UserSignUpRequest;
 import lombok.Builder;
 import lombok.Value;
 
@@ -8,9 +9,6 @@ import java.util.Set;
 
 @Value
 @Builder
-public class CoachProfileUpdateRequest {
-    Long id;
-    String firstName;
-    String lastName;
+public class CoachSignUpRequest extends UserSignUpRequest {
     Set<SessionType> specialization;
 }
