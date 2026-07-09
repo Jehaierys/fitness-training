@@ -2,6 +2,7 @@ package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
+import com.fitnesstraining.dto.TraineeSignUpResponse;
 import com.fitnesstraining.dto.TraineeSignUpRequest;
 import com.fitnesstraining.service.abstraction.TraineeService;
 import com.fitnesstraining.service.abstraction.UserService;
@@ -26,8 +27,10 @@ public class TraineeSignUpProcessor {
     private String username;
     private User user;
     private Trainee trainee;
+    private TraineeSignUpResponse response;
 
-    public Trainee process(TraineeSignUpRequest request) {
+
+    public synchronized TraineeSignUpResponse process(TraineeSignUpRequest request) {
         this.request = request;
         initialLog();
 
@@ -35,9 +38,10 @@ public class TraineeSignUpProcessor {
         generateUsername();
         createUser();
         createTrainee();
+        buildResponse();
 
         finalLog();
-        return trainee;
+        return response;
     }
 
     private void initialLog() {
@@ -70,7 +74,16 @@ public class TraineeSignUpProcessor {
                         .user(this.user)
                         .address(request.getAddress())
                         .birthDate(request.getBirthDate())
-                        .build());
+                        .build()
+                );
+    }
+
+    private void buildResponse() {
+        this.response = TraineeSignUpResponse.builder()
+                .userId(trainee.getId())
+                .username(trainee.getUser().getUsername())
+                .password(trainee.getUser().getPassword())
+                .build();
     }
 
     private void finalLog() {

@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.Trainee;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.TraineeProfileUpdateRequest;
 import com.fitnesstraining.dto.TraineeSignUpRequest;
+import com.fitnesstraining.dto.TraineeSignUpResponse;
 import com.fitnesstraining.dto.UpdateTraineeCoachesRequest;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.TraineeService;
@@ -33,7 +34,7 @@ public class TraineeFacade {
 
 
     @Transactional
-    public Trainee signUp(TraineeSignUpRequest request) {
+    public TraineeSignUpResponse signUp(TraineeSignUpRequest request) {
         return signUpProcessor.process(request);
     }
 

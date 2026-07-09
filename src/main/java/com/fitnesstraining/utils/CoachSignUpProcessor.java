@@ -3,6 +3,9 @@ package com.fitnesstraining.utils;
 import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.CoachSignUpRequest;
+import com.fitnesstraining.dto.CoachSignUpResponse;
+import com.fitnesstraining.dto.TraineeSignUpResponse;
+import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,31 +19,35 @@ import java.util.UUID;
 public class CoachSignUpProcessor {
 
     private final UserService userService;
+    private final CoachService coachService;
     private final SignUpUtils utils;
 
     private CoachSignUpRequest request;
-    private UUID logUuid;
+    private UUID transactionUuid;
     private String password;
     private String username;
     private User user;
+    private Coach coach;
+    private CoachSignUpResponse response;
 
 
-    public Coach process(CoachSignUpRequest request) {
+    public synchronized CoachSignUpResponse process(CoachSignUpRequest request) {
         this.request = request;
         initialLog();
 
         generatePassword();
         generateUsername();
         createUser();
-        Coach coach = createCoach();
+        createCoach();
+        buildResponse();
 
         finalLog();
-        return coach;
+        return response;
     }
 
     private void initialLog() {
-        logUuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), logUuid);
+        transactionUuid = UUID.randomUUID();
+        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
     }
 
     private void generatePassword() {
@@ -52,25 +59,35 @@ public class CoachSignUpProcessor {
     }
 
     private void createUser() {
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .username(username)
-                .password(password)
-                .isActive(true)
-                .build();
-
-        this.user = userService.create(user);
+        this.user = userService
+                .create(User.builder()
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
+                        .username(username)
+                        .password(password)
+                        .isActive(true)
+                        .build()
+                );
     }
 
-    private Coach createCoach() {
-        return Coach.builder()
-                .user(this.user)
-                .specialization(request.getSpecialization())
+    private void createCoach() {
+        this.coach = coachService
+                .create(Coach.builder()
+                        .user(this.user)
+                        .specialization(request.getSpecialization())
+                        .build()
+                );
+    }
+
+    private void buildResponse() {
+        this.response = CoachSignUpResponse.builder()
+                .userId(coach.getId())
+                .username(username)
+                .password(password)
                 .build();
     }
 
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), user.getId(), logUuid);
+        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), user.getId(), transactionUuid);
     }
 }

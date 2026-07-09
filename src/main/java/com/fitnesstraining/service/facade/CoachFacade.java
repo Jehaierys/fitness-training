@@ -4,6 +4,8 @@ import com.fitnesstraining.domain.Coach;
 import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.CoachProfileUpdateRequest;
 import com.fitnesstraining.dto.CoachSignUpRequest;
+import com.fitnesstraining.dto.CoachSignUpResponse;
+import com.fitnesstraining.dto.TraineeSignUpResponse;
 import com.fitnesstraining.service.abstraction.CoachService;
 import com.fitnesstraining.service.abstraction.UserService;
 import com.fitnesstraining.utils.CoachSignUpProcessor;
@@ -27,9 +29,8 @@ public class CoachFacade {
 
 
     @Transactional
-    public synchronized Coach signUp(CoachSignUpRequest request) {
-        Coach coach = signUpProcessor.process(request);
-        return coachService.create(coach);
+    public CoachSignUpResponse signUp(CoachSignUpRequest request) {
+        return signUpProcessor.process(request);
     }
 
 
