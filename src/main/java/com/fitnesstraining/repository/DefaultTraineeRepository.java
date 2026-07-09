@@ -52,7 +52,7 @@ public class DefaultTraineeRepository implements TraineeRepository {
     }
 
     public Optional<Trainee> findByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
+        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return entityManager
                 .createQuery(jpql, Trainee.class)
@@ -62,7 +62,7 @@ public class DefaultTraineeRepository implements TraineeRepository {
     }
 
     public boolean existByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
+        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return !entityManager
                 .createQuery(jpql, Trainee.class)

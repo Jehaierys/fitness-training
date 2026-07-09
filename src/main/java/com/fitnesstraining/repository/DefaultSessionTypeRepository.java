@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.SessionType;
+import com.fitnesstraining.logic.exception.SessionNotFoundException;
 import com.fitnesstraining.repository.abstration.SessionTypeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
 
     public void deleteById(Long id) {
         findById(id).ifPresentOrElse(this::delete, () -> {
-            throw new IllegalArgumentException("SessionType with id: " + id + " not found for deletion.");
+            throw new SessionNotFoundException("SessionType with id: " + id + " not found for deletion.");
         });
     }
 

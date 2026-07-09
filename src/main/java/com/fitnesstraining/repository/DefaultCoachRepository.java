@@ -35,7 +35,7 @@ public class DefaultCoachRepository implements CoachRepository {
     }
 
     public Optional<Coach> findByUsername(String username) {
-        String jpql = "SELECT c FROM Coach c WHERE c.user.username = :username";
+        String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
 
         return entityManager
                 .createQuery(jpql, Coach.class)
@@ -49,7 +49,7 @@ public class DefaultCoachRepository implements CoachRepository {
     }
 
     public boolean existByUsername(String username) {
-        String jpql = "SELECT c FROM Coach c WHERE c.user.username = :username";
+        String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
 
         return !entityManager
                 .createQuery(jpql, Coach.class)
@@ -60,7 +60,7 @@ public class DefaultCoachRepository implements CoachRepository {
     }
 
     public List<Coach> notAssignedOnTraineeWith(String username) {
-        String jpql = "SELECT c FROM Coach c WHERE c NOT IN (SELECT t.coaches FROM Trainee t WHERE t.user.username = :traineeUsername)";
+        String jpql = "SELECT c FROM Coach c WHERE c NOT IN (SELECT t.coaches FROM Trainee t WHERE t.username = :traineeUsername)";
 
         return entityManager
                 .createQuery(jpql, Coach.class)

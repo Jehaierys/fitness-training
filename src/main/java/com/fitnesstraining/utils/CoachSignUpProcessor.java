@@ -42,7 +42,7 @@ public class CoachSignUpProcessor {
 
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
+        log.info("Signing up new coach: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
     }
 
     private void generatePassword() {
@@ -75,6 +75,6 @@ public class CoachSignUpProcessor {
     }
 
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
+        log.info("Successfully created coach: {} {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), coach.getId(), transactionUuid);
     }
 }
