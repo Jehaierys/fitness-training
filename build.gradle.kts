@@ -1,6 +1,6 @@
 plugins {
     java
-    id("org.springframework.boot") version "4.1.0"
+    id("org.springframework.boot") version "3.2.5" // Corrected Spring Boot version
     id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -25,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0") // Added Springdoc OpenAPI dependency
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
