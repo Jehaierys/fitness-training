@@ -22,7 +22,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CoachFacade {
 
-    private final UserService userService;
     private final CoachService coachService;
     private final CoachSignUpProcessor signUpProcessor;
 
@@ -32,23 +31,23 @@ public class CoachFacade {
         return signUpProcessor.process(request);
     }
 
-
-    @Transactional
-    public Coach updateProfile(CoachProfileUpdateRequest request) {
-        UUID uuid = UUID.randomUUID();
-        log.info("Updating coach profile for id: {}, process's UUID: {}", request.getId(), uuid);
-
-        Coach existingCoach = coachService.getById(request.getId());
-        User existingUser = existingCoach.getUser();
-
-        existingUser.setFirstName(request.getFirstName());
-        existingUser.setLastName(request.getLastName());
-        userService.update(existingUser);
-
-        existingCoach.setSpecialization(request.getSpecialization());
-        coachService.update(existingCoach);
-
-        log.info("Successfully updated coach profile for id: {}, process's UUID: {}", request.getId(), uuid);
-        return existingCoach;
-    }
+//
+//    @Transactional
+//    public Coach updateProfile(CoachProfileUpdateRequest request) {
+//        UUID uuid = UUID.randomUUID();
+//        log.info("Updating coach profile for id: {}, process's UUID: {}", request.getId(), uuid);
+//
+//        Coach existingCoach = coachService.getById(request.getId());
+//        User existingUser = existingCoach.getUser();
+//
+//        existingUser.setFirstName(request.getFirstName());
+//        existingUser.setLastName(request.getLastName());
+//        userService.update(existingUser);
+//
+//        existingCoach.setSpecialization(request.getSpecialization());
+//        coachService.update(existingCoach);
+//
+//        log.info("Successfully updated coach profile for id: {}, process's UUID: {}", request.getId(), uuid);
+//        return existingCoach;
+//    }
 }

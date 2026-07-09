@@ -27,8 +27,8 @@ public class SessionFacade {
 
     @Transactional
     public Session registerSession(SessionRegistrationRequest request) {
-        Trainee trainee = traineeService.getById(request.getTraineeId());
-        Coach coach = coachService.getById(request.getCoachId());
+        Trainee trainee = (Trainee) traineeService.getById(request.getTraineeId());
+        Coach coach = (Coach) coachService.getById(request.getCoachId());
         SessionType sessionType = sessionTypeService.getById(request.getSessionTypeId());
 
         Session session = Session.builder()

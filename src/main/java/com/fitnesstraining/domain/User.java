@@ -2,19 +2,20 @@ package com.fitnesstraining.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "users")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trainees_seq")
+    @SequenceGenerator(name = "trainees_seq", sequenceName = "trainees_id_seq", allocationSize = 5)
     private Long id;
 
     @Column(nullable = false)
@@ -32,17 +33,4 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    private Coach coach;
-
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    private Trainee trainee;
 }

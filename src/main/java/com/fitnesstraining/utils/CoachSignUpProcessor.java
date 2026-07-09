@@ -1,7 +1,6 @@
 package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.Coach;
-import com.fitnesstraining.domain.User;
 import com.fitnesstraining.dto.CoachSignUpRequest;
 import com.fitnesstraining.dto.CoachSignUpResponse;
 import com.fitnesstraining.service.abstraction.CoachService;
@@ -17,7 +16,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CoachSignUpProcessor {
 
-    private final UserService userService;
     private final CoachService coachService;
     private final SignUpUtils utils;
 
@@ -25,7 +23,6 @@ public class CoachSignUpProcessor {
     private UUID transactionUuid;
     private String password;
     private String username;
-    private User user;
     private Coach coach;
     private CoachSignUpResponse response;
 
@@ -36,7 +33,6 @@ public class CoachSignUpProcessor {
 
         generatePassword();
         generateUsername();
-        createUser();
         createCoach();
         buildResponse();
 
@@ -54,25 +50,17 @@ public class CoachSignUpProcessor {
     }
 
     private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName());
-    }
-
-    private void createUser() {
-        this.user = userService
-                .create(User.builder()
-                        .firstName(request.getFirstName())
-                        .lastName(request.getLastName())
-                        .username(username)
-                        .password(password)
-                        .isActive(true)
-                        .build()
-                );
+        username = utils.generateUsername(request.getFirstName(), request.getLastName(), (UserService) coachService);
     }
 
     private void createCoach() {
         this.coach = coachService
                 .create(Coach.builder()
-                        .user(this.user)
+                        .firstName(request.getFirstName())
+                        .lastName(request.getLastName())
+                        .username(username)
+                        .password(password)
+                        .isActive(true)
                         .specialization(request.getSpecialization())
                         .build()
                 );
@@ -87,6 +75,6 @@ public class CoachSignUpProcessor {
     }
 
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), user.getId(), transactionUuid);
+        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
     }
 }

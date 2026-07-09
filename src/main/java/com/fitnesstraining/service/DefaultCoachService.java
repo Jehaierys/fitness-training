@@ -1,13 +1,17 @@
 package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.Coach;
+import com.fitnesstraining.domain.User;
 import com.fitnesstraining.repository.DefaultCoachRepository;
 import com.fitnesstraining.service.abstraction.CoachService;
+import com.fitnesstraining.service.exception.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static com.fitnesstraining.utils.ExceptionSuppliers.CoachNotFound;
+import static com.fitnesstraining.utils.ExceptionSuppliers.UserNotFound;
 
 
 @Slf4j
@@ -28,5 +32,32 @@ public class DefaultCoachService implements CoachService {
 
     public Coach update(Coach coach) {
         return coachRepository.update(coach);
+    }
+
+    public boolean existsByUsername(String username) {
+        return coachRepository.existByUsername(username);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return null;
+    }
+
+    @Transactional
+    public void setActive(Long id, boolean isActive) {
+        coachRepository.findById(id).ifPresentOrElse(coach -> {
+            coach.setActive(isActive);
+            coachRepository.update(coach);
+            log.info("Set active status for user with id: {} to {}", id, isActive);
+        }, () -> {
+            throw new UserNotFoundException("User not found with id: " + id);
+        });
+    }
+
+    public void newPassword(Long id, String newPassword) {
+        Coach coach = coachRepository.findById(id).orElseThrow(UserNotFound("User not found with id: " + id));
+        coach.setPassword(newPassword);
+        coachRepository.update(coach);
+        log.info("Password updated for user with id: {}", id);
     }
 }

@@ -2,6 +2,7 @@ package com.fitnesstraining.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,20 +11,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "coachs")
-public class Coach {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_seq")
-    @SequenceGenerator(name = "coach_seq", sequenceName = "coach_id_seq", allocationSize = 1)
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", unique = true, nullable = false)
-    private User user;
+@Table(name = "coaches")
+public class Coach extends User {
 
     @ManyToMany(mappedBy = "coaches")
     @Builder.Default
