@@ -6,11 +6,13 @@ import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
+import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.facade.TraineeFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TraineeController implements TraineeControllerApi {
 
     private final TraineeFacade traineeFacade;
+    private final TraineeService traineeService;
 
 
     public ResponseEntity<UserSignUpResponse> signUp(TraineeSignUpRequest request) {
@@ -29,8 +32,15 @@ public class TraineeController implements TraineeControllerApi {
         );
     }
 
-    public ResponseEntity<UpdateTraineeProfileResponse> updateProfile(UpdateTraineeProfileRequest request) {
+    public ResponseEntity<UpdateTraineeProfileResponse> update(UpdateTraineeProfileRequest request) {
         log.info("Received update profile request for trainee: {}", request.getUsername());
         return ResponseEntity.ok(traineeFacade.updateProfile(request));
+    }
+
+    // todo: username validation
+    public ResponseEntity<HttpStatus> delete(@RequestParam String username) {
+        log.info("Received delete request for trainee: {}", username);
+        traineeService.deleteByUsername(username);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
