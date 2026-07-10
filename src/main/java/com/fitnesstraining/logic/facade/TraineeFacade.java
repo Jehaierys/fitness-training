@@ -1,11 +1,9 @@
 package com.fitnesstraining.logic.facade;
 
-import com.fitnesstraining.domain.dto.abstraction.GetUserResponse;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
+import com.fitnesstraining.domain.dto.abstraction.*;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
 import com.fitnesstraining.domain.entity.Trainee;
+import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.utils.TraineeMapper;
@@ -24,6 +22,7 @@ public class TraineeFacade implements UserFacade {
 
     private final TraineeSignUpProcessor signUpProcessor;
     private final UpdateTraineeProfileProcessor profileUpdateProcessor;
+
     private final TraineeMapper mapper;
     private final TraineeService traineeService;
 
@@ -40,6 +39,13 @@ public class TraineeFacade implements UserFacade {
 
     public GetUserResponse findByUsername(String username) {
         return mapper.toGetTraineeResponse((Trainee) traineeService.findByUsername(username));
+    }
+
+    @Transactional
+    public void setActive(Activated request) {
+        User user = traineeService.findByUsername(request.getUsername());
+        user.setActive(request.getIsActive());
+        traineeService.update(user);
     }
 
 //    @Transactional

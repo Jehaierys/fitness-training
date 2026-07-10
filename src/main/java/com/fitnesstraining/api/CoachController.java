@@ -1,5 +1,6 @@
 package com.fitnesstraining.api;
 
+import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
@@ -37,6 +38,12 @@ public class CoachController implements CoachControllerApi {
     public ResponseEntity<GetCoachResponse> findByUsername(String username) {
         log.info("Received find by username request for coach: {}", username);
         return ResponseEntity.ok((GetCoachResponse) coachFacade.findByUsername(username));
+    }
+
+    public ResponseEntity<HttpStatus> setActive(Activated request) {
+        log.info("Received set active request for coach: {}", request.getUsername());
+        coachFacade.setActive(request);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
 

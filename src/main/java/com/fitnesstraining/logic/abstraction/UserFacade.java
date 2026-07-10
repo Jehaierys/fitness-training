@@ -9,4 +9,6 @@ public interface UserFacade {
     UpdateUserProfileResponse updateProfile(UpdateUserProfileRequest request);
 
     GetUserResponse findByUsername(String username);
+
+    void setActive(Activated request);
 }

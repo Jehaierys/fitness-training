@@ -1,6 +1,7 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
+import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +77,7 @@ public interface CoachControllerApi {
     ResponseEntity<UpdateCoachProfileResponse> updateProfile(@Valid @RequestBody UpdateUserProfileRequest request);
 
 
+
     @Operation(
             summary = "Get coach profile by username",
             description = "Retrieves full profile information for a specific coach."
@@ -97,5 +100,30 @@ public interface CoachControllerApi {
     ResponseEntity<GetCoachResponse> findByUsername(
             @Parameter(description = "Username of the coach to fetch", required = true)
             @RequestParam String username);
+
+
+
+    @Operation(
+            summary = "Set coach active status",
+            description = "Toggles the active/inactive status of a coach profile."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status successfully updated"),
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid request data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Coach not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @PatchMapping()
+    ResponseEntity<HttpStatus> setActive(@Valid @RequestBody Activated request);
+
 
 }

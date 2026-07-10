@@ -1,5 +1,6 @@
 package com.fitnesstraining.api.openapi;
 
+import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
@@ -117,4 +118,31 @@ public interface TraineeControllerApi {
     ResponseEntity<GetTraineeResponse> findByUsername(
             @Parameter(description = "Username of the trainee to fetch", required = true)
             @RequestParam String username);
+
+
+
+
+    @Operation(
+            summary = "Set trainee active status",
+            description = "Toggles the active/inactive status of a trainee profile."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status successfully updated"),
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid request data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Trainee not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @PatchMapping()
+    ResponseEntity<HttpStatus> setActive(@Valid @RequestBody Activated request);
+
+
 }
