@@ -20,7 +20,7 @@ public class SessionType {
     @SequenceGenerator(name = "session_type_seq", sequenceName = "session_type_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany
