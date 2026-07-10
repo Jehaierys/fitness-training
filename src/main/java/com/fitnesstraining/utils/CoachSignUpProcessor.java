@@ -61,7 +61,8 @@ public class CoachSignUpProcessor {
                         .username(username)
                         .password(password)
                         .isActive(true)
-                        .specialization(request.getSpecialization())
+                        // todo
+                        // .specialization(request.getSpecialization())
                         .build()
                 );
     }

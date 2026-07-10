@@ -49,12 +49,9 @@ public class UpdateTraineeProfileProcessor {
 
         trainee.setFirstName(request.getFirstName());
         trainee.setLastName(request.getLastName());
-        trainee.setActive(request.isActive());
+        trainee.setActive(request.getIsActive());
         trainee.setBirthDate(request.getBirthDate());
         trainee.setAddress(request.getAddress());
-
-        // todo
-        trainee.setCoaches(request.getCoaches());
 
         traineeService.update(trainee);
     }

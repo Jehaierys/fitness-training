@@ -51,7 +51,7 @@ public class UpdateCoachProfileProcessor {
         coach.setFirstName(request.getFirstName());
         coach.setLastName(request.getLastName());
         coach.setSpecialization(request.getSpecialization());
-        coach.setActive(request.isActive());
+        coach.setActive(request.getIsActive());
 
         coachService.update(coach);
     }
