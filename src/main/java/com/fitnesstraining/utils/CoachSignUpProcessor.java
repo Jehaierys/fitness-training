@@ -18,6 +18,7 @@ public class CoachSignUpProcessor {
 
     private final CoachService coachService;
     private final SignUpUtils utils;
+    private final CoachMapper mapper;
 
     private CoachSignUpRequest request;
     private UUID transactionUuid;
@@ -54,25 +55,19 @@ public class CoachSignUpProcessor {
     }
 
     private void createCoach() {
-        this.coach = (Coach) coachService
-                .create(Coach.builder()
-                        .firstName(request.getFirstName())
-                        .lastName(request.getLastName())
-                        .username(username)
-                        .password(password)
-                        .isActive(true)
-                        // todo
-                        // .specialization(request.getSpecialization())
-                        .build()
-                );
+        this.coach = new Coach();
+        mapper.toEntity(request, coach);
+
+        coach.setPassword(password);
+        coach.setUsername(username);
+
+        coach.setActive(true);
+
+        coachService.create(coach);
     }
 
     private void buildResponse() {
-        this.response = UserSignUpResponse.builder()
-                .userId(coach.getId())
-                .username(username)
-                .password(password)
-                .build();
+        this.response = mapper.toUserSignUpResponse(coach);
     }
 
     private void finalLog() {

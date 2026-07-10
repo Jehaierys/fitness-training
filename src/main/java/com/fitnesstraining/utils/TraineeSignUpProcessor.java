@@ -18,6 +18,7 @@ public class TraineeSignUpProcessor {
 
     private final SignUpUtils utils;
     private final TraineeService traineeService;
+    private final TraineeMapper mapper;
 
     private TraineeSignUpRequest request;
     private UUID traineeUuid;
@@ -54,25 +55,19 @@ public class TraineeSignUpProcessor {
     }
 
     private void createTrainee() {
-        this.trainee = (Trainee) traineeService
-                .create(Trainee.builder()
-                        .firstName(request.getFirstName())
-                        .lastName(request.getLastName())
-                        .username(username)
-                        .password(password)
-                        .isActive(true)
-                        .address(request.getAddress())
-                        .birthDate(request.getBirthDate())
-                        .build()
-                );
+        trainee = new Trainee();
+        mapper.toEntity(request, trainee);
+
+        trainee.setPassword(password);
+        trainee.setUsername(username);
+
+        trainee.setActive(true);
+
+        traineeService.create(trainee);
     }
 
     private void buildResponse() {
-        this.response = UserSignUpResponse.builder()
-                .userId(trainee.getId())
-                .username(trainee.getUsername())
-                .password(trainee.getPassword())
-                .build();
+        this.response = mapper.toUserSignUpResponse(trainee);
     }
 
     private void finalLog() {
