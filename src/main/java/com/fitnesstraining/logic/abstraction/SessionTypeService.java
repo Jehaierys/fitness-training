@@ -8,6 +8,8 @@ public interface SessionTypeService {
 
     List<SessionType> findAll();
 
+    SessionType findByName(String name);
+
     SessionType getById(Long id);
 
     void delete(SessionType sessionType);

@@ -16,32 +16,37 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.SessionTypeNotFound;
 @RequiredArgsConstructor
 public class DefaultSessionTypeService implements SessionTypeService {
 
-    private final SessionTypeRepository sessionTypeRepository;
+    private SessionTypeRepository repository;
 
+
+    public List<SessionType> findAll() {
+        return repository.findAll();
+    }
 
     @Override
-    public List<SessionType> findAll() {
-        return sessionTypeRepository.fi;
+    public SessionType findByName(String name) {
+        return repository.findByName(name)
+                .orElseThrow(SessionTypeNotFound("SessionType not found with name: " + name));
     }
 
     public SessionType getById(Long id) {
-        return sessionTypeRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(SessionTypeNotFound("SessionType not found with id: " + id));
     }
 
     public void delete(SessionType sessionType) {
-        sessionTypeRepository.delete(sessionType);
+        repository.delete(sessionType);
     }
 
     public void deleteById(Long id) {
-        sessionTypeRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     public boolean existsById(Long id) {
-        return sessionTypeRepository.existsById(id);
+        return repository.existsById(id);
     }
 
     public boolean existByName(String name) {
-        return sessionTypeRepository.existByName(name);
+        return repository.existByName(name);
     }
 }
