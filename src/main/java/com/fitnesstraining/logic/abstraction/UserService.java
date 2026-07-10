@@ -13,8 +13,6 @@ public interface UserService {
 
     User update(User user);
 
-    void setActive(Long id, boolean isActive);
-
     void newPassword(Long id, String newPassword);
 
     boolean existsByUsername(String finalUsername);

@@ -58,16 +58,6 @@ public class DefaultTraineeService implements TraineeService {
         return null;
     }
 
-    public void setActive(Long id, boolean isActive) {
-        traineeRepository.findById(id).ifPresentOrElse(trainee -> {
-            trainee.setActive(isActive);
-            traineeRepository.update(trainee);
-            log.info("Set active status for user with id: {} to {}", id, isActive);
-        }, () -> {
-            throw new RuntimeException("User not found with id: " + id);
-        });
-    }
-
 //
 //    public void checkCredentials(String username, String password) {
 //        User user = traineeRepository.findByUsername(username)

@@ -44,17 +44,6 @@ public class DefaultCoachService implements CoachService {
                 .orElseThrow(UserNotFound("Coach not found with username: " + username));
     }
 
-    @Transactional
-    public void setActive(Long id, boolean isActive) {
-        coachRepository.findById(id).ifPresentOrElse(coach -> {
-            coach.setActive(isActive);
-            coachRepository.update(coach);
-            log.info("Set active status for user with id: {} to {}", id, isActive);
-        }, () -> {
-            throw new UserNotFoundException("User not found with id: " + id);
-        });
-    }
-
     public void newPassword(Long id, String newPassword) {
         Coach coach = coachRepository.findById(id).orElseThrow(UserNotFound("User not found with id: " + id));
         coach.setPassword(newPassword);
