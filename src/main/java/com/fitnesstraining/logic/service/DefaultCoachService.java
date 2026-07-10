@@ -39,9 +39,9 @@ public class DefaultCoachService implements CoachService {
         return coachRepository.existByUsername(username);
     }
 
-    @Override
-    public User findByUsername(String username) {
-        return null;
+    public Coach findByUsername(String username) {
+        return coachRepository.findByUsername(username)
+                .orElseThrow(UserNotFound("Coach not found with username: " + username));
     }
 
     @Transactional

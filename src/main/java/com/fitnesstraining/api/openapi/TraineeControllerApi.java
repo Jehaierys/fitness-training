@@ -3,6 +3,7 @@ package com.fitnesstraining.api.openapi;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -90,5 +91,30 @@ public interface TraineeControllerApi {
     @DeleteMapping
     ResponseEntity<HttpStatus> delete(
             @Parameter(description = "Username of the trainee to be deleted", required = true)
+            @RequestParam String username);
+
+
+
+    @Operation(
+            summary = "Get trainee profile by username",
+            description = "Retrieves full profile information for a specific trainee."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "Trainee profile found",
+                    content = @Content(schema = @Schema(implementation = GetTraineeResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Trainee not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @GetMapping
+    ResponseEntity<GetTraineeResponse> findByUsername(
+            @Parameter(description = "Username of the trainee to fetch", required = true)
             @RequestParam String username);
 }

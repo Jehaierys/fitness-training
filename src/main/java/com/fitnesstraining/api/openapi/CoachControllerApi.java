@@ -4,18 +4,17 @@ import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
+import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
@@ -75,5 +74,28 @@ public interface CoachControllerApi {
     @PutMapping()
     ResponseEntity<UpdateCoachProfileResponse> updateProfile(@Valid @RequestBody UpdateUserProfileRequest request);
 
+
+    @Operation(
+            summary = "Get coach profile by username",
+            description = "Retrieves full profile information for a specific coach."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "Coach profile found",
+                    content = @Content(schema = @Schema(implementation = GetCoachResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Coach not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @GetMapping
+    ResponseEntity<GetCoachResponse> findByUsername(
+            @Parameter(description = "Username of the coach to fetch", required = true)
+            @RequestParam String username);
 
 }

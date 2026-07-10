@@ -4,7 +4,9 @@ import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.CoachControllerApi;
+import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,10 @@ public class CoachController implements CoachControllerApi {
         return ResponseEntity.ok(coachFacade.updateProfile(request));
     }
 
-
+    public ResponseEntity<GetCoachResponse> findByUsername(String username) {
+        log.info("Received find by username request for coach: {}", username);
+        return ResponseEntity.ok((GetCoachResponse) coachFacade.findByUsername(username));
+    }
 }
 
 

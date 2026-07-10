@@ -1,10 +1,10 @@
 package com.fitnesstraining.api;
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.facade.TraineeFacade;
@@ -38,9 +38,14 @@ public class TraineeController implements TraineeControllerApi {
     }
 
     // todo: username validation
-    public ResponseEntity<HttpStatus> delete(@RequestParam String username) {
+    public ResponseEntity<HttpStatus> delete(String username) {
         log.info("Received delete request for trainee: {}", username);
         traineeService.deleteByUsername(username);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    public ResponseEntity<GetTraineeResponse> findByUsername(String username) {
+        log.info("Received find by username request for trainee: {}", username);
+        return ResponseEntity.ok((GetTraineeResponse) traineeFacade.findByUsername(username));
     }
 }
