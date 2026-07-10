@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.fitnesstraining.utils.ExceptionSuppliers.SessionTypeNotFound;
 
 @Slf4j
@@ -16,6 +18,11 @@ public class DefaultSessionTypeService implements SessionTypeService {
 
     private final SessionTypeRepository sessionTypeRepository;
 
+
+    @Override
+    public List<SessionType> findAll() {
+        return sessionTypeRepository.fi;
+    }
 
     public SessionType getById(Long id) {
         return sessionTypeRepository.findById(id)

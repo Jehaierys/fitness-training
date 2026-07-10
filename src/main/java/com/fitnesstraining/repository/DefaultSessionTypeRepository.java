@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -17,6 +18,11 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
 
     private final EntityManager entityManager;
 
+
+    public List<SessionType> findAll() {
+        return entityManager.createQuery("SELECT st FROM SessionType st", SessionType.class)
+                .getResultList();
+    }
 
     public Optional<SessionType> findById(Long id) {
         return Optional.ofNullable(entityManager.find(SessionType.class, id));

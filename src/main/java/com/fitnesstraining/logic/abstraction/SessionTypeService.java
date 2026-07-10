@@ -2,7 +2,11 @@ package com.fitnesstraining.logic.abstraction;
 
 import com.fitnesstraining.domain.entity.SessionType;
 
+import java.util.List;
+
 public interface SessionTypeService {
+
+    List<SessionType> findAll();
 
     SessionType getById(Long id);
 
