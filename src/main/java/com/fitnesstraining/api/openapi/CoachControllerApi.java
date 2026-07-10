@@ -1,5 +1,6 @@
 package com.fitnesstraining.api.openapi;
 
+import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
@@ -35,8 +36,14 @@ public interface CoachControllerApi {
                     responseCode = "201", description = "Coach successfully registered",
                     content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
             ),
-            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Coach already exists", content = @Content)
+            @ApiResponse(
+                    responseCode = "400", description = "Input data validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "409", description = "User with this username already exists",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
     })
     @PostMapping()
     ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody CoachSignUpRequest request);
@@ -52,9 +59,18 @@ public interface CoachControllerApi {
                     responseCode = "200", description = "Profile updated successfully",
                     content = @Content(schema = @Schema(implementation = UpdateCoachProfileResponse.class))
             ),
-            @ApiResponse(responseCode = "400", description = "Invalid request data", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Coach not found", content = @Content)
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid request data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Coach profile not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
     })
     @PutMapping()
     ResponseEntity<UpdateCoachProfileResponse> updateProfile(@Valid @RequestBody UpdateUserProfileRequest request);

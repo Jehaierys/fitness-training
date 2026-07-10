@@ -1,6 +1,5 @@
 package com.fitnesstraining.api.openapi;
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
@@ -13,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +36,10 @@ public interface TraineeControllerApi {
                     responseCode = "201", description = "Trainee successfully registered",
                     content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
             ),
-            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content)
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
     })
     @PostMapping
     ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody TraineeSignUpRequest request);
@@ -52,9 +55,18 @@ public interface TraineeControllerApi {
                     responseCode = "200", description = "Profile updated successfully",
                     content = @Content(schema = @Schema(implementation = UpdateTraineeProfileResponse.class))
             ),
-            @ApiResponse(responseCode = "400", description = "Invalid request data", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Trainee not found", content = @Content)
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid request data",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "Trainee not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
     })
     @PutMapping()
     ResponseEntity<UpdateTraineeProfileResponse> updateProfile(@Valid @RequestBody UpdateTraineeProfileRequest request);
