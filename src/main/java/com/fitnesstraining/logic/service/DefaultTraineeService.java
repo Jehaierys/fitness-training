@@ -47,9 +47,7 @@ public class DefaultTraineeService implements TraineeService {
         traineeRepository.findByUsername(username).ifPresentOrElse(trainee -> {
             traineeRepository.delete(trainee);
             log.info("Trainee with username: {} deleted", username);
-        }, () -> {
-            log.warn("Trainee not found with username: {} to be deleted", username);
-        });
+        }, () -> log.warn("Trainee not found with username: {} to be deleted", username));
     }
 
     public boolean existsByUsername(String username) {
