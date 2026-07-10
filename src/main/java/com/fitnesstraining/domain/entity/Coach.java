@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -19,7 +21,7 @@ public class Coach extends User {
 
     @ManyToMany(mappedBy = "coaches")
     @Builder.Default
-    private Set<SessionType> specialization = new HashSet<>();
+    private List<SessionType> specialization = new ArrayList<>();
 
     @ManyToMany(mappedBy = "coaches")
     @Builder.Default

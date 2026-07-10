@@ -5,7 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -30,5 +32,5 @@ public class Trainee extends User {
             inverseJoinColumns = @JoinColumn(name = "coach_id")
     )
     @Builder.Default
-    private Set<Coach> coaches = new HashSet<>();
+    private List<Coach> coaches = new ArrayList<>();
 }
