@@ -9,11 +9,11 @@ public interface UserService {
 
     User findByUsername(String username);
 
-    User getById(Long id);
+//    User getById(Long id);
 
     User update(User user);
 
-    void newPassword(Long id, String newPassword);
+//    void newPassword(Long id, String newPassword);
 
     boolean existsByUsername(String finalUsername);
 

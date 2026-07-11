@@ -26,10 +26,10 @@ public class DefaultCoachService implements CoachService {
         return coachRepository.create((Coach) coach);
     }
 
-    public Coach getById(Long id) {
-        return coachRepository.findById(id)
-                .orElseThrow(CoachNotFound("Coach not found with id: " + id));
-    }
+//    public Coach getById(Long id) {
+//        return coachRepository.findById(id)
+//                .orElseThrow(CoachNotFound("Coach not found with id: " + id));
+//    }
 
     public Coach update(User coach) {
         return coachRepository.update((Coach) coach);
@@ -44,10 +44,10 @@ public class DefaultCoachService implements CoachService {
                 .orElseThrow(UserNotFound("Coach not found with username: " + username));
     }
 
-    public void newPassword(Long id, String newPassword) {
-        Coach coach = coachRepository.findById(id).orElseThrow(UserNotFound("User not found with id: " + id));
-        coach.setPassword(newPassword);
-        coachRepository.update(coach);
-        log.info("Password updated for user with id: {}", id);
-    }
+//    public void newPassword(Long id, String newPassword) {
+//        Coach coach = coachRepository.findById(id).orElseThrow(UserNotFound("User not found with id: " + id));
+//        coach.setPassword(newPassword);
+//        coachRepository.update(coach);
+//        log.info("Password updated for user with id: {}", id);
+//    }
 }
