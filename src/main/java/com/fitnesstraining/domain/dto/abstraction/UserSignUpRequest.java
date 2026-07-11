@@ -3,15 +3,18 @@ package com.fitnesstraining.domain.dto.abstraction;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@SuperBuilder
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public abstract class UserSignUpRequest {
 
     @NotBlank(message = "First name cannot be blank")

@@ -12,7 +12,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class UserSignUpResponse {
-    Long userId;
     String username;
     String password;
 }

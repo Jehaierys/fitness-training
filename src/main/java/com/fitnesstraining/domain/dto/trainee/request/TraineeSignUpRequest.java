@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@SuperBuilder
 public class TraineeSignUpRequest extends UserSignUpRequest {
 
     @Past(message = "Birth date must be in the past and represent a realistic age")
