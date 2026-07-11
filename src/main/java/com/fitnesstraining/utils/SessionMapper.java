@@ -1,5 +1,6 @@
 package com.fitnesstraining.utils;
 
+import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.entity.Session;
 import org.mapstruct.Mapper;
@@ -13,4 +14,8 @@ public interface SessionMapper {
     @Mapping(target = "trainee", ignore = true)
     @Mapping(target = "sessionType", ignore = true)
     void toEntity(SessionRegistrationRequest dto, @MappingTarget Session session);
+
+    @Mapping(target = "traineeFirstName", source = "trainee.firstName")
+    @Mapping(target = "traineeLastName", source = "trainee.lastName")
+    GetCoachSessionDto toGetCoachSessionDto(Session session);
 }
