@@ -17,12 +17,12 @@ public interface CoachMapper {
 
     UserSignUpResponse toUserSignUpResponse(Coach coach);
 
-    Coach toCoach(GetCoachResponse getCoachResponse);
-
     void toEntity(CoachSignUpRequest dto, @MappingTarget Coach coach);
 
     @Mapping(target = "username", ignore = true)
+    @Mapping(target = "active", source = "isActive")
     void toEntity(UpdateCoachProfileRequest dto, @MappingTarget Coach coach);
 
+    @Mapping(target = "isActive", source = "active") // Idk how this works
     UpdateCoachProfileResponse toUpdateCoachProfileResponse(Coach coach);
 }
