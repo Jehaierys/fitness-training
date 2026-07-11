@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
 import com.fitnesstraining.logic.abstraction.TraineeService;
+import com.fitnesstraining.logic.mapper.TraineeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class UpdateTraineeProfileProcessor {
 
     private final TraineeService traineeService;
+    private final TraineeMapper mapper;
 
     private UpdateTraineeProfileRequest request;
     private UUID transactionUuid;
@@ -47,26 +49,13 @@ public class UpdateTraineeProfileProcessor {
         // todo: check whether new username is taken
         trainee.setUsername(request.getUsername());
 
-        trainee.setFirstName(request.getFirstName());
-        trainee.setLastName(request.getLastName());
-        trainee.setActive(request.getIsActive());
-        trainee.setBirthDate(request.getBirthDate());
-        trainee.setAddress(request.getAddress());
+        mapper.toEntity(request, trainee);
 
         traineeService.update(trainee);
     }
 
-    // todo
     private void buildResponse() {
-        this.response = UpdateTraineeProfileResponse.builder()
-                .username(trainee.getUsername())
-                .firstName(trainee.getFirstName())
-                .lastName(trainee.getLastName())
-                .isActive(trainee.isActive())
-                .address(trainee.getAddress())
-                .birthDate(trainee.getBirthDate())
-                .coaches(trainee.getCoaches())
-                .build();
+        this.response = mapper.toUpdateTraineeProfileResponse(trainee);
     }
 
     // todo: message

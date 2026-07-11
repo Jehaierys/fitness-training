@@ -6,6 +6,7 @@ import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.coach.request.UpdateCoachProfileRequest;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
 import com.fitnesstraining.logic.abstraction.CoachService;
+import com.fitnesstraining.logic.mapper.CoachMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class UpdateCoachProfileProcessor {
 
     private final CoachService coachService;
+    private final CoachMapper mapper;
 
     private UpdateCoachProfileRequest request;
     private UUID transactionUuid;
@@ -48,23 +50,13 @@ public class UpdateCoachProfileProcessor {
         // todo: check whether new username is taken
         coach.setUsername(request.getUsername());
 
-        coach.setFirstName(request.getFirstName());
-        coach.setLastName(request.getLastName());
-        coach.setSpecialization(request.getSpecialization());
-        coach.setActive(request.getIsActive());
+        mapper.toEntity(request, coach);
 
         coachService.update(coach);
     }
 
     private void buildResponse() {
-        this.response = UpdateCoachProfileResponse.builder()
-                .username(coach.getUsername())
-                .firstName(coach.getFirstName())
-                .lastName(coach.getLastName())
-                .specialization(coach.getSpecialization())
-                .isActive(coach.isActive())
-                .trainees(coach.getTrainees())
-                .build();
+        this.response = mapper.toUpdateCoachProfileResponse(coach);
     }
 
     // todo: message
