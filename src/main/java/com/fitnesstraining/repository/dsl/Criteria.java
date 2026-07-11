@@ -1,4 +1,4 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.repository.dsl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;

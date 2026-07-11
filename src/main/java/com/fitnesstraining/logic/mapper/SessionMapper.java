@@ -1,4 +1,4 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.logic.mapper;
 
 import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;

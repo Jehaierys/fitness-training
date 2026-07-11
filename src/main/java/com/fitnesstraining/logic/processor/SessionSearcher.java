@@ -1,8 +1,10 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.logic.processor;
 
 import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.GetCoachSessionListRequest;
 import com.fitnesstraining.domain.entity.Session;
+import com.fitnesstraining.repository.dsl.Criteria;
+import com.fitnesstraining.logic.mapper.SessionMapper;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

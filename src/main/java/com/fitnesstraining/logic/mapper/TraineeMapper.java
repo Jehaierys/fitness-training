@@ -1,4 +1,4 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.logic.mapper;
 
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;

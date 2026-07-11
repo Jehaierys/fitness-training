@@ -1,4 +1,4 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.logic.processor;
 
 
 import com.fitnesstraining.domain.entity.Coach;

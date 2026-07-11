@@ -1,4 +1,4 @@
-package com.fitnesstraining.utils;
+package com.fitnesstraining.logic.processor;
 
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.entity.Coach;
@@ -9,6 +9,7 @@ import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.abstraction.SessionService;
 import com.fitnesstraining.logic.abstraction.SessionTypeService;
 import com.fitnesstraining.logic.abstraction.TraineeService;
+import com.fitnesstraining.logic.mapper.SessionMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
