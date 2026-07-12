@@ -2,6 +2,7 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.SessionControllerApi;
 import com.fitnesstraining.domain.dto.session.*;
+import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.SessionFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +30,13 @@ public class SessionController implements SessionControllerApi {
 
     // todo: check user gets only his own sessions
     public ResponseEntity<List<SessionDto>> sessions(
-            @Valid @RequestBody SessionSearchCriteria criteria
+            SessionSearchCriteria criteria,
+            User user
     ) {
         // todo: extract somehow
-        Long requestSenderId = 0L;
+        Long requestSenderId = user.getId();
 
+        criteria.setRequestSenderId(requestSenderId);
         log.info("Received sessions request for user: {}", requestSenderId);
         return ResponseEntity.ok(facade.findSessionsByCriteria(criteria));
     }

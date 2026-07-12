@@ -46,7 +46,11 @@ public class CoachController implements CoachControllerApi {
         return ResponseEntity.ok((GetCoachResponse) coachFacade.findByUsername(username));
     }
 
-    public ResponseEntity<HttpStatus> setActive(Activated request) {
+    public ResponseEntity<HttpStatus> setActive(Activated request, UserDetails principal) {
+        if (!request.getUsername().equals(principal.getUsername())) {
+            throw new RuntimeException("Иди нахуй");
+        }
+
         log.info("Received set active request for coach: {}", request.getUsername());
         coachFacade.setActive(request);
         return ResponseEntity.ok(HttpStatus.OK);

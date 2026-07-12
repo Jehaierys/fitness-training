@@ -23,6 +23,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -134,7 +135,10 @@ public interface CoachControllerApi {
             )
     })
     @PatchMapping()
-    ResponseEntity<HttpStatus> setActive(@Valid @RequestBody Activated request);
+    ResponseEntity<HttpStatus> setActive(
+            @Valid @RequestBody Activated request,
+            @AuthenticationPrincipal UserDetails principal
+    );
 
 
 

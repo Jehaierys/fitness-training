@@ -4,6 +4,7 @@ import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.session.SessionDto;
+import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,6 +75,7 @@ public interface SessionControllerApi {
     @GetMapping
     ResponseEntity<List<SessionDto>> sessions(
             @Parameter(description = "Search criteria for filtering sessions", required = true)
-            @Valid @RequestBody SessionSearchCriteria criteria
+            @Valid @RequestBody SessionSearchCriteria criteria,
+            @AuthenticationPrincipal User user
     );
 }
