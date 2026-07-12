@@ -2,6 +2,7 @@ package com.fitnesstraining.logic.mapper;
 
 import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.session.SessionDto;
 import com.fitnesstraining.domain.entity.Session;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +19,7 @@ public interface SessionMapper {
     @Mapping(target = "traineeFirstName", source = "trainee.firstName")
     @Mapping(target = "traineeLastName", source = "trainee.lastName")
     GetCoachSessionDto toGetCoachSessionDto(Session session);
+
+    // todo
+    SessionDto toShortSessionDto(Session session);
 }

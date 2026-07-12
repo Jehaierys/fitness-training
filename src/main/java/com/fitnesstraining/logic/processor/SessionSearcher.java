@@ -16,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+// todo: collapse with SessionSuperSearcher
 public class SessionSearcher {
 
     private final EntityManager entityManager;
