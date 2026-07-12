@@ -11,5 +11,4 @@ public interface SessionService {
 
     Session getById(Long id);
 
-    List<Session> searchSessions(SessionSearchCriteria criteria);
 }

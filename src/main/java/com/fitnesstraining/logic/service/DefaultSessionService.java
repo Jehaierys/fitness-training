@@ -27,8 +27,4 @@ public class DefaultSessionService implements SessionService {
         return sessionRepository.findById(id)
                 .orElseThrow(SessionNotFound("Session not found with id: " + id + "."));
     }
-
-    public List<Session> searchSessions(SessionSearchCriteria criteria) {
-        return sessionRepository.searchSessions(criteria);
-    }
 }

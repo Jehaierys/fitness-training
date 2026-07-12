@@ -12,6 +12,4 @@ public interface SessionRepository {
 
     Optional<Session> findById(Long id);
 
-    List<Session> searchSessions(SessionSearchCriteria criteria);
-
 }
