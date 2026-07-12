@@ -31,7 +31,7 @@ public class CoachController implements CoachControllerApi {
         );
     }
 
-    public ResponseEntity<UpdateCoachProfileResponse> updateProfile(UpdateUserProfileRequest request) {
+    public ResponseEntity<UpdateCoachProfileResponse> update(UpdateUserProfileRequest request) {
         return ResponseEntity.ok(coachFacade.updateProfile(request));
     }
 

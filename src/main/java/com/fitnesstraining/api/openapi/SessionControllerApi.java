@@ -65,6 +65,7 @@ public interface SessionControllerApi {
     @GetMapping()
     ResponseEntity<List<GetCoachSessionDto>> getCoachSessionByCriteria(
             @Parameter(description = "Criteria to filter coach sessions", required = true)
+            // todo: to @QueryMapping
             @Valid @RequestBody GetCoachSessionListRequest request
     );
 }

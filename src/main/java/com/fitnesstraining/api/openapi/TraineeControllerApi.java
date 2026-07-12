@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
@@ -89,10 +91,12 @@ public interface TraineeControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @DeleteMapping
+    @DeleteMapping("/{username}")
     ResponseEntity<HttpStatus> delete(
             @Parameter(description = "Username of the trainee to be deleted", required = true)
-            @RequestParam String username);
+            @NotBlank
+            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+            @PathVariable String username);
 
 
 
@@ -114,10 +118,13 @@ public interface TraineeControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping
+    @GetMapping("/{username}")
     ResponseEntity<GetTraineeResponse> findByUsername(
             @Parameter(description = "Username of the trainee to fetch", required = true)
-            @RequestParam String username);
+            //todo: to @QueryMapping, add validation
+            @NotBlank
+            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+            @PathVariable String username);
 
 
 

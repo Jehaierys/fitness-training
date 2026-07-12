@@ -1,20 +1,27 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
+import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
+import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.facade.TraineeFacade;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController

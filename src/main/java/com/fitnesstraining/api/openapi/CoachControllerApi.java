@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +76,7 @@ public interface CoachControllerApi {
             )
     })
     @PutMapping()
-    ResponseEntity<UpdateCoachProfileResponse> updateProfile(@Valid @RequestBody UpdateUserProfileRequest request);
+    ResponseEntity<UpdateCoachProfileResponse> update(@Valid @RequestBody UpdateUserProfileRequest request);
 
 
 
@@ -96,10 +98,12 @@ public interface CoachControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping
+    @GetMapping("/{username}")
     ResponseEntity<GetCoachResponse> findByUsername(
             @Parameter(description = "Username of the coach to fetch", required = true)
-            @RequestParam String username);
+            @NotBlank
+            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+            @PathVariable String username);
 
 
 
