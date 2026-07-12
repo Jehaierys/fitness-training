@@ -4,6 +4,8 @@ import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.GetCoachSessionListRequest;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.session.SessionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,5 +70,33 @@ public interface SessionControllerApi {
             @Parameter(description = "Criteria to filter coach sessions", required = true)
             // todo: to @QueryMapping
             @Valid @RequestBody GetCoachSessionListRequest request
+    );
+
+
+    @Operation(
+            summary = "Get user sessions by criteria",
+            description = "Retrieves a list of sessions for a specific user based on various filtering criteria such as coach, date range, session type, and names."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "Successfully retrieved list of sessions",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = SessionDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid input parameters or validation error",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "User not found or no sessions matching criteria",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @GetMapping
+    ResponseEntity<List<SessionDto>> sessions(
+            @Parameter(description = "Search criteria for filtering sessions", required = true)
+            @Valid @RequestBody SessionSearchCriteria criteria
     );
 }

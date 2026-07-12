@@ -1,17 +1,20 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.SessionControllerApi;
-import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
-import com.fitnesstraining.domain.dto.session.GetCoachSessionListRequest;
-import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.session.*;
 import com.fitnesstraining.logic.facade.SessionFacade;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class SessionController implements SessionControllerApi {
@@ -26,5 +29,16 @@ public class SessionController implements SessionControllerApi {
 
     public ResponseEntity<List<GetCoachSessionDto>> getCoachSessionByCriteria(GetCoachSessionListRequest request) {
         return ResponseEntity.ok(facade.findSessionsByCoachAndCriteria(request));
+    }
+
+    // todo: check user gets only his own sessions
+    public ResponseEntity<List<SessionDto>> sessions(
+            @Valid @RequestBody SessionSearchCriteria criteria
+    ) {
+        // todo: extract somehow
+        Long requestSenderId = 0L;
+
+        log.info("Received sessions request for user: {}", requestSenderId);
+        return ResponseEntity.ok(facade.findSessionsByCriteria(criteria));
     }
 }
