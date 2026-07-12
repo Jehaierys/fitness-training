@@ -18,44 +18,45 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.UserNotFound;
 @RequiredArgsConstructor
 public class DefaultTraineeService implements TraineeService {
 
-    private final DefaultTraineeRepository traineeRepository;
+    private final DefaultTraineeRepository repository;
 
 
     public Trainee create(User trainee) {
-        return traineeRepository.create((Trainee) trainee);
+        return repository.create((Trainee) trainee);
     }
 
     public Trainee getById(Long id) {
-        return traineeRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(TraineeNotFound("Trainee not found with id: " + id));
     }
 
     public Trainee update(User trainee) {
-        return traineeRepository.update((Trainee) trainee);
+        return repository.update((Trainee) trainee);
     }
 
     public void delete(Long id) {
-        if (!traineeRepository.existsById(id)) {
+        if (!repository.existsById(id)) {
             log.warn("Trainee not found with id: {} to be deleted", id);
         } else {
-            traineeRepository.deleteById(id);
+            repository.deleteById(id);
         }
     }
 
     @Transactional
     public void deleteByUsername(String username) {
-        traineeRepository.findByUsername(username).ifPresentOrElse(trainee -> {
-            traineeRepository.delete(trainee);
+        repository.findByUsername(username).ifPresentOrElse(trainee -> {
+            repository.delete(trainee);
             log.info("Trainee with username: {} deleted", username);
         }, () -> log.warn("Trainee not found with username: {} to be deleted", username));
     }
 
     public boolean existsByUsername(String username) {
-        return traineeRepository.existByUsername(username);
+        return repository.existByUsername(username);
     }
 
     public Trainee findByUsername(String username) {
-        return null;
+        return repository.findByUsername(username)
+                .orElseThrow(TraineeNotFound("Trainee not found with username: " + username));
     }
 
 //
@@ -71,9 +72,9 @@ public class DefaultTraineeService implements TraineeService {
 //    }
 
     public void newPassword(Long id, String newPassword) {
-        Trainee trainee = traineeRepository.findById(id).orElseThrow(UserNotFound("User not found with id:" + id));
+        Trainee trainee = repository.findById(id).orElseThrow(UserNotFound("User not found with id:" + id));
         trainee.setPassword(newPassword);
-        traineeRepository.update(trainee);
+        repository.update(trainee);
         log.info("Password updated for user with id: {}", id);
     }
 }
