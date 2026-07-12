@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository.dsl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,9 @@ public class Criteria<T> {
 
     private CriteriaQuery<T> criteriaQuery;
     private Root<T> root;
+    private Integer limit = null;
+    private Integer offset = null;
+    private TypedQuery<T> query;
 
 
     public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
@@ -55,10 +59,36 @@ public class Criteria<T> {
 
     public List<T> list() {
         summarize();
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        return query.getResultList();
+    }
+
+    public Criteria<T> limit(int limit) {
+        this. limit= limit;
+        return this;
+    }
+
+    public Criteria<T> offset(int offset) {
+        this.offset = offset;
+        return this;
+    }
+
+    public Criteria<T> page(int page, int size) {
+        this.offset = page * size;
+        this.limit = size;
+        return this;
     }
 
     private void summarize() {
         criteriaQuery.where(predicates.toArray(Predicate[]::new));
+
+        query = entityManager.createQuery(criteriaQuery);
+
+        if (offset != null) {
+            query.setFirstResult(offset);
+        }
+
+        if (limit != null) {
+            query.setMaxResults(limit);
+        }
     }
 }
