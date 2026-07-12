@@ -5,15 +5,21 @@ import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.CoachControllerApi;
+import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
+import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -44,6 +50,10 @@ public class CoachController implements CoachControllerApi {
         log.info("Received set active request for coach: {}", request.getUsername());
         coachFacade.setActive(request);
         return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<CoachDto>> findAvailableCoaches(User user) {
+        return ResponseEntity.ok(coachFacade.findAvailableCoaches(user.getId()));
     }
 }
 

@@ -5,22 +5,29 @@ import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
+import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RequestMapping("/coaches")
 @Tag(
@@ -130,4 +137,33 @@ public interface CoachControllerApi {
     ResponseEntity<HttpStatus> setActive(@Valid @RequestBody Activated request);
 
 
+
+    @Operation(
+            summary = "Get available coaches",
+            description = "Returns a list of coaches available for the authenticated trainee."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Available coaches successfully retrieved",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = CoachDto.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "User is not authenticated"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Access denied"
+            )
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/available")
+    ResponseEntity<List<CoachDto>> findAvailableCoaches(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal User user
+    );
 }
