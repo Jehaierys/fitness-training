@@ -1,6 +1,5 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.dto.session.SessionDto;
 import com.fitnesstraining.domain.entity.Session;
@@ -15,11 +14,16 @@ public interface SessionMapper {
     @Mapping(target = "trainee", ignore = true)
     @Mapping(target = "sessionType", ignore = true)
     void toEntity(SessionRegistrationRequest dto, @MappingTarget Session session);
+//
+//    @Mapping(target = "sessionName", source = "name")
+//
+//    @Mapping(target = "traineeUsername", source = "trainee.username")
+//    @Mapping(target = "traineeFirstName", source = "trainee.firstName")
+//    @Mapping(target = "traineeLastName", source = "trainee.lastName")
+//
+//    @Mapping(target = "coachUsername", source = "coach.username")
+//    @Mapping(target = "coachFirstName", source = "coach.firstName")
+//    @Mapping(target = "coachLastName", source = "coach.lastName")
 
-    @Mapping(target = "traineeFirstName", source = "trainee.firstName")
-    @Mapping(target = "traineeLastName", source = "trainee.lastName")
-    GetCoachSessionDto toGetCoachSessionDto(Session session);
-
-    // todo
-    SessionDto toShortSessionDto(Session session);
+    SessionDto toSessionDto(Session session);
 }

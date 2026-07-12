@@ -1,8 +1,6 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
-import com.fitnesstraining.domain.dto.session.GetCoachSessionDto;
-import com.fitnesstraining.domain.dto.session.GetCoachSessionListRequest;
 import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.session.SessionDto;
@@ -17,7 +15,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,27 +47,6 @@ public interface SessionControllerApi {
     @PostMapping
     ResponseEntity<HttpStatus> create(@Valid @RequestBody SessionRegistrationRequest request);
 
-
-    @Operation(summary = "Get coach sessions by criteria",
-            description = "Retrieves a list of sessions for a specific coach based on various filtering criteria.")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200", description = "Successfully retrieved list of sessions",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = GetCoachSessionDto.class)
-                    )
-            ),
-            @ApiResponse(responseCode = "400", description = "Invalid input parameters"),
-            @ApiResponse(responseCode = "404", description = "Coach not found or no sessions matching criteria")
-    })
-    // будет передавать тело запроса, мне пофиг
-    @GetMapping()
-    ResponseEntity<List<GetCoachSessionDto>> getCoachSessionByCriteria(
-            @Parameter(description = "Criteria to filter coach sessions", required = true)
-            // todo: to @QueryMapping
-            @Valid @RequestBody GetCoachSessionListRequest request
-    );
 
 
     @Operation(

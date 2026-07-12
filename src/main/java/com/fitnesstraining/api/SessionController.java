@@ -27,10 +27,6 @@ public class SessionController implements SessionControllerApi {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<GetCoachSessionDto>> getCoachSessionByCriteria(GetCoachSessionListRequest request) {
-        return ResponseEntity.ok(facade.findSessionsByCoachAndCriteria(request));
-    }
-
     // todo: check user gets only his own sessions
     public ResponseEntity<List<SessionDto>> sessions(
             @Valid @RequestBody SessionSearchCriteria criteria
