@@ -1,6 +1,6 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.repository.abstration.TraineeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class DefaultTraineeRepository implements TraineeRepository {
 
     public void deleteById(Long id) {
         findById(id).ifPresentOrElse(this::delete,
-                () -> { log.warn("Trainee with id: {} not found for deletion", id);});
+                () -> log.warn("Trainee with id: {} not found for deletion", id));
     }
 
     public boolean existsById(Long id) {
@@ -52,7 +52,7 @@ public class DefaultTraineeRepository implements TraineeRepository {
     }
 
     public Optional<Trainee> findByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
+        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return entityManager
                 .createQuery(jpql, Trainee.class)
@@ -62,7 +62,7 @@ public class DefaultTraineeRepository implements TraineeRepository {
     }
 
     public boolean existByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.user.username = :username";
+        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return !entityManager
                 .createQuery(jpql, Trainee.class)

@@ -1,12 +1,14 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.SessionType;
+import com.fitnesstraining.domain.entity.SessionType;
+import com.fitnesstraining.logic.exception.SessionNotFoundException;
 import com.fitnesstraining.repository.abstration.SessionTypeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -16,6 +18,11 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
 
     private final EntityManager entityManager;
 
+
+    public List<SessionType> findAll() {
+        return entityManager.createQuery("SELECT st FROM SessionType st", SessionType.class)
+                .getResultList();
+    }
 
     public Optional<SessionType> findById(Long id) {
         return Optional.ofNullable(entityManager.find(SessionType.class, id));
@@ -28,7 +35,7 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
 
     public void deleteById(Long id) {
         findById(id).ifPresentOrElse(this::delete, () -> {
-            throw new IllegalArgumentException("SessionType with id: " + id + " not found for deletion.");
+            throw new SessionNotFoundException("SessionType with id: " + id + " not found for deletion.");
         });
     }
 

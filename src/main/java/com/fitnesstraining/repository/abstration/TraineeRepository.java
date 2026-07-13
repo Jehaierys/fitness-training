@@ -1,6 +1,6 @@
 package com.fitnesstraining.repository.abstration;
 
-import com.fitnesstraining.domain.Trainee;
+import com.fitnesstraining.domain.entity.Trainee;
 
 import java.util.Optional;
 
