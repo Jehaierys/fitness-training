@@ -14,7 +14,7 @@ public class SignUpUtils {
     private final SecureRandom random = new SecureRandom();
     private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    // todo: make protected
+
     public String generatePassword() {
         return random.ints(10, 0, CHARACTERS.length())
                 .mapToObj(CHARACTERS::charAt)

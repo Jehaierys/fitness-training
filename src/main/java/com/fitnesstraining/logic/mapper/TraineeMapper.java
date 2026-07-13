@@ -1,7 +1,6 @@
 package com.fitnesstraining.logic.mapper;
 
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;

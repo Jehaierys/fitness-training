@@ -1,13 +1,10 @@
 package com.fitnesstraining.logic.service;
 
 import com.fitnesstraining.domain.entity.Session;
-import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
 import com.fitnesstraining.repository.DefaultSessionRepository;
 import com.fitnesstraining.logic.abstraction.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.fitnesstraining.utils.ExceptionSuppliers.SessionNotFound;
 

@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import static com.fitnesstraining.utils.ExceptionSuppliers.TraineeNotFound;
-import static com.fitnesstraining.utils.ExceptionSuppliers.UserNotFound;
 
 
 @Slf4j
@@ -57,24 +56,5 @@ public class DefaultTraineeService implements TraineeService {
     public Trainee findByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(TraineeNotFound("Trainee not found with username: " + username));
-    }
-
-//
-//    public void checkCredentials(String username, String password) {
-//        User user = traineeRepository.findByUsername(username)
-//                .orElseThrow(UserNotFound("User not found with username: " + username));
-//
-//        if (!user.getPassword().equals(password)) {
-//            log.warn("User not found with username: {} and password: {}", username, user.getPassword());
-//            // todo: assign appropriate exception
-//            throw new RuntimeException("Invalid credentials for username: " + username);
-//        }
-//    }
-
-    public void newPassword(Long id, String newPassword) {
-        Trainee trainee = repository.findById(id).orElseThrow(UserNotFound("User not found with id:" + id));
-        trainee.setPassword(newPassword);
-        repository.update(trainee);
-        log.info("Password updated for user with id: {}", id);
     }
 }

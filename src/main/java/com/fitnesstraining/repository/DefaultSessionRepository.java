@@ -1,16 +1,12 @@
 package com.fitnesstraining.repository;
 
-import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.entity.*;
 import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 

@@ -8,14 +8,12 @@ import com.fitnesstraining.api.openapi.CoachControllerApi;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
-import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
