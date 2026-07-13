@@ -17,8 +17,8 @@ public class Criteria<T> {
 
     private CriteriaQuery<T> criteriaQuery;
     private Root<T> root;
-    private Integer limit = null;
-    private Integer offset = null;
+    private Integer limit = 25;
+    private Integer offset = 0;
     private TypedQuery<T> query;
 
 
@@ -52,7 +52,7 @@ public class Criteria<T> {
         return this;
     }
 
-    public CriteriaQuery<T> build() {
+    public CriteriaQuery<T> query() {
         summarize();
         return criteriaQuery;
     }
@@ -83,12 +83,7 @@ public class Criteria<T> {
 
         query = entityManager.createQuery(criteriaQuery);
 
-        if (offset != null) {
-            query.setFirstResult(offset);
-        }
-
-        if (limit != null) {
-            query.setMaxResults(limit);
-        }
+        query.setFirstResult(offset);
+        query.setMaxResults(limit);
     }
 }
