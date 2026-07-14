@@ -45,19 +45,8 @@ public class AuthenticationController implements AuthenticationControllerApi {
         );
     }
 
-    @PutMapping("/users/password")
+    @PutMapping("/password")
     public void changePassword(User user, String newPassword) {
         userService.changePassword(user, newPassword);
     }
-
-//    @PostMapping("/login")
-//    public void login(...) { ... }
-//
-//    @PostMapping("/logout")
-//    public void logout(...) { ... }
-
-
-//
-//    @GetMapping("/me")
-//    public UserDto me(...) { ... }
 }

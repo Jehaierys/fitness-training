@@ -25,12 +25,10 @@ public class SessionController implements SessionControllerApi {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    // todo: check user gets only his own sessions
     public ResponseEntity<List<SessionDto>> sessions(
             SessionSearchCriteria criteria,
             User user
     ) {
-        // todo: extract somehow
         Long requestSenderId = user.getId();
 
         criteria.setRequestSenderId(requestSenderId);

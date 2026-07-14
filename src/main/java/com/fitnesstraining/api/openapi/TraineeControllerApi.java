@@ -22,10 +22,10 @@ import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 
-@RequestMapping("/v1.0.0/trainees")
+@RequestMapping("/v1-0-0/trainees")
 @Tag(
-        name = "Trainee Controller",
-        description = "Operations related to trainee management"
+        name = "Trainee",
+        description = "Trainee management"
 )
 public interface TraineeControllerApi {
 

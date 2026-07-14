@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Tag(name = "Session Type", description = "Operations related to training session types and specializations")
-@RequestMapping("/api/v1/session-types")
+@RequestMapping("/v1-0-0/session-types")
+@Tag(
+        name = "Session Type",
+        description = "Training session types and specializations"
+)
 public interface SessionTypeControllerApi {
 
     @Operation(

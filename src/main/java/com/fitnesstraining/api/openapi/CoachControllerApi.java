@@ -30,14 +30,12 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-@RequestMapping("/coaches")
+@RequestMapping("/v1-0-0/coaches")
 @Tag(
-        name = "Coach Controller",
-        description = "Operations related to coach management"
+        name = "Coach",
+        description = "Coach management"
 )
 public interface CoachControllerApi {
-
-
 
 
     @Operation(
