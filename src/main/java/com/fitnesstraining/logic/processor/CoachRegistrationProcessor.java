@@ -4,8 +4,8 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.mapper.CoachMapper;
+import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,9 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CoachSignUpProcessor {
+public class CoachRegistrationProcessor {
 
-    private final CoachService coachService;
+    private final CoachRepository repository;
     private final CoachMapper mapper;
 
     private CoachSignUpRequest request;
@@ -49,7 +49,7 @@ public class CoachSignUpProcessor {
 
         coach.setActive(true);
 
-        coach = (Coach) coachService.create(coach);
+        coach = repository.create(coach);
     }
 
     private void buildResponse() {

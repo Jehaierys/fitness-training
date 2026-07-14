@@ -2,7 +2,7 @@ package com.fitnesstraining.logic.service;
 
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.repository.DefaultTraineeRepository;
+import com.fitnesstraining.repository.TraineeRepository;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.TraineeNotFound;
 @RequiredArgsConstructor
 public class DefaultTraineeService implements TraineeService {
 
-    private final DefaultTraineeRepository repository;
+    private final TraineeRepository repository;
 
 
     public Trainee create(User trainee) {
@@ -43,10 +43,8 @@ public class DefaultTraineeService implements TraineeService {
 
     @Transactional
     public void deleteByUsername(String username) {
-        repository.findByUsername(username).ifPresentOrElse(trainee -> {
-            repository.delete(trainee);
-            log.info("Trainee with username: {} deleted", username);
-        }, () -> log.warn("Trainee not found with username: {} to be deleted", username));
+        Trainee trainee = repository.findByUsername(username);
+        repository.delete(trainee);
     }
 
     public boolean existsByUsername(String username) {
@@ -54,7 +52,6 @@ public class DefaultTraineeService implements TraineeService {
     }
 
     public Trainee findByUsername(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(TraineeNotFound("Trainee not found with username: " + username));
+        return repository.findByUsername(username);
     }
 }

@@ -5,8 +5,8 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.coach.request.UpdateCoachProfileRequest;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
-import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.mapper.CoachMapper;
+import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,9 +16,9 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UpdateCoachProfileProcessor {
+public class UpdateCoachProcessor {
 
-    private final CoachService coachService;
+    private final CoachRepository repository;
     private final CoachMapper mapper;
 
     private UpdateCoachProfileRequest request;
@@ -31,6 +31,7 @@ public class UpdateCoachProfileProcessor {
         this.request = (UpdateCoachProfileRequest) request;
         initialLog();
 
+        // check username
         updateCoach();
         buildResponse();
 
@@ -45,14 +46,14 @@ public class UpdateCoachProfileProcessor {
     }
 
     private void updateCoach() {
-        this.coach = (Coach) coachService.findByUsername(request.getUsername());
+        this.coach = repository.findByUsername(request.getUsername());
 
         // todo: check whether new username is taken
         coach.setUsername(request.getUsername());
 
         mapper.toEntity(request, coach);
 
-        coachService.update(coach);
+        coach = repository.update(coach);
     }
 
     private void buildResponse() {

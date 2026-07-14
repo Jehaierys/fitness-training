@@ -9,8 +9,8 @@ import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.logic.processor.CoachSearcher;
-import com.fitnesstraining.logic.processor.UpdateCoachProfileProcessor;
-import com.fitnesstraining.logic.processor.CoachSignUpProcessor;
+import com.fitnesstraining.logic.processor.UpdateCoachProcessor;
+import com.fitnesstraining.logic.processor.CoachRegistrationProcessor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachFacade implements UserFacade {
 
-    private final CoachSignUpProcessor signUpProcessor;
-    private final UpdateCoachProfileProcessor profileUpdateProcessor;
+    private final CoachRegistrationProcessor signUpProcessor;
+    private final UpdateCoachProcessor profileUpdateProcessor;
     private final CoachSearcher searcher;
 
     private final CoachService coachService;

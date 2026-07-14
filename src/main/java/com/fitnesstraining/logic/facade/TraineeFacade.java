@@ -7,8 +7,8 @@ import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
-import com.fitnesstraining.logic.processor.TraineeSignUpProcessor;
-import com.fitnesstraining.logic.processor.UpdateTraineeProfileProcessor;
+import com.fitnesstraining.logic.processor.TraineeRegistrationProcessor;
+import com.fitnesstraining.logic.processor.UpdateTraineeProcessor;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class TraineeFacade implements UserFacade {
 
-    private final TraineeSignUpProcessor signUpProcessor;
-    private final UpdateTraineeProfileProcessor profileUpdateProcessor;
+    private final TraineeRegistrationProcessor signUpProcessor;
+    private final UpdateTraineeProcessor profileUpdateProcessor;
 
     private final TraineeMapper mapper;
     private final TraineeService traineeService;

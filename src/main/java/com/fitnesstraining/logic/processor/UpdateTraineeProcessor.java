@@ -4,8 +4,8 @@ import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
-import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
+import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,9 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UpdateTraineeProfileProcessor {
+public class UpdateTraineeProcessor {
 
-    private final TraineeService traineeService;
+    private final TraineeRepository repository;
     private final TraineeMapper mapper;
 
     private UpdateTraineeProfileRequest request;
@@ -30,6 +30,7 @@ public class UpdateTraineeProfileProcessor {
         this.request = (UpdateTraineeProfileRequest) request;
         initialLog();
 
+        // check username
         updateTrainee();
         buildResponse();
 
@@ -44,14 +45,14 @@ public class UpdateTraineeProfileProcessor {
     }
 
     private void updateTrainee() {
-        this.trainee = (Trainee) traineeService.findByUsername(request.getUsername());
+        this.trainee = repository.findByUsername(request.getUsername());
 
         // todo: check whether new username is taken
         trainee.setUsername(request.getUsername());
 
         mapper.toEntity(request, trainee);
 
-        traineeService.update(trainee);
+        repository.update(trainee);
     }
 
     private void buildResponse() {

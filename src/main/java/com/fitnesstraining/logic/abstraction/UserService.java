@@ -5,7 +5,6 @@ import com.fitnesstraining.domain.entity.User;
 
 public interface UserService {
 
-    User create(User coach);
 
     User findByUsername(String username);
 

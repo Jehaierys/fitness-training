@@ -91,6 +91,8 @@ class CoachMapperTest {
         CoachSignUpRequest dto = new CoachSignUpRequest();
         dto.setFirstName("NewJohn");
         dto.setLastName("NewDoe");
+        dto.setUsername("new.username");
+        dto.setPassword("newpass");
         dto.setSpecialization(newSpecialization);
 
         Coach existingCoach = Coach.builder()
@@ -112,10 +114,10 @@ class CoachMapperTest {
         assertEquals("NewDoe", existingCoach.getLastName());
         assertEquals(newSpecialization.size(), existingCoach.getSpecialization().size());
         assertTrue(existingCoach.getSpecialization().containsAll(newSpecialization));
-        // Other inherited user fields should remain unchanged as they are not in CoachSignUpRequest
         assertEquals(100L, existingCoach.getId());
-        assertEquals("old.user", existingCoach.getUsername());
-        assertEquals("oldpass", existingCoach.getPassword());
+        assertEquals("new.username", existingCoach.getUsername());
+        assertEquals("newpass", existingCoach.getPassword());
+        // Other inherited user fields should remain unchanged as they are not in CoachSignUpRequest
         assertFalse(existingCoach.isActive());
     }
 

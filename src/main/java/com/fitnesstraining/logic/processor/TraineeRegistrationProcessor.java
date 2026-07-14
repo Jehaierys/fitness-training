@@ -4,8 +4,8 @@ import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
 import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
 import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
+import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,10 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TraineeSignUpProcessor {
+public class TraineeRegistrationProcessor {
 
-    private final TraineeService traineeService;
     private final TraineeMapper mapper;
+    private final TraineeRepository repository;
 
     private TraineeSignUpRequest request;
     private UUID traineeUuid;
@@ -49,7 +49,7 @@ public class TraineeSignUpProcessor {
 
         trainee.setActive(true);
 
-        trainee = (Trainee) traineeService.create(trainee);
+        trainee = repository.create(trainee);
     }
 
     private void buildResponse() {
