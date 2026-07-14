@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SHALOM — Авторизация</title>
+    <style>
+      :root{
+        --bg1:#0f172a;
+        --bg2:#0b3c5d;
+        --accent:#ffd166;
+        --muted:#cbd5e1;
+        --error:#ef476f;
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+      body{
+        display:flex;align-items:center;justify-content:center;
+        background:radial-gradient(circle at top right, rgba(255,209,102,0.08), transparent 40%),
+                   radial-gradient(circle at bottom left, rgba(17,138,178,0.1), transparent 35%),
+                   linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+        color:var(--muted);
+        min-height:100vh;
+      }
+      .bg-glow{position:fixed;left:-8%;top:-15%;width:500px;height:500px;background:radial-gradient(circle, rgba(255,209,102,0.12), transparent 70%);filter:blur(12px);pointer-events:none}
+      .container{
+        width:min(420px,92%);
+        position:relative;
+        z-index:10;
+      }
+      .card{
+        border-radius:18px;
+        padding:42px;
+        background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));
+        box-shadow:0 20px 60px rgba(2,6,23,0.65);
+        border:1px solid rgba(255,255,255,0.08);
+        backdrop-filter:blur(12px);
+      }
+      .logo-box{
+        display:flex;align-items:center;justify-content:center;
+        width:68px;height:68px;margin:0 auto 26px;
+        border-radius:14px;
+        background:linear-gradient(135deg,var(--accent),#ff9a8b);
+        font-weight:700;color:#07111b;font-size:24px;
+        box-shadow:0 8px 24px rgba(255,209,102,0.3);
+      }
+      h1{
+        margin:0 0 8px;text-align:center;
+        font-size:36px;color:var(--accent);letter-spacing:2px;text-shadow:0 8px 24px rgba(0,0,0,.3)
+      }
+      .subtitle{
+        text-align:center;margin:0 0 32px;
+        font-size:15px;color:#94a3b8;letter-spacing:.05em
+      }
+      .form-group{margin-bottom:18px}
+      .form-group label{
+        display:block;margin-bottom:8px;
+        font-size:13px;color:#e2e8f0;text-transform:uppercase;letter-spacing:.08em;font-weight:700
+      }
+      .form-group input{
+        width:100%;padding:12px 14px;
+        border-radius:12px;border:1px solid rgba(255,255,255,0.08);
+        background:rgba(255,255,255,0.04);
+        color:#fff;font-size:15px;
+        transition:.2s ease;
+      }
+      .form-group input::placeholder{color:#64748b}
+      .form-group input:focus{
+        outline:none;
+        background:rgba(255,255,255,0.06);
+        border-color:rgba(255,209,102,0.4);
+        box-shadow:0 0 0 3px rgba(255,209,102,0.1);
+      }
+      .form-group input:invalid:not(:placeholder-shown){
+        border-color:rgba(239,71,111,0.5);
+        background:rgba(239,71,111,0.06);
+      }
+      .error-msg{
+        display:none;
+        margin-top:6px;font-size:13px;color:var(--error);
+      }
+      .form-group input:invalid:not(:placeholder-shown) ~ .error-msg{
+        display:block;
+      }
+      .remember{
+        display:flex;align-items:center;gap:10px;margin-bottom:24px;font-size:14px;
+      }
+      .remember input{width:auto;margin:0}
+      .btn-submit{
+        width:100%;padding:14px;
+        border:none;border-radius:12px;
+        background:linear-gradient(90deg,var(--accent),#ff9a8b);
+        color:#07111b;
+        font-size:16px;font-weight:700;
+        cursor:pointer;
+        transition:.2s ease;
+      }
+      .btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(255,209,102,0.3)}
+      .btn-submit:active{transform:translateY(0)}
+      .divider{
+        display:flex;align-items:center;margin:24px 0;
+      }
+      .divider::before,.divider::after{
+        content:'';flex:1;height:1px;background:rgba(255,255,255,0.08)
+      }
+      .divider span{
+        padding:0 12px;font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.08em
+      }
+      .signup-link{
+        text-align:center;margin-top:20px;font-size:14px;
+      }
+      .signup-link a{
+        color:var(--accent);text-decoration:none;font-weight:700;
+        transition:.2s ease;
+      }
+      .signup-link a:hover{text-decoration:underline}
+      .alert{
+        padding:14px;border-radius:12px;margin-bottom:20px;
+        font-size:14px;display:none;
+      }
+      .alert.show{display:block}
+      .alert.error{
+        background:rgba(239,71,111,0.1);border:1px solid rgba(239,71,111,0.3);color:#ff8fa3
+      }
+      .alert.success{
+        background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.3);color:#00e6b8
+      }
+      .spinner{
+        display:none;width:16px;height:16px;margin-right:8px;
+        border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;
+        border-radius:50%;animation:spin .6s linear infinite;
+      }
+      @keyframes spin {100%{transform:rotate(360deg)}}
+      .btn-submit:disabled{
+        opacity:.65;cursor:not-allowed
+      }
+      .btn-submit:disabled .spinner{
+        display:inline-block
+      }
+      @keyframes floaty {0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+      .logo-box{animation:floaty 4.5s ease-in-out infinite}
+      @media (max-width:480px){
+        .card{padding:28px}
+        h1{font-size:28px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+
+    <div class="container">
+      <div class="card">
+        <div class="logo-box">SH</div>
+        <h1>SHALOM</h1>
+        <p class="subtitle">Добро пожаловать. Авторизуйся для входа</p>
+
+        <div class="alert error" id="alertError"></div>
+
+        <form method="POST" action="/login" id="loginForm">
+          <div class="form-group">
+            <label for="username">Имя пользователя</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Введи свой username"
+              required
+              autocomplete="username"
+            />
+            <span class="error-msg">Поле не может быть пусто</span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Пароль</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Введи пароль"
+              required
+              autocomplete="current-password"
+            />
+            <span class="error-msg">Поле не может быть пусто</span>
+          </div>
+
+          <div class="remember">
+            <input type="checkbox" id="remember" name="remember-me" />
+            <label for="remember" style="margin:0">Запомнить меня</label>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="spinner"></span> Войти
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>или</span>
+        </div>
+
+        <div class="signup-link">
+          Нет аккаунта? <a href="/register">Зарегистрируйся здесь</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function(){
+        const form = document.getElementById('loginForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const alertError = document.getElementById('alertError');
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Проверяем, есть ли ошибка в URL параметре error=true
+        if (urlParams.get('error') === 'true') {
+          alertError.textContent = 'Неверное имя пользователя или пароль';
+          alertError.classList.add('show');
+        }
+
+        // Обработка отправки формы
+        form.addEventListener('submit', function(e){
+          const username = document.getElementById('username').value.trim();
+          const password = document.getElementById('password').value.trim();
+
+          if (!username || !password) {
+            e.preventDefault();
+            alertError.textContent = 'Пожалуйста, заполни оба поля';
+            alertError.classList.add('show');
+            return;
+          }
+
+          // Отключаем кнопку при отправке
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Загружается...';
+        });
+
+        // Скрываем ошибку при изменении полей
+        document.getElementById('username').addEventListener('input', () => {
+          alertError.classList.remove('show');
+        });
+        document.getElementById('password').addEventListener('input', () => {
+          alertError.classList.remove('show');
+        });
+      })();
+    </script>
+  </body>
+</html>
+
