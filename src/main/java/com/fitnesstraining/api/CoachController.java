@@ -27,14 +27,6 @@ public class CoachController implements CoachControllerApi {
     private final CoachFacade coachFacade;
 
 
-    public ResponseEntity<UserSignUpResponse> signUp(CoachSignUpRequest request) {
-        log.info("Received signup request for coach: {}", request.getFirstName());
-        return new ResponseEntity<>(
-                coachFacade.signUp(request),
-                HttpStatus.CREATED
-        );
-    }
-
     public ResponseEntity<UpdateCoachProfileResponse> update(UpdateUserProfileRequest request) {
         return ResponseEntity.ok(coachFacade.updateProfile(request));
     }

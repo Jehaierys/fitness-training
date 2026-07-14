@@ -30,23 +30,6 @@ import org.springframework.web.bind.annotation.*;
 public interface TraineeControllerApi {
 
 
-    @Operation(
-            summary = "Register a new trainee",
-            description = "Creates a new trainee account and associated user profile."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201", description = "Trainee successfully registered",
-                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "400", description = "Invalid input data",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    @PostMapping
-    ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody TraineeSignUpRequest request);
-
 
 
     @Operation(

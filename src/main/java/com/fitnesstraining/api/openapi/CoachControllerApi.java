@@ -38,27 +38,6 @@ import java.util.List;
 public interface CoachControllerApi {
 
 
-    @Operation(
-            summary = "Register a new coach",
-            description = "Creates a new coach account and associated user profile."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201", description = "Coach successfully registered",
-                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "400", description = "Input data validation failed",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "409", description = "User with this username already exists",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    @PostMapping()
-    ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody CoachSignUpRequest request);
-
 
 
     @Operation(
