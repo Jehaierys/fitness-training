@@ -21,14 +21,19 @@ public abstract class UserSignUpRequest {
     @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Username can only contain letters, numbers, dots, and underscores")
     String username;
 
+    // todo: should contain different symbols
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 6, max = 100, message = "Password must be between 6 and 100 characters")
+    String password;
+
     @NotBlank(message = "First name cannot be blank")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "First name can only contain letters, hyphens, and spaces")
-    private String firstName;
+    String firstName;
 
     @NotBlank(message = "Last name cannot be blank")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "Last name can only contain letters, hyphens, and spaces")
-    private String lastName;
+    String lastName;
 
 }
