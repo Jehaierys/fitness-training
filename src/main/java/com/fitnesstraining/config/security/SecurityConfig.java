@@ -17,6 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     }
 
     private final Consumer<AuthorizeHttpRequestsConfigurer<HttpSecurity>
-                .AuthorizationManagerRequestMatcherRegistry> authorizationRules = auth -> auth
+            .AuthorizationManagerRequestMatcherRegistry> authorizationRules = auth -> auth
             .requestMatchers(whileList()).permitAll()
 
             // Registration endpoints
@@ -62,6 +63,7 @@ public class SecurityConfig {
 
     private String[] whileList() {
         return new String[] {
+
                 // Public static resources
                 "/",
                 "/index.html",
@@ -84,13 +86,8 @@ public class SecurityConfig {
         };
     }
 
-    private final Consumer<FormLoginConfigurer<HttpSecurity>> formLoginConfiguration = form -> form
-            .loginPage("/authentication.html")
-            .loginProcessingUrl("/login")
-            .permitAll()
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .successHandler((request, response, authentication) -> {
+    private final AuthenticationSuccessHandler authenticationSuccessHandler =
+            (request, response, authentication) -> {
 
                 Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
 
@@ -101,7 +98,15 @@ public class SecurityConfig {
                 } else {
                     response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 }
-            });
+            };
+
+    private final Consumer<FormLoginConfigurer<HttpSecurity>> formLoginConfiguration = form -> form
+            .loginPage("/authentication.html")
+            .loginProcessingUrl("/login")
+            .permitAll()
+            .usernameParameter("username")
+            .passwordParameter("password")
+            .successHandler(authenticationSuccessHandler);
 
     @Bean
     public PasswordEncoder passwordEncoder() {
