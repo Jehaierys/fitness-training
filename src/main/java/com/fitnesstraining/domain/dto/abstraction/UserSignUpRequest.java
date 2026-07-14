@@ -16,6 +16,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public abstract class UserSignUpRequest {
 
+    @NotBlank(message = "Username cannot be blank")
+    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Username can only contain letters, numbers, dots, and underscores")
+    String username;
+
     @NotBlank(message = "First name cannot be blank")
     @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "First name can only contain letters, hyphens, and spaces")
