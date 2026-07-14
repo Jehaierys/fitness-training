@@ -20,6 +20,7 @@ public class Criteria<T> {
     private Integer limit = 25;
     private Integer offset = 0;
     private TypedQuery<T> query;
+    private boolean paginationApplied = false;
 
 
     public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
@@ -63,18 +64,35 @@ public class Criteria<T> {
     }
 
     public Criteria<T> limit(int limit) {
-        this. limit= limit;
+        if (paginationApplied) {
+            throw new IllegalStateException("Pagination already applied");
+        }
+        if (limit < 0) {
+            throw new IllegalArgumentException("Limit must be non-negative");
+        }
+        paginationApplied = true;
+        this. limit = limit;
         return this;
     }
 
     public Criteria<T> offset(int offset) {
+        if (offset < 0) {
+            throw new IllegalArgumentException("Offset must be non-negative");
+        }
         this.offset = offset;
         return this;
     }
 
     public Criteria<T> page(int page, int size) {
+        if (paginationApplied) {
+            throw new IllegalStateException("Pagination already applied");
+        }
+        if (page < 0 || size < 0) {
+            throw new IllegalArgumentException("Page and size must be non-negative");
+        }
         this.offset = page * size;
         this.limit = size;
+        this.paginationApplied = true;
         return this;
     }
 
