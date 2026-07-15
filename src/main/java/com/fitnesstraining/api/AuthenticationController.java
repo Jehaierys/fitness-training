@@ -1,9 +1,9 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import com.fitnesstraining.logic.facade.TraineeFacade;
@@ -28,19 +28,19 @@ public class AuthenticationController implements AuthenticationControllerApi {
 
     //todo: signUp or register?
     @PostMapping("/coaches")
-    public ResponseEntity<UserSignUpResponse>  registerCoach(CoachSignUpRequest request) {
+    public ResponseEntity<RegisterUserResponse>  registerCoach(RegisterCoachRequest request) {
         log.info("Received signup request for coach: {}", request.getFirstName());
         return new ResponseEntity<>(
-                coachFacade.signUp(request),
+                coachFacade.register(request),
                 HttpStatus.CREATED
         );
     }
 
     @PostMapping("/trainees")
-    public ResponseEntity<UserSignUpResponse> registerTrainee(TraineeSignUpRequest request) {
+    public ResponseEntity<RegisterUserResponse> registerTrainee(RegisterTraineeRequest request) {
         log.info("Received signup request for trainee: {} {}", request.getFirstName(), request.getLastName());
         return new ResponseEntity<>(
-                traineeFacade.signUp(request),
+                traineeFacade.register(request),
                 HttpStatus.CREATED
         );
     }

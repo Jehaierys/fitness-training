@@ -1,10 +1,10 @@
 package com.fitnesstraining.logic.processor;
 
 
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachProfileRequest;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +16,19 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UpdateCoachProcessor {
+public class CoachUpdater {
 
     private final CoachRepository repository;
     private final CoachMapper mapper;
 
-    private UpdateCoachProfileRequest request;
+    private UpdateCoachRequest request;
     private UUID transactionUuid;
     private Coach coach;
-    private UpdateCoachProfileResponse response;
+    private UpdateCoachResponse response;
 
 
-    public synchronized UpdateCoachProfileResponse process(UpdateUserProfileRequest request) {
-        this.request = (UpdateCoachProfileRequest) request;
+    public synchronized UpdateCoachResponse update(UpdateUserRequest request) {
+        this.request = (UpdateCoachRequest) request;
         initialLog();
 
         // check username
@@ -42,7 +42,7 @@ public class UpdateCoachProcessor {
     // todo: message
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
+        log.info("Updating coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
     }
 
     private void updateCoach() {
@@ -57,11 +57,11 @@ public class UpdateCoachProcessor {
     }
 
     private void buildResponse() {
-        this.response = mapper.toUpdateCoachProfileResponse(coach);
+        this.response = mapper.toUpdateCoachResponse(coach);
     }
 
     // todo: message
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
+        log.info("Successfully updated coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
     }
 }

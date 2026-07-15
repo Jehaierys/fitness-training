@@ -1,9 +1,9 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +32,7 @@ public interface AuthenticationControllerApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201", description = "Coach successfully registered",
-                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
+                    content = @Content(schema = @Schema(implementation = RegisterUserResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400", description = "Input data validation failed",
@@ -44,7 +44,7 @@ public interface AuthenticationControllerApi {
             )
     })
     @PostMapping()
-    ResponseEntity<UserSignUpResponse> registerCoach(@Valid @RequestBody CoachSignUpRequest request);
+    ResponseEntity<RegisterUserResponse> registerCoach(@Valid @RequestBody RegisterCoachRequest request);
 
 
 
@@ -55,7 +55,7 @@ public interface AuthenticationControllerApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201", description = "Trainee successfully registered",
-                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
+                    content = @Content(schema = @Schema(implementation = RegisterUserResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400", description = "Invalid input data",
@@ -63,7 +63,7 @@ public interface AuthenticationControllerApi {
             )
     })
     @PostMapping
-    ResponseEntity<UserSignUpResponse> registerTrainee(@Valid @RequestBody TraineeSignUpRequest request);
+    ResponseEntity<RegisterUserResponse> registerTrainee(@Valid @RequestBody RegisterTraineeRequest request);
 
 
 

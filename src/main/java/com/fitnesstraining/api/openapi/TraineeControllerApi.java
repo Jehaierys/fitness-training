@@ -1,11 +1,9 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
-import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
+import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,7 +37,7 @@ public interface TraineeControllerApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200", description = "Profile updated successfully",
-                    content = @Content(schema = @Schema(implementation = UpdateTraineeProfileResponse.class))
+                    content = @Content(schema = @Schema(implementation = UpdateTraineeResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400", description = "Invalid request data",
@@ -55,7 +53,7 @@ public interface TraineeControllerApi {
             )
     })
     @PutMapping()
-    ResponseEntity<UpdateTraineeProfileResponse> update(@Valid @RequestBody UpdateTraineeProfileRequest request);
+    ResponseEntity<UpdateTraineeResponse> update(@Valid @RequestBody UpdateTraineeRequest request);
 
 
 

@@ -1,6 +1,6 @@
 package com.fitnesstraining.domain.dto.trainee.request;
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateTraineeProfileRequest extends UpdateUserProfileRequest {
+public class UpdateTraineeRequest extends UpdateUserRequest {
 
     @NotNull(message = "Birth date cannot be null")
     @Past(message = "Birth date must be in the past and represent a realistic age")

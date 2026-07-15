@@ -1,7 +1,7 @@
 package com.fitnesstraining.domain.dto.trainee.response;
 
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserResponse;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @SuperBuilder
-public class UpdateTraineeProfileResponse extends UpdateUserProfileResponse {
+public class UpdateTraineeResponse extends UpdateUserResponse {
 
     private LocalDate birthDate;
     private String address;
