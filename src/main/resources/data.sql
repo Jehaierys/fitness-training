@@ -1,5 +1,3 @@
-
-
 -- Insert constant session types
 INSERT INTO session_types (id, name) VALUES (1, 'Yoga') ON CONFLICT (id) DO NOTHING;
 INSERT INTO session_types (id, name) VALUES (2, 'Crossfit') ON CONFLICT (id) DO NOTHING;
