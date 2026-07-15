@@ -8,6 +8,7 @@ import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.logic.mapper.SessionMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -27,6 +28,7 @@ import java.util.function.BiFunction;
 public class SessionSearcher {
 
     // don't use entityManager in this class
+    @PersistenceContext
     private final EntityManager entityManager;
     private final SessionMapper mapper;
 

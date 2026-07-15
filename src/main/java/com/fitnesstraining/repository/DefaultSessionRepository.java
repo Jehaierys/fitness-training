@@ -3,6 +3,7 @@ package com.fitnesstraining.repository;
 import com.fitnesstraining.domain.entity.*;
 import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DefaultSessionRepository implements SessionRepository {
 
+    @PersistenceContext
     private final EntityManager entityManager;
 
 

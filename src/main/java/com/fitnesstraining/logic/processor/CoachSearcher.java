@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachSearcher {
 
+    @PersistenceContext
     private final EntityManager entityManager;
     private final CoachMapper mapper;
 
