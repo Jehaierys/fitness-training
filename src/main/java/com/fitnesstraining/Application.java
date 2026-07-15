@@ -29,8 +29,7 @@ public class Application {
                 WebMvcConfig.class,
                 DataConfig.class
         );
-        DispatcherServlet dispatcherServlet =
-                new DispatcherServlet(applicationContext);
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(applicationContext);
 
         Wrapper wrapper = Tomcat.addServlet(context, "dispatcher", dispatcherServlet);
 
@@ -46,6 +45,8 @@ public class Application {
         System.out.println("Shalom");
         System.out.println();applicationContext.refresh();
         System.out.println(applicationContext.getBean(EntityManagerFactory.class));
+
+        Runtime.getRuntime().addShutdownHook(new Thread(applicationContext::close));
 
         tomcat.getServer().await();
     }

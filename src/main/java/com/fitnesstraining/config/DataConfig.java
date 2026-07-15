@@ -3,6 +3,7 @@ package com.fitnesstraining.config;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -62,6 +63,7 @@ public class DataConfig {
     }
 
     @Bean
+    @DependsOn("entityManagerFactory")
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 
         ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
