@@ -23,12 +23,12 @@ public class DataConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
 
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
-        emf.setDataSource(dataSource);
-        emf.setPackagesToScan("com.fitnesstraining.domain.entity");
-        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        emf.setPersistenceUnitName("fitness");
+        entityManagerFactory.setDataSource(dataSource);
+        entityManagerFactory.setPackagesToScan("com.fitnesstraining.domain.entity");
+        entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManagerFactory.setPersistenceUnitName("fitness");
 
         Properties properties = new Properties();
 
@@ -37,9 +37,9 @@ public class DataConfig {
         properties.put("hibernate.format_sql", true);
         properties.put("hibernate.hbm2ddl.auto", "create-drop");
 
-        emf.setJpaProperties(properties);
+        entityManagerFactory.setJpaProperties(properties);
 
-        return emf;
+        return entityManagerFactory;
     }
 
     @Bean
@@ -59,6 +59,21 @@ public class DataConfig {
         dataSource.setPassword("1234");
 
         return dataSource;
+    }
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
+
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+
+        populator.addScript(new ClassPathResource("data.sql"));
+
+        DataSourceInitializer initializer = new DataSourceInitializer();
+
+        initializer.setDataSource(dataSource);
+        initializer.setDatabasePopulator(populator);
+
+        return initializer;
     }
 
 }
