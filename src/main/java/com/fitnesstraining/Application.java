@@ -3,6 +3,8 @@ package com.fitnesstraining;
 import com.fitnesstraining.config.DataConfig;
 import com.fitnesstraining.config.RootConfig;
 import com.fitnesstraining.config.web.WebMvcConfig;
+import jakarta.persistence.EntityManagerFactory;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -27,11 +29,12 @@ public class Application {
                 WebMvcConfig.class,
                 DataConfig.class
         );
-
         DispatcherServlet dispatcherServlet =
                 new DispatcherServlet(applicationContext);
 
-        Tomcat.addServlet(context, "dispatcher", dispatcherServlet);
+        Wrapper wrapper = Tomcat.addServlet(context, "dispatcher", dispatcherServlet);
+
+        wrapper.setLoadOnStartup(1);
 
         context.addServletMappingDecoded("/", "dispatcher");
 
@@ -41,7 +44,8 @@ public class Application {
         System.out.println();
         System.out.println();
         System.out.println("Shalom");
-        System.out.println();
+        System.out.println();applicationContext.refresh();
+        System.out.println(applicationContext.getBean(EntityManagerFactory.class));
 
         tomcat.getServer().await();
     }

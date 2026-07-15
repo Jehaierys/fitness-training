@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class User {
+public abstract class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trainees_seq")
