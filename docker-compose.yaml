@@ -1,0 +1,10 @@
+services:
+  postgres:
+    container_name: 'fitness-postgres'
+    image: 'postgres:17.10-bookworm'
+    environment:
+      - 'POSTGRES_DB=fitness'
+      - 'POSTGRES_PASSWORD=6767691488'
+      - 'POSTGRES_USER=postgres'
+    expose:
+      - '5432'
