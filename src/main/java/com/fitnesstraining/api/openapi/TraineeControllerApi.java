@@ -104,7 +104,6 @@ public interface TraineeControllerApi {
     @GetMapping("/{username}")
     ResponseEntity<GetTraineeResponse> findByUsername(
             @Parameter(description = "Username of the trainee to fetch", required = true)
-            //todo: to @QueryMapping, add validation
             @NotBlank
             @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
             @PathVariable String username);

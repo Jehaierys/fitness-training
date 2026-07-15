@@ -75,6 +75,7 @@ public interface SessionControllerApi {
     @GetMapping
     ResponseEntity<List<SessionDto>> sessions(
             @Parameter(description = "Search criteria for filtering sessions", required = true)
+            // todo: to @QueryMapping
             @Valid @RequestBody SessionSearchCriteria criteria,
             @AuthenticationPrincipal User user
     );
