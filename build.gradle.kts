@@ -1,7 +1,6 @@
+
 plugins {
     java
-    id("org.springframework.boot") version "4.0.7"
-    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "com.example.fitness-training"
@@ -17,44 +16,59 @@ repositories {
     mavenCentral()
 }
 
-extra["springCloudVersion"] = "2025.1.2"
-
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-//    implementation("org.springframework.boot:spring-boot-starter-flyway")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-webmvc")
-//    implementation("org.flywaydb:flyway-database-postgresql")
+    // Spring Framework
+    implementation("org.springframework:spring-context:7.0.0")
+    implementation("org.springframework:spring-webmvc:7.0.0")
+    implementation("org.springframework:spring-jdbc:7.0.0")
+    implementation("org.springframework:spring-tx:7.0.0")
+    implementation("org.springframework:spring-orm:7.0.0")
+    implementation("org.springframework:spring-aop:7.0.0")
+
+    // Tomcat
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:11.0.13")
+    implementation("org.apache.tomcat.embed:tomcat-embed-el:11.0.13")
+    implementation("org.apache.tomcat.embed:tomcat-embed-websocket:11.0.13")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.1.0")
+
+    // Spring Security
+    implementation("org.springframework.security:spring-security-config:7.0.0")
+    implementation("org.springframework.security:spring-security-web:7.0.0")
+
+    // Validation
+    implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
+
+    // JPA
+    implementation("org.hibernate.orm:hibernate-core:7.1.0.Final")
+    implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
+    implementation("com.zaxxer:HikariCP:6.3.1")
+
+    // PostgreSQL
+    runtimeOnly("org.postgresql:postgresql:42.7.7")
+
+    // OpenAPI
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
-//    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
+
+    // MapStruct
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-//    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-//    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-    runtimeOnly("org.postgresql:postgresql")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-//    testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-security-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-    testCompileOnly("org.projectlombok:lombok")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.38")
+    annotationProcessor("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
-    testAnnotationProcessor("org.projectlombok:lombok")
+
+    // Testing
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
+    testImplementation("org.springframework:spring-test:7.0.0")
+    testImplementation("org.springframework.security:spring-security-test:7.0.0")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-dependencyManagement {
-    imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-    }
-}
-
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
