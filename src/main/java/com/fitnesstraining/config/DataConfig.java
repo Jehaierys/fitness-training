@@ -3,12 +3,12 @@ package com.fitnesstraining.config;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -38,6 +38,7 @@ public class DataConfig {
 
         return emf;
     }
+
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -47,10 +48,10 @@ public class DataConfig {
 
     @Bean
     public DataSource dataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/fitness");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/fitness");
         dataSource.setUsername("postgres");
         dataSource.setPassword("1234");
 
