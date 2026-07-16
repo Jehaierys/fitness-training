@@ -69,7 +69,6 @@ public class SessionSearcher {
         );
     }
 
-
     private BiFunction<CriteriaBuilder, Root<Session>, Predicate> inRange(LocalDateTime from, LocalDateTime to) {
         return (cb, session) -> cb.between(
                 session.get("date"),

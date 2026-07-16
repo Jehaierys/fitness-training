@@ -1,18 +1,17 @@
-package com.fitnesstraining.domain.dto.coach.response;
+package com.fitnesstraining.domain.dto.abstraction;
 
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-
 @Getter
 @Setter
 @SuperBuilder
+@AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
-public class CoachSignUpResponse extends UserSignUpResponse {
-    Long userId;
+public abstract class RegisterUserResponse {
     String username;
     String password;
 }

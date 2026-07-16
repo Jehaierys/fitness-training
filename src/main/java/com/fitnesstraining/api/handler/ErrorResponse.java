@@ -8,12 +8,12 @@ import java.util.Map;
 
 @Getter
 @Builder
-@Schema(description = "Стандартный ответ при ошибке")
+@Schema(description = "Standard error output")
 public class ErrorResponse {
 
-    @Schema(description = "Сообщение об ошибке", example = "Validation failed")
+    @Schema(description = "Error message", example = "Validation failed")
     private String message;
 
-    @Schema(description = "Детализация ошибок по полям (если есть)")
+    @Schema(description = "Error details")
     private Map<String, String> details;
 }

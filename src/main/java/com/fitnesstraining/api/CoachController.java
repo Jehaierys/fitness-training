@@ -1,13 +1,11 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
 import com.fitnesstraining.api.openapi.CoachControllerApi;
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import lombok.RequiredArgsConstructor;
@@ -24,38 +22,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachController implements CoachControllerApi {
 
-    private final CoachFacade coachFacade;
+    private final CoachFacade facade;
 
 
-    public ResponseEntity<UserSignUpResponse> signUp(CoachSignUpRequest request) {
-        log.info("Received signup request for coach: {}", request.getFirstName());
-        return new ResponseEntity<>(
-                coachFacade.signUp(request),
-                HttpStatus.CREATED
-        );
-    }
-
-    public ResponseEntity<UpdateCoachProfileResponse> update(UpdateUserProfileRequest request) {
-        return ResponseEntity.ok(coachFacade.updateProfile(request));
+    public ResponseEntity<UpdateCoachResponse> update(UpdateUserRequest request) {
+        return ResponseEntity.ok(facade.update(request));
     }
 
     public ResponseEntity<GetCoachResponse> findByUsername(String username) {
         log.info("Received find by username request for coach: {}", username);
-        return ResponseEntity.ok((GetCoachResponse) coachFacade.findByUsername(username));
+        return ResponseEntity.ok((GetCoachResponse) facade.findByUsername(username));
     }
 
     public ResponseEntity<HttpStatus> setActive(Activated request, UserDetails principal) {
         if (!request.getUsername().equals(principal.getUsername())) {
-            throw new RuntimeException("Иди нахуй");
+            throw new RuntimeException("Unauthorized request");
         }
 
         log.info("Received set active request for coach: {}", request.getUsername());
-        coachFacade.setActive(request);
+        facade.setActive(request);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     public ResponseEntity<List<CoachDto>> findAvailableCoaches(User user) {
-        return ResponseEntity.ok(coachFacade.findAvailableCoaches(user.getId()));
+        return ResponseEntity.ok(facade.findAvailableCoaches(user.getId()));
     }
 }
 

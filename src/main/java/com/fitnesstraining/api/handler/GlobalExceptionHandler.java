@@ -12,10 +12,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Обработка ошибок валидации (Jakarta Validation).
-     * Срабатывает, когда @Valid в контроллере находит несоответствия в DTO.
-     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -31,9 +27,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Базовый обработчик для всех непредвиденных исключений.
-     */
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralExceptions(Exception ex) {
         ErrorResponse response = ErrorResponse.builder()
                 .message("Internal Server Error: " + ex.getMessage())

@@ -1,10 +1,10 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachProfileRequest;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
@@ -61,7 +61,7 @@ class CoachMapperTest {
     }
 
     @Test
-    void toUserSignUpResponse_ShouldMapUsernameAndPasswordFromInheritedUser() {
+    void toRegisterCoachResponse_ShouldMapUsernameAndPasswordFromInheritedUser() {
         // Given
         Coach coach = Coach.builder()
                 .id(1L)
@@ -73,7 +73,7 @@ class CoachMapperTest {
                 .build();
 
         // When
-        UserSignUpResponse response = coachMapper.toUserSignUpResponse(coach);
+        RegisterUserResponse response = coachMapper.toRegisterCoachResponse(coach);
 
         // Then
         assertNotNull(response);
@@ -88,9 +88,11 @@ class CoachMapperTest {
         SessionType sessionType2 = SessionType.builder().id(11L).name("Pilates").build();
         List<SessionType> newSpecialization = Arrays.asList(sessionType1, sessionType2);
 
-        CoachSignUpRequest dto = new CoachSignUpRequest();
+        RegisterCoachRequest dto = new RegisterCoachRequest();
         dto.setFirstName("NewJohn");
         dto.setLastName("NewDoe");
+        dto.setUsername("new.username");
+        dto.setPassword("newpass");
         dto.setSpecialization(newSpecialization);
 
         Coach existingCoach = Coach.builder()
@@ -112,10 +114,10 @@ class CoachMapperTest {
         assertEquals("NewDoe", existingCoach.getLastName());
         assertEquals(newSpecialization.size(), existingCoach.getSpecialization().size());
         assertTrue(existingCoach.getSpecialization().containsAll(newSpecialization));
-        // Other inherited user fields should remain unchanged as they are not in CoachSignUpRequest
         assertEquals(100L, existingCoach.getId());
-        assertEquals("old.user", existingCoach.getUsername());
-        assertEquals("oldpass", existingCoach.getPassword());
+        assertEquals("new.username", existingCoach.getUsername());
+        assertEquals("newpass", existingCoach.getPassword());
+        // Other inherited user fields should remain unchanged as they are not in CoachSignUpRequest
         assertFalse(existingCoach.isActive());
     }
 
@@ -125,7 +127,7 @@ class CoachMapperTest {
         SessionType sessionType1 = SessionType.builder().id(10L).name("Yoga").build();
         Set<SessionType> newSpecialization = new HashSet<>(List.of(sessionType1));
 
-        UpdateCoachProfileRequest dto = new UpdateCoachProfileRequest();
+        UpdateCoachRequest dto = new UpdateCoachRequest();
         dto.setFirstName("UpdatedJohn");
         dto.setLastName("UpdatedDoe");
         dto.setUsername("new.username"); // This should be ignored
@@ -175,7 +177,7 @@ class CoachMapperTest {
                 .trainees(new HashSet<>(Arrays.asList(trainee1)))
                 .build();
 
-        UpdateCoachProfileResponse response = coachMapper.toUpdateCoachProfileResponse(coach);
+        UpdateCoachResponse response = coachMapper.toUpdateCoachResponse(coach);
 
         assertNotNull(response);
         assertEquals(coach.getFirstName(), response.getFirstName());

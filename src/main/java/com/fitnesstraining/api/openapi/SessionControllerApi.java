@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 
-@RequestMapping("/sessions")
+@RequestMapping("/v1-0-0/sessions")
 @Tag(
         name = "Session",
-        description = "Operations related to training session scheduling and management"
+        description = "Training session scheduling and management"
 )
 public interface SessionControllerApi {
 
@@ -75,6 +75,7 @@ public interface SessionControllerApi {
     @GetMapping
     ResponseEntity<List<SessionDto>> sessions(
             @Parameter(description = "Search criteria for filtering sessions", required = true)
+            // todo: to @QueryMapping
             @Valid @RequestBody SessionSearchCriteria criteria,
             @AuthenticationPrincipal User user
     );

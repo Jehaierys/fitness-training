@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-public class UpdateUserProfileResponse {
+public abstract class UpdateUserResponse {
 
     String firstName;
     String lastName;
