@@ -41,19 +41,20 @@ public class SessionCreator {
 
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Creating new session: {} {}, attempt's UUID: {}", request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
+        log.info("Creating new session: {} {}, attempt's UUID: {}",
+                request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
     }
 
     private void buildSession() {
-        Session session = new Session();
+        final Session session = new Session();
 
-        Trainee trainee = (Trainee) traineeService.findByUsername(request.getTraineeUsername());
+        final Trainee trainee = (Trainee) traineeService.findByUsername(request.getTraineeUsername());
         session.setTrainee(trainee);
 
-        Coach coach = (Coach) coachService.findByUsername(request.getCoachUsername());
+        final Coach coach = (Coach) coachService.findByUsername(request.getCoachUsername());
         session.setCoach(coach);
 
-        SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
+        final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
         session.setSessionType(sessionType);
 
         mapper.toEntity(request, session);
@@ -62,6 +63,7 @@ public class SessionCreator {
     }
 
     private void finalLog() {
-        log.info("Successfully created session: {} {}, process's UUID: {}", request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
+        log.info("Successfully created session: {} {}, process's UUID: {}",
+                request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
     }
 }

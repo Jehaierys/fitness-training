@@ -43,7 +43,7 @@ public class DefaultTraineeService implements TraineeService {
 
     @Transactional
     public void deleteByUsername(String username) {
-        Trainee trainee = repository.findByUsername(username);
+        final Trainee trainee = repository.findByUsername(username);
         repository.delete(trainee);
     }
 

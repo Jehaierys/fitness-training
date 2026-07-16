@@ -52,7 +52,7 @@ public class CoachFacade implements UserFacade {
 
     @Transactional
     public void setActive(Activated request) {
-        User user = service.findByUsername(request.getUsername());
+        final User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());
         service.update(user);
     }

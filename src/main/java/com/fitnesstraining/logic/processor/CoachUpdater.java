@@ -42,7 +42,8 @@ public class CoachUpdater {
     // todo: message
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Updating coach: {} {}, specialization: {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
+        log.info("Updating coach: {} {}, specialization: {}, attempt's UUID: {}",
+                request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
     }
 
     private void updateCoach() {
@@ -62,6 +63,7 @@ public class CoachUpdater {
 
     // todo: message
     private void finalLog() {
-        log.info("Successfully updated coach: {} {}, specialization: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
+        log.info("Successfully updated coach: {} {}, specialization: {}, userId: {} process's UUID: {}",
+                request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
     }
 }

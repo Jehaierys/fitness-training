@@ -40,7 +40,8 @@ public class TraineeRegistrar {
 
     private void initialLog() {
         traineeUuid = UUID.randomUUID();
-        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), traineeUuid);
+        log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}",
+                request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), traineeUuid);
     }
 
     private void createTrainee() {
@@ -57,6 +58,7 @@ public class TraineeRegistrar {
     }
 
     private void finalLog() {
-        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), trainee.getId(), traineeUuid);
+        log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}",
+                request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), trainee.getId(), traineeUuid);
     }
 }
