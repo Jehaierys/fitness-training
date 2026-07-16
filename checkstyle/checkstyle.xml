@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+
+<module name="Checker">
+
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}/suppression.xml"/>
+    </module>
+
+
+    <module name="TreeWalker">
+
+        <!--Upper Camel Case for class name-->
+        <module name="TypeName"/>
+
+        <!--Lower Camel Case for method name-->
+        <module name="MethodName"/>
+
+        <!--Lower Camel Case for field name-->
+        <module name="MemberName"/>
+
+        <!--Upper Snake Case for constant fields-->
+        <module name="ConstantName"/>
+
+        <module name="ParameterNumber">
+            <property name="max" value="3"/>
+        </module>
+
+        <module name="MethodLength">
+            <property name="max" value="30"/>
+        </module>
+
+        <!-- Requires {} for single-line if statement -->
+        <module name="NeedBraces"/>
+
+        <!-- No import library.* -->
+        <!--        <module name="AvoidStarImport"/>-->
+
+        <module name="UnusedImports"/>
+
+        <!--        <module name="CustomImportOrder">-->
+        <!--            <property name="customImportOrderRules"-->
+        <!--                      value="THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC"/>-->
+        <!--        </module>-->
+
+        <!-- No Magic Numbers -->
+        <!--        <module name="MagicNumber"/>-->
+
+        <!-- No multiple if -->
+        <module name="CyclomaticComplexity">
+            <property name="max" value="10"/>
+        </module>
+
+        <module name="EmptyCatchBlock"/>
+
+        <module name="EmptyBlock"/>
+
+        <module name="WhitespaceAround"/>
+
+        <!--        <module name="Indentation"/>-->
+
+        <module name="OneStatementPerLine"/>
+
+        <!--        <module name="ReturnCount">-->
+        <!--            <property name="max" value="1"/>-->
+        <!--        </module>-->
+
+        <!--        <module name="FileLength">-->
+        <!--            <property name="max" value="500"/>-->
+        <!--        </module>-->
+
+        <module name="OuterTypeNumber">
+            <property name="max" value="1"/>
+        </module>
+
+        <module name="FinalLocalVariable"/>
+
+        <module name="NestedIfDepth">
+            <property name="max" value="2"/>
+        </module>
+
+        <!-- First declare fields, then methods -->
+        <module name="DeclarationOrder"/>
+
+        <module name="TodoComment"/>
+    </module>
+
+
+
+    <!-- Against too long lines -->
+    <module name="LineLength">
+        <property name="max" value="150"/>
+    </module>
+</module>

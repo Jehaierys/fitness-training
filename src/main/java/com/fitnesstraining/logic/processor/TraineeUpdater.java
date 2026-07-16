@@ -41,7 +41,8 @@ public class TraineeUpdater {
     // todo: message
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Updating trainee: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
+        log.info("Updating trainee: {} {}, attempt's UUID: {}",
+                request.getFirstName(), request.getLastName(), transactionUuid);
     }
 
     private void updateTrainee() {
@@ -61,6 +62,7 @@ public class TraineeUpdater {
 
     // todo: message
     private void finalLog() {
-        log.info("Successfully updated trainee: {} {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), trainee.getId(), transactionUuid);
+        log.info("Successfully updated trainee: {} {}, userId: {} process's UUID: {}",
+                request.getFirstName(), request.getLastName(), trainee.getId(), transactionUuid);
     }
 }
