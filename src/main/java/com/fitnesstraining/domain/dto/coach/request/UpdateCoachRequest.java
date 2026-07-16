@@ -1,7 +1,7 @@
 package com.fitnesstraining.domain.dto.coach.request;
 
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import java.util.Set;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCoachProfileRequest extends UpdateUserProfileRequest {
+public class UpdateCoachRequest extends UpdateUserRequest {
 
     @NotEmpty(message = "Specializations list cannot be empty")
     Set<SessionType> specialization;

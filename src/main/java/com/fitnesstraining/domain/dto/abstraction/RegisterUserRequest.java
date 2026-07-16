@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public abstract class UserSignUpRequest {
+public abstract class RegisterUserRequest {
 
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")

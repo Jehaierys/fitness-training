@@ -1,11 +1,8 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachProfileRequest;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.coach.response.*;
 import com.fitnesstraining.domain.entity.Coach;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -17,16 +14,16 @@ public interface CoachMapper {
 
     GetCoachResponse toGetCoachResponse(Coach coach);
 
-    UserSignUpResponse toUserSignUpResponse(Coach coach);
+    RegisterCoachResponse toRegisterCoachResponse(Coach coach);
 
-    void toEntity(CoachSignUpRequest dto, @MappingTarget Coach coach);
+    void toEntity(RegisterCoachRequest dto, @MappingTarget Coach coach);
 
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "active", source = "isActive")
-    void toEntity(UpdateCoachProfileRequest dto, @MappingTarget Coach coach);
+    void toEntity(UpdateCoachRequest dto, @MappingTarget Coach coach);
 
     @Mapping(target = "isActive", source = "active") // Idk how this works
-    UpdateCoachProfileResponse toUpdateCoachProfileResponse(Coach coach);
+    UpdateCoachResponse toUpdateCoachResponse(Coach coach);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "firstName", source = "firstName")

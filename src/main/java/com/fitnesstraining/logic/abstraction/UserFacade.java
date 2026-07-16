@@ -4,9 +4,9 @@ import com.fitnesstraining.domain.dto.abstraction.*;
 
 public interface UserFacade {
 
-    UserSignUpResponse signUp(UserSignUpRequest request);
+    RegisterUserResponse register(RegisterUserRequest request);
 
-    UpdateUserProfileResponse updateProfile(UpdateUserProfileRequest request);
+    UpdateUserResponse update(UpdateUserRequest request);
 
     GetUserResponse findByUsername(String username);
 

@@ -1,9 +1,9 @@
 package com.fitnesstraining.logic.processor;
 
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
 import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,19 +15,19 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UpdateTraineeProcessor {
+public class TraineeUpdater {
 
     private final TraineeRepository repository;
     private final TraineeMapper mapper;
 
-    private UpdateTraineeProfileRequest request;
+    private UpdateTraineeRequest request;
     private UUID transactionUuid;
     private Trainee trainee;
-    private UpdateTraineeProfileResponse response;
+    private UpdateTraineeResponse response;
 
 
-    public synchronized UpdateTraineeProfileResponse process(UpdateUserProfileRequest request) {
-        this.request = (UpdateTraineeProfileRequest) request;
+    public synchronized UpdateTraineeResponse update(UpdateUserRequest request) {
+        this.request = (UpdateTraineeRequest) request;
         initialLog();
 
         // check username
@@ -41,7 +41,7 @@ public class UpdateTraineeProcessor {
     // todo: message
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
+        log.info("Updating trainee: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
     }
 
     private void updateTrainee() {
@@ -56,11 +56,11 @@ public class UpdateTraineeProcessor {
     }
 
     private void buildResponse() {
-        this.response = mapper.toUpdateTraineeProfileResponse(trainee);
+        this.response = mapper.toUpdateTraineeResponse(trainee);
     }
 
     // todo: message
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), trainee.getId(), transactionUuid);
+        log.info("Successfully updated trainee: {} {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), trainee.getId(), transactionUuid);
     }
 }

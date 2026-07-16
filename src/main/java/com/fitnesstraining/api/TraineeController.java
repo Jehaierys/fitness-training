@@ -2,9 +2,9 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeProfileRequest;
+import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeProfileResponse;
+import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.facade.TraineeFacade;
 import lombok.RequiredArgsConstructor;
@@ -19,29 +19,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TraineeController implements TraineeControllerApi {
 
-    private final TraineeFacade traineeFacade;
-    private final TraineeService traineeService;
+    private final TraineeFacade facade;
+    private final TraineeService service;
 
 
-    public ResponseEntity<UpdateTraineeProfileResponse> update(UpdateTraineeProfileRequest request) {
+    public ResponseEntity<UpdateTraineeResponse> update(UpdateTraineeRequest request) {
         log.info("Received update profile request for trainee: {}", request.getUsername());
-        return ResponseEntity.ok(traineeFacade.updateProfile(request));
+        return ResponseEntity.ok(facade.update(request));
     }
 
     public ResponseEntity<HttpStatus> delete(String username) {
         log.info("Received delete request for trainee: {}", username);
-        traineeService.deleteByUsername(username);
+        service.deleteByUsername(username);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     public ResponseEntity<GetTraineeResponse> findByUsername(String username) {
         log.info("Received find by username request for trainee: {}", username);
-        return ResponseEntity.ok((GetTraineeResponse) traineeFacade.findByUsername(username));
+        return ResponseEntity.ok((GetTraineeResponse) facade.findByUsername(username));
     }
 
     public ResponseEntity<HttpStatus> setActive(Activated request) {
         log.info("Received set active request for trainee: {}", request.getUsername());
-        traineeFacade.setActive(request);
+        facade.setActive(request);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
