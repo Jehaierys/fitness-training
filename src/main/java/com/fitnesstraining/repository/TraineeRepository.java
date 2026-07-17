@@ -23,6 +23,7 @@ public class TraineeRepository {
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
+
             transaction.begin();
             entityManager.persist(trainee);
             transaction.commit();
@@ -48,6 +49,7 @@ public class TraineeRepository {
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
+
             transaction.begin();
             entityManager.merge(trainee);
             transaction.commit();
@@ -68,8 +70,22 @@ public class TraineeRepository {
     }
 
     public void delete(Trainee trainee) {
-        entityManager.remove(trainee);
-        log.info("Trainee with id: {} deleted", trainee.getId());
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.remove(trainee);
+            transaction.commit();
+
+            log.info("Trainee with id: {} deleted", trainee.getId());
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public void deleteById(Long id) {
