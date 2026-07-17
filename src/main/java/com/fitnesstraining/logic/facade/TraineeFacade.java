@@ -10,13 +10,10 @@ import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
 import com.fitnesstraining.logic.processor.TraineeRegistrar;
 import com.fitnesstraining.logic.processor.TraineeUpdater;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TraineeFacade implements UserFacade {
@@ -28,12 +25,10 @@ public class TraineeFacade implements UserFacade {
     private final TraineeService service;
 
 
-    @Transactional
     public RegisterTraineeResponse register(RegisterUserRequest request) {
         return registrar.register(request);
     }
 
-    @Transactional
     public UpdateTraineeResponse update(UpdateUserRequest request) {
         return updater.update(request);
     }
@@ -42,7 +37,7 @@ public class TraineeFacade implements UserFacade {
         return mapper.toGetTraineeResponse((Trainee) service.findByUsername(username));
     }
 
-    @Transactional
+    // todo: extract to user scope
     public void setActive(Activated request) {
         final User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());

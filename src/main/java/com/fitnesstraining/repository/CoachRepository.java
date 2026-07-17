@@ -2,6 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Coach;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -20,15 +21,49 @@ public class CoachRepository {
 
 
     public Coach create(Coach coach) {
-        entityManager.persist(coach);
-        log.info("Coach with id: {} created", coach.getId());
-        return coach;
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.persist(coach);
+            transaction.commit();
+
+            log.info("Coach with id: {} created", coach.getId());
+            return coach;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Coach update(Coach coach) {
-        final Coach mergedCoach = entityManager.merge(coach);
-        log.info("Coach with id: {} updated", coach.getId());
-        return mergedCoach;
+        if (coach.getId() == null || !existsById(coach.getId())) {
+            log.warn("Coach with id: {} not found for update", coach.getId());
+            throw new IllegalArgumentException("Coach must have an ID and exist in the database to be updated.");
+        }
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.merge(coach);
+            transaction.commit();
+
+            log.info("Coach with id: {} updated", coach.getId());
+            return coach;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Optional<Coach> findById(Long id) {

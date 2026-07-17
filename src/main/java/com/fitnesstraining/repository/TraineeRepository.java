@@ -2,6 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Trainee;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -19,19 +20,51 @@ public class TraineeRepository {
 
 
     public Trainee create(Trainee trainee) {
-        entityManager.persist(trainee);
-        log.info("Trainee with id: {} created", trainee.getId());
-        return trainee;
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.persist(trainee);
+            transaction.commit();
+
+            // todo: add username
+            log.info("Trainee with id: {} created", trainee.getId());
+            return trainee;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Trainee update(Trainee trainee) {
+
         if (trainee.getId() == null || !existsById(trainee.getId())) {
             log.warn("Trainee with id: {} not found for update", trainee.getId());
             throw new IllegalArgumentException("Trainee must have an ID and exist in the database to be updated.");
         }
-        final Trainee mergedTrainee = entityManager.merge(trainee);
-        log.info("Trainee with id: {} updated", trainee.getId());
-        return mergedTrainee;
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.merge(trainee);
+            transaction.commit();
+
+            log.info("Trainee with id: {} updated", trainee.getId());
+            return trainee;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Optional<Trainee> findById(Long id) {
@@ -39,8 +72,23 @@ public class TraineeRepository {
     }
 
     public void delete(Trainee trainee) {
-        entityManager.remove(trainee);
-        log.info("Trainee with id: {} deleted", trainee.getId());
+
+        final EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.remove(trainee);
+            transaction.commit();
+
+            log.info("Trainee with id: {} deleted", trainee.getId());
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public void deleteById(Long id) {

@@ -11,15 +11,12 @@ import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.logic.processor.CoachSearcher;
 import com.fitnesstraining.logic.processor.CoachUpdater;
 import com.fitnesstraining.logic.processor.CoachRegistrar;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CoachFacade implements UserFacade {
@@ -32,12 +29,10 @@ public class CoachFacade implements UserFacade {
     private final CoachMapper mapper;
 
 
-    @Transactional
     public RegisterUserResponse register(RegisterUserRequest request) {
         return registrar.register(request);
     }
 
-    @Transactional
     public UpdateCoachResponse update(UpdateUserRequest request) {
         return updater.update(request);
     }
@@ -50,7 +45,7 @@ public class CoachFacade implements UserFacade {
         return searcher.findAvailable(traineeId);
     }
 
-    @Transactional
+    // todo: extract to user scope
     public void setActive(Activated request) {
         final User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());
