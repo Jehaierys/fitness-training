@@ -2,7 +2,9 @@ package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.abstraction.Activated;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
@@ -34,6 +36,30 @@ import java.util.List;
         description = "Coach management"
 )
 public interface CoachControllerApi {
+
+
+
+    @Operation(
+            summary = "Register a new coach",
+            description = "Creates a new coach account and associated user profile."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201", description = "Coach successfully registered",
+                    content = @Content(schema = @Schema(implementation = RegisterUserResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400", description = "Input data validation failed",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "409", description = "User with this username already exists",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @PostMapping()
+    ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterCoachRequest request);
+
 
 
     @Operation(
