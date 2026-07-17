@@ -298,7 +298,7 @@
     </div>
 
     <script>
-      (function(){
+      (function() {
         const sessionTypes = [
           { id: 1, name: 'Yoga' },
           { id: 2, name: 'Crossfit' },
@@ -332,7 +332,7 @@
 
         let role = 'trainee';
 
-        function renderSpecializations(){
+        function renderSpecializations() {
           specializationList.innerHTML = sessionTypes.map(item => `
             <label class="spec-item">
               <input type="checkbox" name="specialization" value='${JSON.stringify(item)}' />
@@ -341,7 +341,7 @@
           `).join('');
         }
 
-        function setTabState(nextRole){
+        function setTabState(nextRole) {
           role = nextRole;
           const isTrainee = role === 'trainee';
           traineeTab.classList.toggle('active', isTrainee);
@@ -381,30 +381,30 @@
               `;
         }
 
-        function markTouched(){
+        function markTouched() {
           this.classList.add('touched');
         }
 
-        function clearFeedback(){
+        function clearFeedback() {
           errorBox.classList.remove('show');
           successBox.classList.remove('show');
           errorBox.textContent = '';
           successBox.textContent = '';
         }
 
-        function showError(message){
+        function showError(message) {
           errorBox.textContent = message;
           errorBox.classList.add('show');
           successBox.classList.remove('show');
         }
 
-        function showSuccess(message){
+        function showSuccess(message) {
           successBox.textContent = message;
           successBox.classList.add('show');
           errorBox.classList.remove('show');
         }
 
-        function isValidDatePast(value){
+        function isValidDatePast(value) {
           if (!value) return false;
           const date = new Date(value + 'T00:00:00');
           const today = new Date();
@@ -412,12 +412,12 @@
           return !Number.isNaN(date.getTime()) && date < today && date >= new Date('1900-01-01T00:00:00');
         }
 
-        function buildCoachSpecialization(){
+        function buildCoachSpecialization() {
           const selected = Array.from(specializationList.querySelectorAll('input[name="specialization"]:checked'));
           return selected.map(box => JSON.parse(box.value));
         }
 
-        function validateCommon(){
+        function validateCommon() {
           const username = document.getElementById('username');
           const firstName = document.getElementById('firstName');
           const lastName = document.getElementById('lastName');
@@ -437,7 +437,7 @@
           return null;
         }
 
-        function validateTrainee(){
+        function validateTrainee() {
           const birthDate = document.getElementById('birthDate').value;
           const address = document.getElementById('address').value.trim();
           if (!isValidDatePast(birthDate)) return 'Birth date must be in the past and not earlier than 1900-01-01.';
@@ -445,7 +445,7 @@
           return null;
         }
 
-        function validateCoach(){
+        function validateCoach() {
           const specialization = buildCoachSpecialization();
           const ok = specialization.length > 0;
           specializationError.hidden = ok;
@@ -453,11 +453,12 @@
           return null;
         }
 
-        function buildPayload(){
+        function buildPayload() {
           const payload = {
             username: document.getElementById('username').value.trim(),
             firstName: document.getElementById('firstName').value.trim(),
-            lastName: document.getElementById('lastName').value.trim()
+            lastName: document.getElementById('lastName').value.trim(),
+            password: 'password123'
           };
 
           if (role === 'trainee') {
@@ -469,7 +470,7 @@
           return payload;
         }
 
-        async function sendRequest(url, payload){
+        async function sendRequest(url, payload) {
           const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -505,7 +506,7 @@
           specializationError.hidden = true;
 
           const payload = buildPayload();
-          const url = role === 'trainee' ? '/trainees' : '/coaches';
+          const url = role === 'trainee' ? '/v1-0-0/trainees' : '/v1-0-0/coaches';
 
           submitBtn.disabled = true;
           const originalText = submitBtn.textContent;
