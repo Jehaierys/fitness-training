@@ -1,6 +1,8 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
@@ -27,6 +29,24 @@ import org.springframework.web.bind.annotation.*;
 )
 public interface TraineeControllerApi {
 
+
+
+    @Operation(
+            summary = "Register a new trainee",
+            description = "Creates a new trainee account and associated user profile."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201", description = "Trainee successfully registered",
+                    content = @Content(schema = @Schema(implementation = RegisterUserResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400", description = "Invalid input data",
+                    content = @Content(schema = @Schema(implementation = org.springframework.web.ErrorResponse.class))
+            )
+    })
+    @PostMapping
+    ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterTraineeRequest request);
 
 
 

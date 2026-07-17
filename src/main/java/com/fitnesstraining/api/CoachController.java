@@ -2,7 +2,9 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.api.openapi.CoachControllerApi;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
 import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
@@ -24,6 +26,14 @@ public class CoachController implements CoachControllerApi {
 
     private final CoachFacade facade;
 
+
+    public ResponseEntity<RegisterUserResponse> register(RegisterCoachRequest request) {
+        log.info("Received signup request for coach: {}", request.getFirstName());
+        return new ResponseEntity<>(
+                facade.register(request),
+                HttpStatus.CREATED
+        );
+    }
 
     public ResponseEntity<UpdateCoachResponse> update(UpdateUserRequest request) {
         return ResponseEntity.ok(facade.update(request));

@@ -2,6 +2,8 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
@@ -22,6 +24,14 @@ public class TraineeController implements TraineeControllerApi {
     private final TraineeFacade facade;
     private final TraineeService service;
 
+
+    public ResponseEntity<RegisterUserResponse> register(RegisterTraineeRequest request) {
+        log.info("Received signup request for trainee: {} {}", request.getFirstName(), request.getLastName());
+        return new ResponseEntity<>(
+                facade.register(request),
+                HttpStatus.CREATED
+        );
+    }
 
     public ResponseEntity<UpdateTraineeResponse> update(UpdateTraineeRequest request) {
         log.info("Received update profile request for trainee: {}", request.getUsername());
