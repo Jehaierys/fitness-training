@@ -24,7 +24,7 @@ public class UserRepository {
     }
 
     public User update(User user) {
-        final User mergedUser = entityManager.merge(user);
+        User mergedUser = entityManager.merge(user);
         log.info("User with id: {} updated", user.getId());
         return mergedUser;
     }

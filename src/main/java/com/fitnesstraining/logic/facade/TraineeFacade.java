@@ -44,7 +44,7 @@ public class TraineeFacade implements UserFacade {
 
     @Transactional
     public void setActive(Activated request) {
-        final User user = service.findByUsername(request.getUsername());
+        User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());
         service.update(user);
     }

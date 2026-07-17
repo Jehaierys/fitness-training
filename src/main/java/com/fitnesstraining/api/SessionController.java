@@ -29,7 +29,7 @@ public class SessionController implements SessionControllerApi {
             SessionSearchCriteria criteria,
             User user
     ) {
-        final Long requestSenderId = user.getId();
+        Long requestSenderId = user.getId();
 
         criteria.setRequestSenderId(requestSenderId);
         log.info("Received sessions request for user: {}", requestSenderId);

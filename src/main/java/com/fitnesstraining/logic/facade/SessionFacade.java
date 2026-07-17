@@ -15,13 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SessionFacade {
 
-    private final SessionCreator creator;
+    private final SessionCreator sessionCreator;
     private final SessionSearcher searcher;
 
 
     @Transactional
     public void create(SessionRegistrationRequest request) {
-        creator.create(request);
+        sessionCreator.create(request);
     }
 
     public List<SessionDto> findSessionsByCriteria(SessionSearchCriteria criteria) {

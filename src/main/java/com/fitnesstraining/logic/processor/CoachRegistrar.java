@@ -40,8 +40,7 @@ public class CoachRegistrar {
 
     private void initialLog() {
         transactionUuid = UUID.randomUUID();
-        log.info("Signing up new coach: {} {}, attempt's UUID: {}",
-                request.getFirstName(), request.getLastName(), transactionUuid);
+        log.info("Signing up new coach: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
     }
 
     private void createCoach() {
@@ -58,7 +57,6 @@ public class CoachRegistrar {
     }
 
     private void finalLog() {
-        log.info("Successfully created coach: {} {}, userId: {} process's UUID: {}",
-                request.getFirstName(), request.getLastName(), coach.getId(), transactionUuid);
+        log.info("Successfully created coach: {} {}, userId: {} process's UUID: {}", request.getFirstName(), request.getLastName(), coach.getId(), transactionUuid);
     }
 }

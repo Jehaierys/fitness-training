@@ -23,17 +23,15 @@ public class Criteria<T> {
     private boolean paginationApplied = false;
 
 
-    @SuppressWarnings("unused")
+    public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
+        return new Criteria<>(entityManager);
+    }
+
     private Criteria(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.predicates = new ArrayList<>();
     }
-
-    public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
-        return new Criteria<>(entityManager);
-    }
-
 
     public Criteria<T> root(Class<T> entityClass) {
         this.criteriaQuery = criteriaBuilder.createQuery(entityClass);
@@ -50,7 +48,7 @@ public class Criteria<T> {
             String attribute,
             BiFunction<CriteriaBuilder, Join<T, J>, Predicate> predicateFactory
     ) {
-        final Join<T, J> join = root.join(attribute);
+        Join<T, J> join = root.join(attribute);
         predicates.add(predicateFactory.apply(criteriaBuilder, join));
         return this;
     }
