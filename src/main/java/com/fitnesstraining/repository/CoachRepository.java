@@ -30,18 +30,32 @@ public class CoachRepository {
 
             log.info("Coach with id: {} created", coach.getId());
             return coach;
-        } catch (Exception e) {
+
+        } catch (Exception ex) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e;
+            throw ex;
         }
     }
 
     public Coach update(Coach coach) {
-        final Coach mergedCoach = entityManager.merge(coach);
-        log.info("Coach with id: {} updated", coach.getId());
-        return mergedCoach;
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(coach);
+            transaction.commit();
+
+            log.info("Coach with id: {} updated", coach.getId());
+            return coach;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Optional<Coach> findById(Long id) {

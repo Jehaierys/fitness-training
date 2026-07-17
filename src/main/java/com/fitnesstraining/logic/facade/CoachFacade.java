@@ -36,7 +36,6 @@ public class CoachFacade implements UserFacade {
         return registrar.register(request);
     }
 
-    @Transactional
     public UpdateCoachResponse update(UpdateUserRequest request) {
         return updater.update(request);
     }
@@ -49,7 +48,7 @@ public class CoachFacade implements UserFacade {
         return searcher.findAvailable(traineeId);
     }
 
-    @Transactional
+    // todo: extract to user scope
     public void setActive(Activated request) {
         final User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());
