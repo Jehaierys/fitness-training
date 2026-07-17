@@ -29,7 +29,7 @@ public class TraineeRepository {
             log.warn("Trainee with id: {} not found for update", trainee.getId());
             throw new IllegalArgumentException("Trainee must have an ID and exist in the database to be updated.");
         }
-        Trainee mergedTrainee = entityManager.merge(trainee);
+        final Trainee mergedTrainee = entityManager.merge(trainee);
         log.info("Trainee with id: {} updated", trainee.getId());
         return mergedTrainee;
     }
@@ -53,7 +53,7 @@ public class TraineeRepository {
     }
 
     public Trainee findByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
+        final String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return entityManager
                 .createQuery(jpql, Trainee.class)
@@ -64,7 +64,7 @@ public class TraineeRepository {
     }
 
     public boolean existByUsername(String username) {
-        String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
+        final String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return !entityManager
                 .createQuery(jpql, Trainee.class)

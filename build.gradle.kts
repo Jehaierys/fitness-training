@@ -1,5 +1,7 @@
+
 plugins {
     java
+    checkstyle
     id("org.springframework.boot") version "4.0.7"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -11,6 +13,11 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+checkstyle {
+    toolVersion = "10.26.1"
+    configDirectory.set(file("checkstyle"))
 }
 
 repositories {
@@ -57,4 +64,11 @@ dependencyManagement {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.withType<Checkstyle>().configureEach {
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
