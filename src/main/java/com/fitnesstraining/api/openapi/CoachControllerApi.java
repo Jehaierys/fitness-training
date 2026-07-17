@@ -140,6 +140,7 @@ public interface CoachControllerApi {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
+    // todo: to @PathVariable
     @GetMapping("/available")
     ResponseEntity<List<CoachDto>> findAvailableCoaches(
             @Parameter(hidden = true)

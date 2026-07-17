@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController implements AuthenticationControllerApi {
 
+    // todo: move to facade
     private final UserService userService;
     private final CoachFacade coachFacade;
     private final TraineeFacade traineeFacade;
 
 
-    //todo: signUp or register?
     @PostMapping("/coaches")
     public ResponseEntity<RegisterUserResponse>  registerCoach(RegisterCoachRequest request) {
         log.info("Received signup request for coach: {}", request.getFirstName());

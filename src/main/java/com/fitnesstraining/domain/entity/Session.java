@@ -14,6 +14,7 @@ import java.time.Duration;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "sessions")
+// todo: rename
 public class Session {
 
     @Id
