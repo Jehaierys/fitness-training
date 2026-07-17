@@ -11,15 +11,12 @@ import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.logic.processor.CoachSearcher;
 import com.fitnesstraining.logic.processor.CoachUpdater;
 import com.fitnesstraining.logic.processor.CoachRegistrar;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CoachFacade implements UserFacade {

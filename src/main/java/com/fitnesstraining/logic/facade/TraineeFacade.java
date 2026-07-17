@@ -10,13 +10,10 @@ import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
 import com.fitnesstraining.logic.processor.TraineeRegistrar;
 import com.fitnesstraining.logic.processor.TraineeUpdater;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TraineeFacade implements UserFacade {
