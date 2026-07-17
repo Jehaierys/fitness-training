@@ -46,7 +46,7 @@ public class CoachController implements CoachControllerApi {
 
     public ResponseEntity<HttpStatus> setActive(Activated request, UserDetails principal) {
         if (!request.getUsername().equals(principal.getUsername())) {
-            throw new RuntimeException("Иди нахуй");
+            throw new RuntimeException("Access denied");
         }
 
         log.info("Received set active request for coach: {}", request.getUsername());
