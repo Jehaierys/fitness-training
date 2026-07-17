@@ -28,7 +28,6 @@ public class TraineeFacade implements UserFacade {
     private final TraineeService service;
 
 
-    @Transactional
     public RegisterTraineeResponse register(RegisterUserRequest request) {
         return registrar.register(request);
     }
@@ -43,6 +42,7 @@ public class TraineeFacade implements UserFacade {
     }
 
     @Transactional
+    // todo: extract to user scope
     public void setActive(Activated request) {
         final User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());

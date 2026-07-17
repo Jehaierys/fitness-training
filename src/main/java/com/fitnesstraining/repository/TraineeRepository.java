@@ -2,6 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Trainee;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -19,9 +20,23 @@ public class TraineeRepository {
 
 
     public Trainee create(Trainee trainee) {
-        entityManager.persist(trainee);
-        log.info("Trainee with id: {} created", trainee.getId());
-        return trainee;
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.persist(trainee);
+            transaction.commit();
+
+            // todo: add username
+            log.info("Trainee with id: {} created", trainee.getId());
+            return trainee;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Trainee update(Trainee trainee) {
