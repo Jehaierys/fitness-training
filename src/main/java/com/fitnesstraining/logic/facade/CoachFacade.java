@@ -32,7 +32,6 @@ public class CoachFacade implements UserFacade {
     private final CoachMapper mapper;
 
 
-    @Transactional
     public RegisterUserResponse register(RegisterUserRequest request) {
         return registrar.register(request);
     }

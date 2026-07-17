@@ -2,6 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Coach;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -20,9 +21,21 @@ public class CoachRepository {
 
 
     public Coach create(Coach coach) {
-        entityManager.persist(coach);
-        log.info("Coach with id: {} created", coach.getId());
-        return coach;
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.persist(coach);
+            transaction.commit();
+
+            log.info("Coach with id: {} created", coach.getId());
+            return coach;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        }
     }
 
     public Coach update(Coach coach) {
