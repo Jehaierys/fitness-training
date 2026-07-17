@@ -32,7 +32,6 @@ public class TraineeFacade implements UserFacade {
         return registrar.register(request);
     }
 
-    @Transactional
     public UpdateTraineeResponse update(UpdateUserRequest request) {
         return updater.update(request);
     }
@@ -41,7 +40,6 @@ public class TraineeFacade implements UserFacade {
         return mapper.toGetTraineeResponse((Trainee) service.findByUsername(username));
     }
 
-    @Transactional
     // todo: extract to user scope
     public void setActive(Activated request) {
         final User user = service.findByUsername(request.getUsername());

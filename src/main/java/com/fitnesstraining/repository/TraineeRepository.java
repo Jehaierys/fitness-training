@@ -44,9 +44,23 @@ public class TraineeRepository {
             log.warn("Trainee with id: {} not found for update", trainee.getId());
             throw new IllegalArgumentException("Trainee must have an ID and exist in the database to be updated.");
         }
-        final Trainee mergedTrainee = entityManager.merge(trainee);
-        log.info("Trainee with id: {} updated", trainee.getId());
-        return mergedTrainee;
+
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+            entityManager.merge(trainee);
+            transaction.commit();
+
+            log.info("Trainee with id: {} updated", trainee.getId());
+            return trainee;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Optional<Trainee> findById(Long id) {
