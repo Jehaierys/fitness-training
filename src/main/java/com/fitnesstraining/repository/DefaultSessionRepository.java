@@ -3,6 +3,7 @@ package com.fitnesstraining.repository;
 import com.fitnesstraining.domain.entity.*;
 import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -19,9 +20,24 @@ public class DefaultSessionRepository implements SessionRepository {
 
 
     public Session create(Session session) {
-        entityManager.persist(session);
-        log.info("Session with id: {} created", session.getId());
-        return session;
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+
+            transaction.begin();
+            entityManager.persist(session);
+            transaction.commit();
+
+            log.info("Session with id: {}, coach: {}, trainee: {}, date: {} created",
+                    session.getId(), session.getCoach().getUsername(), session.getTrainee().getUsername(), session.getDate());
+            return session;
+
+        } catch (Exception ex) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw ex;
+        }
     }
 
     public Optional<Session> findById(Long id) {

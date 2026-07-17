@@ -3,7 +3,6 @@ package com.fitnesstraining.logic.facade;
 import com.fitnesstraining.domain.dto.session.*;
 import com.fitnesstraining.logic.processor.SessionCreator;
 import com.fitnesstraining.logic.processor.SessionSearcher;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +18,6 @@ public class SessionFacade {
     private final SessionSearcher searcher;
 
 
-    @Transactional
     public void create(SessionRegistrationRequest request) {
         creator.create(request);
     }
