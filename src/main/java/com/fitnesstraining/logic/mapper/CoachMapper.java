@@ -16,6 +16,7 @@ public interface CoachMapper {
 
     RegisterCoachResponse toRegisterCoachResponse(Coach coach);
 
+    @Mapping(target = "password", ignore = true)
     void toEntity(RegisterCoachRequest dto, @MappingTarget Coach coach);
 
     @Mapping(target = "username", ignore = true)

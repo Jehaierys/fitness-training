@@ -8,6 +8,7 @@ import com.fitnesstraining.logic.mapper.TraineeMapper;
 import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class TraineeRegistrar {
 
     private final TraineeMapper mapper;
     private final TraineeRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     private RegisterTraineeRequest request;
     private UUID traineeUuid;
@@ -47,6 +49,8 @@ public class TraineeRegistrar {
     private void createTrainee() {
         trainee = new Trainee();
         mapper.toEntity(request, trainee);
+
+        trainee.setPassword(passwordEncoder.encode(request.getPassword()));
 
         trainee.setActive(true);
 

@@ -8,6 +8,7 @@ import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class CoachRegistrar {
 
     private final CoachRepository repository;
     private final CoachMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     private RegisterCoachRequest request;
     private UUID transactionUuid;
@@ -47,6 +49,8 @@ public class CoachRegistrar {
     private void createCoach() {
         this.coach = new Coach();
         mapper.toEntity(request, coach);
+
+        coach.setPassword(passwordEncoder.encode(request.getPassword()));
 
         coach.setActive(true);
 

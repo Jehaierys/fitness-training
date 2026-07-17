@@ -15,6 +15,7 @@ public interface TraineeMapper {
 
     RegisterTraineeResponse toRegisterTraineeResponse(Trainee trainee);
 
+    @Mapping(target = "password", ignore = true)
     void toEntity(RegisterTraineeRequest dto, @MappingTarget Trainee trainee);
 
     GetTraineeResponse toGetTraineeResponse(Trainee trainee);
