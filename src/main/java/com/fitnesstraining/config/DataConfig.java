@@ -1,9 +1,12 @@
 package com.fitnesstraining.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -19,7 +22,26 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class DataConfig {
+
+    private final Dotenv dotenv = Dotenv.load();
+
+
+    // property fields
+    private final String hibernateDialect = dotenv.get("hibernate.dialect");
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+    @Value("${hibernate.format_sql}")
+    private String hibernateFormatSql;
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
+
+    private final String driverClassName = dotenv.get("driver.class-name");
+    private final String dataSourceUrl = dotenv.get("data-source.url");
+    private final String dataSourceUsername = dotenv.get("data-source.username");
+    private final String dataSourcePassword = dotenv.get("data-source.password");
+
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
@@ -33,10 +55,10 @@ public class DataConfig {
 
         Properties properties = new Properties();
 
-        properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.put("hibernate.show_sql", true);
-        properties.put("hibernate.format_sql", true);
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.dialect", hibernateDialect);
+        properties.put("hibernate.show_sql", hibernateShowSql);
+        properties.put("hibernate.format_sql", hibernateFormatSql);
+        properties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
 
         entityManagerFactory.setJpaProperties(properties);
 
@@ -54,10 +76,10 @@ public class DataConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/fitness");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("1234");
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(dataSourceUrl);
+        dataSource.setUsername(dataSourceUsername);
+        dataSource.setPassword(dataSourcePassword);
 
         return dataSource;
     }
@@ -77,5 +99,4 @@ public class DataConfig {
 
         return initializer;
     }
-
 }
