@@ -44,7 +44,7 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
     }
 
     public Optional<SessionType> findByName(String name) {
-        final String jpql = "SELECT st FROM SessionType st WHERE st.name = :name";
+        String jpql = "SELECT st FROM SessionType st WHERE st.name = :name";
 
         return entityManager.createQuery(jpql, SessionType.class)
                 .setParameter("name", name)
@@ -53,7 +53,7 @@ public class DefaultSessionTypeRepository implements SessionTypeRepository {
     }
 
     public boolean existByName(String name) {
-        final String jpql = "SELECT st FROM SessionType st WHERE st.name = :name";
+        String jpql = "SELECT st FROM SessionType st WHERE st.name = :name";
 
         return !entityManager.createQuery(jpql, SessionType.class)
                 .setParameter("name", name)

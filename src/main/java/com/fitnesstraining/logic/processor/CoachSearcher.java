@@ -21,7 +21,7 @@ public class CoachSearcher {
 
 
     public List<CoachDto> findAvailable(Long traineeId) {
-        final List<Coach> availableCoaches = fetchAvailableCoaches(traineeId);
+        List<Coach> availableCoaches = fetchAvailableCoaches(traineeId);
         return mapToDto(availableCoaches);
     }
 

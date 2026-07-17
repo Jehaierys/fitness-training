@@ -89,7 +89,7 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler authenticationSuccessHandler =
             (request, response, authentication) -> {
 
-                final Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
+                Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
 
                 if (roles.contains(roleTrainee)) {
                     response.sendRedirect("/trainee.html");

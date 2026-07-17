@@ -14,12 +14,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        final Map<String, String> errors = new HashMap<>();
+        Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error -> 
             errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        final ErrorResponse response = ErrorResponse.builder()
+        ErrorResponse response = ErrorResponse.builder()
                 .message("Validation failed")
                 .details(errors)
                 .build();
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralExceptions(Exception ex) {
-        final ErrorResponse response = ErrorResponse.builder()
+        ErrorResponse response = ErrorResponse.builder()
                 .message("Internal Server Error: " + ex.getMessage())
                 .build();
 

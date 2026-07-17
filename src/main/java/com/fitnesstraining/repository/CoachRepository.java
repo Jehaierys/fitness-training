@@ -26,7 +26,7 @@ public class CoachRepository {
     }
 
     public Coach update(Coach coach) {
-        final Coach mergedCoach = entityManager.merge(coach);
+        Coach mergedCoach = entityManager.merge(coach);
         log.info("Coach with id: {} updated", coach.getId());
         return mergedCoach;
     }
@@ -36,7 +36,7 @@ public class CoachRepository {
     }
 
     public Coach findByUsername(String username) {
-        final String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
+        String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
 
         return entityManager
                 .createQuery(jpql, Coach.class)
@@ -51,7 +51,7 @@ public class CoachRepository {
     }
 
     public boolean existByUsername(String username) {
-        final String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
+        String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
 
         return !entityManager
                 .createQuery(jpql, Coach.class)
@@ -62,8 +62,7 @@ public class CoachRepository {
     }
 
     public List<Coach> notAssignedOnTraineeWith(String username) {
-        final String jpql = "SELECT c FROM Coach c WHERE c NOT IN (" +
-                "SELECT t.coaches FROM Trainee t WHERE t.username = :traineeUsername" + ")";
+        String jpql = "SELECT c FROM Coach c WHERE c NOT IN (SELECT t.coaches FROM Trainee t WHERE t.username = :traineeUsername)";
 
         return entityManager
                 .createQuery(jpql, Coach.class)
