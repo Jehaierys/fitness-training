@@ -1,4 +1,3 @@
-
 plugins {
     java
 }
@@ -38,6 +37,9 @@ dependencies {
     // Validation
     implementation("org.hibernate.validator:hibernate-validator:9.0.1.Final")
 
+    // .env
+    implementation("io.github.cdimascio:dotenv-java:3.2.0")
+
     // JPA
     implementation("org.hibernate.orm:hibernate-core:7.1.0.Final")
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
@@ -62,9 +64,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
     testImplementation("org.springframework:spring-test:7.0.0")
     testImplementation("org.springframework.security:spring-security-test:7.0.0")
-
-    testCompileOnly("org.projectlombok:lombok:1.18.38")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
