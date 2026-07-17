@@ -20,7 +20,8 @@ public class DefaultSessionRepository implements SessionRepository {
 
 
     public Session create(Session session) {
-        EntityTransaction transaction = entityManager.getTransaction();
+
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -43,5 +44,4 @@ public class DefaultSessionRepository implements SessionRepository {
     public Optional<Session> findById(Long id) {
         return Optional.ofNullable(entityManager.find(Session.class, id));
     }
-
 }

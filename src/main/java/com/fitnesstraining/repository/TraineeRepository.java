@@ -20,7 +20,8 @@ public class TraineeRepository {
 
 
     public Trainee create(Trainee trainee) {
-        EntityTransaction transaction = entityManager.getTransaction();
+
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -41,12 +42,13 @@ public class TraineeRepository {
     }
 
     public Trainee update(Trainee trainee) {
+
         if (trainee.getId() == null || !existsById(trainee.getId())) {
             log.warn("Trainee with id: {} not found for update", trainee.getId());
             throw new IllegalArgumentException("Trainee must have an ID and exist in the database to be updated.");
         }
 
-        EntityTransaction transaction = entityManager.getTransaction();
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 
@@ -70,7 +72,8 @@ public class TraineeRepository {
     }
 
     public void delete(Trainee trainee) {
-        EntityTransaction transaction = entityManager.getTransaction();
+
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
 

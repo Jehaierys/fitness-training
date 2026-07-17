@@ -21,9 +21,11 @@ public class CoachRepository {
 
 
     public Coach create(Coach coach) {
-        EntityTransaction transaction = entityManager.getTransaction();
+
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
+
             transaction.begin();
             entityManager.persist(coach);
             transaction.commit();
@@ -45,9 +47,10 @@ public class CoachRepository {
             throw new IllegalArgumentException("Coach must have an ID and exist in the database to be updated.");
         }
 
-        EntityTransaction transaction = entityManager.getTransaction();
+        final EntityTransaction transaction = entityManager.getTransaction();
 
         try {
+
             transaction.begin();
             entityManager.merge(coach);
             transaction.commit();
