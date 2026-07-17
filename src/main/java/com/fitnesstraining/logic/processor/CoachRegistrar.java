@@ -1,12 +1,11 @@
 package com.fitnesstraining.logic.processor;
 
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.coach.response.RegisterCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
-import com.fitnesstraining.logic.abstraction.CoachService;
-import com.fitnesstraining.utils.SignUpUtils;
 import com.fitnesstraining.logic.mapper.CoachMapper;
+import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,26 +15,22 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class CoachSignUpProcessor {
+public class CoachRegistrar {
 
-    private final CoachService coachService;
-    private final SignUpUtils utils;
+    private final CoachRepository repository;
     private final CoachMapper mapper;
 
-    private CoachSignUpRequest request;
+    private RegisterCoachRequest request;
     private UUID transactionUuid;
-    private String password;
-    private String username;
     private Coach coach;
-    private UserSignUpResponse response;
+    private RegisterCoachResponse response;
 
 
-    public synchronized UserSignUpResponse process(UserSignUpRequest request) {
-        this.request = (CoachSignUpRequest) request;
+    public synchronized RegisterCoachResponse register(RegisterUserRequest request) {
+        this.request = (RegisterCoachRequest) request;
         initialLog();
 
-        generatePassword();
-        generateUsername();
+        // check user exists by username
         createCoach();
         buildResponse();
 
@@ -48,28 +43,17 @@ public class CoachSignUpProcessor {
         log.info("Signing up new coach: {} {}, attempt's UUID: {}", request.getFirstName(), request.getLastName(), transactionUuid);
     }
 
-    private void generatePassword() {
-        password = utils.generatePassword();
-    }
-
-    private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName(), coachService);
-    }
-
     private void createCoach() {
         this.coach = new Coach();
         mapper.toEntity(request, coach);
 
-        coach.setPassword(password);
-        coach.setUsername(username);
-
         coach.setActive(true);
 
-        coachService.create(coach);
+        coach = repository.create(coach);
     }
 
     private void buildResponse() {
-        this.response = mapper.toUserSignUpResponse(coach);
+        this.response = mapper.toRegisterCoachResponse(coach);
     }
 
     private void finalLog() {

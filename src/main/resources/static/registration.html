@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SHALOM — Registration</title>
+    <style>
+      :root{
+        --bg1:#0f172a;
+        --bg2:#0b3c5d;
+        --accent:#ffd166;
+        --accent2:#06d6a0;
+        --coach:#118ab2;
+        --trainee:#ef476f;
+        --muted:#cbd5e1;
+        --glass:rgba(255,255,255,0.06);
+        --glass2:rgba(255,255,255,0.03);
+        --danger:#ff8fa3;
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+      body{
+        min-height:100vh;
+        display:flex;align-items:center;justify-content:center;
+        color:var(--muted);
+        overflow-x:hidden;
+        background:
+          radial-gradient(circle at top right, rgba(255,209,102,0.12), transparent 34%),
+          radial-gradient(circle at bottom left, rgba(17,138,178,0.12), transparent 28%),
+          linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%);
+      }
+      .glow{position:fixed;border-radius:50%;filter:blur(16px);pointer-events:none;opacity:.9}
+      .glow.one{width:420px;height:420px;left:-120px;top:-120px;background:rgba(255,209,102,0.1)}
+      .glow.two{width:360px;height:360px;right:-100px;bottom:-100px;background:rgba(6,214,160,0.08)}
+      .wrap{width:min(1180px,94%);position:relative;z-index:2}
+      .header{
+        display:flex;justify-content:space-between;align-items:center;gap:16px;
+        margin-bottom:18px;padding:0 6px;
+      }
+      .brand{display:flex;align-items:center;gap:14px}
+      .brand-mark{
+        width:52px;height:52px;border-radius:14px;
+        display:grid;place-items:center;
+        background:linear-gradient(135deg,var(--accent),#ff9a8b);
+        color:#07111b;font-weight:800;box-shadow:0 10px 24px rgba(255,209,102,.25);
+      }
+      .brand h1{margin:0;font-size:22px;letter-spacing:.18em;color:#fff;text-transform:uppercase}
+      .brand p{margin:4px 0 0;font-size:13px;color:#94a3b8}
+      .back-link{
+        color:#fff;text-decoration:none;font-size:14px;
+        padding:10px 14px;border:1px solid rgba(255,255,255,0.08);
+        border-radius:999px;background:rgba(255,255,255,0.04);
+      }
+      .shell{
+        display:grid;grid-template-columns: 0.9fr 1.1fr;gap:24px;
+        padding:24px;border-radius:24px;
+        background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
+        border:1px solid rgba(255,255,255,0.08);
+        box-shadow:0 18px 60px rgba(2,6,23,0.62);
+        backdrop-filter:blur(14px);
+      }
+      .hero,
+      .form-panel{
+        border-radius:20px;
+        background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+        border:1px solid rgba(255,255,255,0.06);
+        overflow:hidden;
+      }
+      .hero{
+        position:relative;padding:28px;min-height:720px;
+        display:flex;flex-direction:column;justify-content:space-between;
+      }
+      .hero-top{display:grid;gap:18px}
+      .role-badge{
+        width:max-content;padding:8px 12px;border-radius:999px;
+        background:rgba(255,255,255,0.07);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+        color:#fff;
+      }
+      .hero-title{margin:0;font-size:58px;line-height:.95;letter-spacing:3px;color:var(--accent);text-shadow:0 10px 30px rgba(0,0,0,.35)}
+      .hero-desc{margin:0;max-width:40ch;font-size:18px;line-height:1.7}
+      .feature-list{display:grid;gap:12px;margin-top:8px}
+      .feature{
+        padding:14px 16px;border-radius:14px;background:rgba(15,23,42,0.38);
+        border:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;gap:16px;align-items:center;
+      }
+      .feature span:last-child{font-weight:700;color:var(--accent)}
+      .hero-footer{display:grid;gap:12px}
+      .mini-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+      .mini-card{padding:14px;border-radius:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06)}
+      .mini-card small{display:block;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em}
+      .mini-card strong{display:block;margin-top:8px;color:#fff;font-size:22px}
+      .form-panel{padding:24px}
+      .tabs{
+        display:grid;grid-template-columns:repeat(2,1fr);gap:10px;
+        padding:8px;border-radius:16px;background:rgba(15,23,42,0.35);margin-bottom:18px;
+      }
+      .tab{
+        appearance:none;border:none;cursor:pointer;
+        padding:14px 16px;border-radius:12px;
+        background:transparent;color:#cbd5e1;font-weight:700;
+        transition:.2s ease;
+      }
+      .tab.active.trainee{background:linear-gradient(90deg,var(--trainee),#ff9a8b);color:#07111b;box-shadow:0 10px 20px rgba(239,71,111,.18)}
+      .tab.active[data-role="coach"]{background:linear-gradient(90deg,var(--coach),#06d6a0);color:#07111b;box-shadow:0 10px 20px rgba(17,138,178,.18)}
+      .mode-note{
+        margin:0 0 18px;padding:12px 14px;border-radius:14px;
+        background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);font-size:14px
+      }
+      .mode-note strong{color:#fff}
+      .alert{
+        display:none;margin-bottom:16px;padding:14px;border-radius:12px;font-size:14px;line-height:1.5
+      }
+      .alert.error{background:rgba(239,71,111,0.12);border:1px solid rgba(239,71,111,0.3);color:#ffb3c1}
+      .alert.success{background:rgba(6,214,160,0.12);border:1px solid rgba(6,214,160,0.3);color:#9ff7df}
+      form{display:grid;gap:14px}
+      .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+      .field{display:grid;gap:8px}
+      .field label{
+        font-size:13px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#e2e8f0
+      }
+      .field input,
+      .field select,
+      .field textarea{
+        width:100%;padding:12px 14px;border-radius:12px;
+        border:1px solid rgba(255,255,255,0.08);
+        background:rgba(255,255,255,0.04);color:#fff;
+        outline:none;transition:.2s ease;
+      }
+      .field textarea{min-height:110px;resize:vertical}
+      .field input::placeholder,
+      .field textarea::placeholder{color:#64748b}
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus{
+        background:rgba(255,255,255,0.06);
+        border-color:rgba(255,209,102,0.35);
+        box-shadow:0 0 0 3px rgba(255,209,102,0.1);
+      }
+      .help{font-size:12px;color:#94a3b8;line-height:1.45}
+      .invalid{display:none;font-size:13px;color:var(--danger)}
+      .field input:invalid:not(:placeholder-shown) ~ .invalid,
+      .field textarea:invalid:not(:placeholder-shown) ~ .invalid,
+      .field input.touched:invalid ~ .invalid,
+      .field textarea.touched:invalid ~ .invalid{display:block}
+      .specialization-box{
+        display:grid;gap:10px;
+        padding:14px;border-radius:16px;background:rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.06);
+      }
+      .specialization-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+      .spec-item{
+        display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+        background:rgba(15,23,42,0.35);border:1px solid rgba(255,255,255,0.06);
+      }
+      .spec-item input{width:auto;margin:0}
+      .spec-item label{margin:0;font-size:14px;text-transform:none;letter-spacing:0;font-weight:500;color:#e2e8f0}
+      .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+      .btn{
+        appearance:none;border:none;cursor:pointer;
+        padding:13px 18px;border-radius:12px;font-weight:800;
+        transition:.2s ease;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
+      }
+      .btn:hover{transform:translateY(-1px)}
+      .btn.primary.trainee{background:linear-gradient(90deg,var(--trainee),#ff9a8b);color:#07111b}
+      .btn.primary[data-role="coach"]{background:linear-gradient(90deg,var(--coach),#06d6a0);color:#07111b}
+      .btn.ghost{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.08)}
+      .hidden{display:none !important}
+      .footer-note{margin-top:14px;font-size:13px;color:#94a3b8;line-height:1.55}
+      @keyframes floaty {0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+      .hero{animation:floaty 5s ease-in-out infinite}
+      @media (max-width: 980px){
+        .shell{grid-template-columns:1fr}
+        .hero{min-height:auto}
+      }
+      @media (max-width: 620px){
+        .header{flex-direction:column;align-items:flex-start}
+        .grid-2,.mini-stats,.specialization-list{grid-template-columns:1fr}
+        .hero-title{font-size:42px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow one"></div>
+    <div class="glow two"></div>
+
+    <div class="wrap">
+      <div class="header">
+        <div class="brand">
+          <div class="brand-mark">SH</div>
+          <div>
+            <h1>SHALOM</h1>
+            <p>Registration portal for Trainee and Coach</p>
+          </div>
+        </div>
+        <a class="back-link" href="/authentication.html">← Back to login</a>
+      </div>
+
+      <main class="shell" role="main">
+        <section class="hero" id="heroPanel">
+          <div class="hero-top">
+            <div class="role-badge" id="roleBadge">Trainee registration</div>
+            <h2 class="hero-title" id="heroTitle">SHALOM</h2>
+            <p class="hero-desc" id="heroDesc">
+              Create a trainee account and start tracking workouts, goals and progress in a clean, calm SHALOM style.
+            </p>
+
+            <div class="feature-list" id="heroFeatures">
+              <div class="feature"><span>Training plan</span><span>Ready</span></div>
+              <div class="feature"><span>Progress tracking</span><span>Active</span></div>
+              <div class="feature"><span>Goal management</span><span>Fast</span></div>
+            </div>
+          </div>
+
+          <div class="hero-footer">
+            <div class="mini-stats">
+              <div class="mini-card"><small>Role</small><strong id="miniRole">Trainee</strong></div>
+              <div class="mini-card"><small>Style</small><strong id="miniStyle">Warm</strong></div>
+              <div class="mini-card"><small>Mode</small><strong id="miniMode">Focused</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-panel">
+          <div class="tabs" role="tablist" aria-label="Registration role tabs">
+              <button class="tab active trainee" type="button" id="traineeTab" data-role="trainee">Trainee</button>
+              <button class="tab coach-mode" type="button" id="coachTab" data-role="coach">Coach</button>
+          </div>
+
+          <p class="mode-note" id="modeNote">
+            <strong>Trainee mode:</strong> username, first name, last name, birth date and address.
+          </p>
+
+          <div class="alert error" id="errorBox"></div>
+          <div class="alert success" id="successBox"></div>
+
+          <form id="registrationForm" novalidate>
+            <div class="grid-2">
+              <div class="field">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="john.doe" autocomplete="username" required minlength="4" maxlength="30" pattern="^[a-zA-Z0-9._]+$" />
+                <div class="help">4–30 chars. Letters, numbers, dots and underscores only.</div>
+                <div class="invalid">Username is required and must match the allowed format.</div>
+              </div>
+              <div class="field">
+                <label for="firstName">First name</label>
+                <input id="firstName" name="firstName" type="text" placeholder="John" autocomplete="given-name" required minlength="2" maxlength="50" pattern="^[\p{L}'\-\s]+$" />
+                <div class="help">Letters, hyphens and spaces only.</div>
+                <div class="invalid">First name is required and must contain only valid letters.</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input id="lastName" name="lastName" type="text" placeholder="Carter" autocomplete="family-name" required minlength="2" maxlength="50" pattern="^[\p{L}'\-\s]+$" />
+              <div class="help">Letters, hyphens and spaces only.</div>
+              <div class="invalid">Last name is required and must contain only valid letters.</div>
+            </div>
+
+            <div id="traineeFields">
+              <div class="grid-2">
+                <div class="field">
+                  <label for="birthDate">Birth date</label>
+                  <input id="birthDate" name="birthDate" type="date" required min="1900-01-01" />
+                  <div class="help">Must be in the past and realistic.</div>
+                  <div class="invalid">Birth date must be in the past.</div>
+                </div>
+                <div class="field">
+                  <label for="address">Address</label>
+                  <input id="address" name="address" type="text" placeholder="New York, 5th Avenue" required minlength="5" maxlength="255" />
+                  <div class="help">5–255 characters.</div>
+                  <div class="invalid">Address is required and must be at least 5 characters.</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="coachFields" class="hidden">
+              <div class="specialization-box">
+                <div class="field" style="margin:0">
+                  <label>Specialization</label>
+                  <div class="help">Select one or more session types. Server expects a list of SessionType objects.</div>
+                </div>
+                <div class="specialization-list" id="specializationList"></div>
+                <div class="invalid" id="specializationError" hidden>Select at least one specialization.</div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary trainee" type="submit" id="submitBtn" data-role="trainee">Register trainee</button>
+              <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+            </div>
+          </form>
+
+          <div class="footer-note" id="footerNote">
+            Submitted data will be sent as JSON to <code>/trainees</code> or <code>/coaches</code> depending on the selected role.
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function(){
+        const sessionTypes = [
+          { id: 1, name: 'Yoga' },
+          { id: 2, name: 'Crossfit' },
+          { id: 3, name: 'Pilates' },
+          { id: 4, name: 'Cardio' },
+          { id: 5, name: 'Strength Training' },
+          { id: 6, name: 'Zumba' }
+        ];
+
+        const traineeTab = document.getElementById('traineeTab');
+        const coachTab = document.getElementById('coachTab');
+        const roleBadge = document.getElementById('roleBadge');
+        const heroTitle = document.getElementById('heroTitle');
+        const heroDesc = document.getElementById('heroDesc');
+        const heroFeatures = document.getElementById('heroFeatures');
+        const miniRole = document.getElementById('miniRole');
+        const miniStyle = document.getElementById('miniStyle');
+        const miniMode = document.getElementById('miniMode');
+        const modeNote = document.getElementById('modeNote');
+        const traineeFields = document.getElementById('traineeFields');
+        const coachFields = document.getElementById('coachFields');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorBox = document.getElementById('errorBox');
+        const successBox = document.getElementById('successBox');
+        const specializationList = document.getElementById('specializationList');
+        const specializationError = document.getElementById('specializationError');
+        const footerNote = document.getElementById('footerNote');
+        const form = document.getElementById('registrationForm');
+        const resetBtn = document.getElementById('resetBtn');
+        const inputs = Array.from(form.querySelectorAll('input, textarea'));
+
+        let role = 'trainee';
+
+        function renderSpecializations(){
+          specializationList.innerHTML = sessionTypes.map(item => `
+            <label class="spec-item">
+              <input type="checkbox" name="specialization" value='${JSON.stringify(item)}' />
+              <span>${item.name}</span>
+            </label>
+          `).join('');
+        }
+
+        function setTabState(nextRole){
+          role = nextRole;
+          const isTrainee = role === 'trainee';
+          traineeTab.classList.toggle('active', isTrainee);
+          traineeTab.classList.toggle('trainee', isTrainee);
+          coachTab.classList.toggle('active', !isTrainee);
+          coachTab.classList.toggle('coach-mode', !isTrainee);
+          traineeFields.classList.toggle('hidden', !isTrainee);
+          coachFields.classList.toggle('hidden', isTrainee);
+          submitBtn.className = `btn primary ${isTrainee ? 'trainee' : ''}`.trim();
+          submitBtn.dataset.role = isTrainee ? 'trainee' : 'coach';
+          submitBtn.textContent = isTrainee ? 'Register trainee' : 'Register coach';
+          roleBadge.textContent = isTrainee ? 'Trainee registration' : 'Coach registration';
+          miniRole.textContent = isTrainee ? 'Trainee' : 'Coach';
+          miniStyle.textContent = isTrainee ? 'Warm' : 'Sharp';
+          miniMode.textContent = isTrainee ? 'Focused' : 'Lead';
+          modeNote.innerHTML = isTrainee
+            ? '<strong>Trainee mode:</strong> username, first name, last name, birth date and address.'
+            : '<strong>Coach mode:</strong> username, first name, last name and specialization list.';
+          footerNote.innerHTML = isTrainee
+            ? 'Submitted data will be sent as JSON to <code>/trainees</code>.'
+            : 'Submitted data will be sent as JSON to <code>/coaches</code>.';
+
+          heroTitle.textContent = 'SHALOM';
+          heroDesc.textContent = isTrainee
+            ? 'Create a trainee account and start tracking workouts, goals and progress in a clean, calm SHALOM style.'
+            : 'Create a coach account and manage students, programs and specialties in a confident SHALOM style.';
+          heroFeatures.innerHTML = isTrainee
+            ? `
+                <div class="feature"><span>Training plan</span><span>Ready</span></div>
+                <div class="feature"><span>Progress tracking</span><span>Active</span></div>
+                <div class="feature"><span>Goal management</span><span>Fast</span></div>
+              `
+            : `
+                <div class="feature"><span>Client management</span><span>Ready</span></div>
+                <div class="feature"><span>Session planning</span><span>Active</span></div>
+                <div class="feature"><span>Expert tools</span><span>Fast</span></div>
+              `;
+        }
+
+        function markTouched(){
+          this.classList.add('touched');
+        }
+
+        function clearFeedback(){
+          errorBox.classList.remove('show');
+          successBox.classList.remove('show');
+          errorBox.textContent = '';
+          successBox.textContent = '';
+        }
+
+        function showError(message){
+          errorBox.textContent = message;
+          errorBox.classList.add('show');
+          successBox.classList.remove('show');
+        }
+
+        function showSuccess(message){
+          successBox.textContent = message;
+          successBox.classList.add('show');
+          errorBox.classList.remove('show');
+        }
+
+        function isValidDatePast(value){
+          if (!value) return false;
+          const date = new Date(value + 'T00:00:00');
+          const today = new Date();
+          today.setHours(0,0,0,0);
+          return !Number.isNaN(date.getTime()) && date < today && date >= new Date('1900-01-01T00:00:00');
+        }
+
+        function buildCoachSpecialization(){
+          const selected = Array.from(specializationList.querySelectorAll('input[name="specialization"]:checked'));
+          return selected.map(box => JSON.parse(box.value));
+        }
+
+        function validateCommon(){
+          const username = document.getElementById('username');
+          const firstName = document.getElementById('firstName');
+          const lastName = document.getElementById('lastName');
+
+          const usernameValue = username.value.trim();
+          const firstNameValue = firstName.value.trim();
+          const lastNameValue = lastName.value.trim();
+
+          const usernameOk = /^[a-zA-Z0-9._]{4,30}$/.test(usernameValue);
+          const nameRegex = /^[\p{L}'\-\s]{2,50}$/u;
+          const firstNameOk = nameRegex.test(firstNameValue);
+          const lastNameOk = nameRegex.test(lastNameValue);
+
+          if (!usernameOk) return 'Username must be 4–30 chars and use only letters, numbers, dots or underscores.';
+          if (!firstNameOk) return 'First name must be 2–50 chars and contain only valid letters.';
+          if (!lastNameOk) return 'Last name must be 2–50 chars and contain only valid letters.';
+          return null;
+        }
+
+        function validateTrainee(){
+          const birthDate = document.getElementById('birthDate').value;
+          const address = document.getElementById('address').value.trim();
+          if (!isValidDatePast(birthDate)) return 'Birth date must be in the past and not earlier than 1900-01-01.';
+          if (address.length < 5 || address.length > 255) return 'Address must be between 5 and 255 characters.';
+          return null;
+        }
+
+        function validateCoach(){
+          const specialization = buildCoachSpecialization();
+          const ok = specialization.length > 0;
+          specializationError.hidden = ok;
+          if (!ok) return 'Select at least one specialization.';
+          return null;
+        }
+
+        function buildPayload(){
+          const payload = {
+            username: document.getElementById('username').value.trim(),
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim()
+          };
+
+          if (role === 'trainee') {
+            payload.birthDate = document.getElementById('birthDate').value;
+            payload.address = document.getElementById('address').value.trim();
+          } else {
+            payload.specialization = buildCoachSpecialization();
+          }
+          return payload;
+        }
+
+        async function sendRequest(url, payload){
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          let body = null;
+          try { body = await res.json(); } catch (_) { /* ignore */ }
+          return { res, body };
+        }
+
+        traineeTab.addEventListener('click', () => setTabState('trainee'));
+        coachTab.addEventListener('click', () => setTabState('coach'));
+        resetBtn.addEventListener('click', () => {
+          form.reset();
+          clearFeedback();
+          inputs.forEach(i => i.classList.remove('touched'));
+        });
+        inputs.forEach(i => i.addEventListener('blur', markTouched));
+        renderSpecializations();
+        setTabState('trainee');
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          clearFeedback();
+          inputs.forEach(i => i.classList.add('touched'));
+
+          const commonError = validateCommon();
+          if (commonError) return showError(commonError);
+
+          const specificError = role === 'trainee' ? validateTrainee() : validateCoach();
+          if (specificError) return showError(specificError);
+          specializationError.hidden = true;
+
+          const payload = buildPayload();
+          const url = role === 'trainee' ? '/trainees' : '/coaches';
+
+          submitBtn.disabled = true;
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = role === 'trainee' ? 'Creating trainee...' : 'Creating coach...';
+
+          try {
+            const { res, body } = await sendRequest(url, payload);
+            if (!res.ok) {
+              const serverMessage = body && (body.message || body.detail || body.title);
+              showError(serverMessage || `Registration failed (${res.status})`);
+              return;
+            }
+
+            showSuccess(role === 'trainee'
+              ? 'Trainee account created successfully. Redirecting to login...'
+              : 'Coach account created successfully. Redirecting to login...'
+            );
+
+            setTimeout(() => {
+              window.location.href = '/authentication.html';
+            }, 1100);
+          } catch (err) {
+            showError(err.message || 'Something went wrong during registration.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+

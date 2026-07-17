@@ -1,7 +1,6 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.repository.abstration.TraineeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,10 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+import static com.fitnesstraining.utils.ExceptionSuppliers.TraineeNotFound;
+
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultTraineeRepository implements TraineeRepository {
+public class TraineeRepository {
 
     private final EntityManager entityManager;
 
@@ -51,14 +52,15 @@ public class DefaultTraineeRepository implements TraineeRepository {
         return entityManager.find(Trainee.class, id) != null;
     }
 
-    public Optional<Trainee> findByUsername(String username) {
+    public Trainee findByUsername(String username) {
         String jpql = "SELECT t FROM Trainee t WHERE t.username = :username";
 
         return entityManager
                 .createQuery(jpql, Trainee.class)
                 .setParameter("username", username)
                 .getResultStream()
-                .findFirst();
+                .findFirst()
+                .orElseThrow(TraineeNotFound("Trainee not found with username: " + username));
     }
 
     public boolean existByUsername(String username) {

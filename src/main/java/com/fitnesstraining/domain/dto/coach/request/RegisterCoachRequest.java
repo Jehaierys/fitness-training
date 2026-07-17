@@ -1,6 +1,6 @@
 package com.fitnesstraining.domain.dto.coach.request;
 
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserRequest;
 import com.fitnesstraining.domain.entity.SessionType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoachSignUpRequest extends UserSignUpRequest {
+public class RegisterCoachRequest extends RegisterUserRequest {
 
     // todo: this is not a String
     @NotBlank(message = "Specialization cannot be blank")

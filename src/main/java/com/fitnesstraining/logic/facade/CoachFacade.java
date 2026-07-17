@@ -2,15 +2,15 @@ package com.fitnesstraining.logic.facade;
 
 import com.fitnesstraining.domain.dto.abstraction.*;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.logic.processor.CoachSearcher;
-import com.fitnesstraining.logic.processor.UpdateCoachProfileProcessor;
-import com.fitnesstraining.logic.processor.CoachSignUpProcessor;
+import com.fitnesstraining.logic.processor.CoachUpdater;
+import com.fitnesstraining.logic.processor.CoachRegistrar;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +24,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachFacade implements UserFacade {
 
-    private final CoachSignUpProcessor signUpProcessor;
-    private final UpdateCoachProfileProcessor profileUpdateProcessor;
+    private final CoachRegistrar registrar;
+    private final CoachUpdater updater;
     private final CoachSearcher searcher;
 
-    private final CoachService coachService;
+    private final CoachService service;
     private final CoachMapper mapper;
 
 
     @Transactional
-    public UserSignUpResponse signUp(UserSignUpRequest request) {
-        return signUpProcessor.process(request);
+    public RegisterUserResponse register(RegisterUserRequest request) {
+        return registrar.register(request);
     }
 
     @Transactional
-    public UpdateCoachProfileResponse updateProfile(UpdateUserProfileRequest request) {
-        return profileUpdateProcessor.process(request);
+    public UpdateCoachResponse update(UpdateUserRequest request) {
+        return updater.update(request);
     }
 
     public GetUserResponse findByUsername(String username) {
-        return mapper.toGetCoachResponse((Coach) coachService.findByUsername(username));
+        return mapper.toGetCoachResponse((Coach) service.findByUsername(username));
     }
 
     public List<CoachDto> findAvailableCoaches(Long traineeId) {
@@ -52,8 +52,8 @@ public class CoachFacade implements UserFacade {
 
     @Transactional
     public void setActive(Activated request) {
-        User user = coachService.findByUsername(request.getUsername());
+        User user = service.findByUsername(request.getUsername());
         user.setActive(request.getIsActive());
-        coachService.update(user);
+        service.update(user);
     }
 }

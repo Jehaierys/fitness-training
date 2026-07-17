@@ -1,7 +1,6 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.repository.abstration.CoachRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +9,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import static com.fitnesstraining.utils.ExceptionSuppliers.CoachNotFound;
+
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultCoachRepository implements CoachRepository {
+public class CoachRepository {
 
     private final EntityManager entityManager;
 
@@ -34,14 +35,15 @@ public class DefaultCoachRepository implements CoachRepository {
         return Optional.ofNullable(entityManager.find(Coach.class, id));
     }
 
-    public Optional<Coach> findByUsername(String username) {
+    public Coach findByUsername(String username) {
         String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
 
         return entityManager
                 .createQuery(jpql, Coach.class)
                 .setParameter("username", username)
                 .getResultStream()
-                .findFirst();
+                .findFirst()
+                .orElseThrow(CoachNotFound("Coach not found with username: " + username));
     }
 
     public boolean existsById(Long id) {

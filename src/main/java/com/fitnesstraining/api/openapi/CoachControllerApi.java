@@ -2,12 +2,10 @@ package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.abstraction.Activated;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserProfileRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.domain.dto.coach.request.CoachSignUpRequest;
+import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
 import com.fitnesstraining.domain.dto.coach.response.CoachDto;
 import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachProfileResponse;
+import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -30,35 +28,12 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-@RequestMapping("/coaches")
+@RequestMapping("/v1-0-0/coaches")
 @Tag(
-        name = "Coach Controller",
-        description = "Operations related to coach management"
+        name = "Coach",
+        description = "Coach management"
 )
 public interface CoachControllerApi {
-
-
-    @Operation(
-            summary = "Register a new coach",
-            description = "Creates a new coach account and associated user profile."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201", description = "Coach successfully registered",
-                    content = @Content(schema = @Schema(implementation = UserSignUpResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "400", description = "Input data validation failed",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "409", description = "User with this username already exists",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    @PostMapping()
-    ResponseEntity<UserSignUpResponse> signUp(@Valid @RequestBody CoachSignUpRequest request);
-
 
 
     @Operation(
@@ -68,7 +43,7 @@ public interface CoachControllerApi {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200", description = "Profile updated successfully",
-                    content = @Content(schema = @Schema(implementation = UpdateCoachProfileResponse.class))
+                    content = @Content(schema = @Schema(implementation = UpdateCoachResponse.class))
             ),
             @ApiResponse(
                     responseCode = "400", description = "Invalid request data",
@@ -84,7 +59,7 @@ public interface CoachControllerApi {
             )
     })
     @PutMapping()
-    ResponseEntity<UpdateCoachProfileResponse> update(@Valid @RequestBody UpdateUserProfileRequest request);
+    ResponseEntity<UpdateCoachResponse> update(@Valid @RequestBody UpdateUserRequest request);
 
 
 

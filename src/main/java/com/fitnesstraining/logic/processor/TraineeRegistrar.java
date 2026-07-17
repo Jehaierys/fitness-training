@@ -1,12 +1,11 @@
 package com.fitnesstraining.logic.processor;
 
+import com.fitnesstraining.domain.dto.abstraction.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpRequest;
-import com.fitnesstraining.domain.dto.trainee.request.TraineeSignUpRequest;
-import com.fitnesstraining.domain.dto.abstraction.UserSignUpResponse;
-import com.fitnesstraining.logic.abstraction.TraineeService;
-import com.fitnesstraining.utils.SignUpUtils;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
+import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,26 +15,22 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TraineeSignUpProcessor {
+public class TraineeRegistrar {
 
-    private final SignUpUtils utils;
-    private final TraineeService traineeService;
     private final TraineeMapper mapper;
+    private final TraineeRepository repository;
 
-    private TraineeSignUpRequest request;
+    private RegisterTraineeRequest request;
     private UUID traineeUuid;
-    private String password;
-    private String username;
     private Trainee trainee;
-    private UserSignUpResponse response;
+    private RegisterTraineeResponse response;
 
 
-    public synchronized UserSignUpResponse process(UserSignUpRequest request) {
-        this.request = (TraineeSignUpRequest) request;
+    public synchronized RegisterTraineeResponse register(RegisterUserRequest request) {
+        this.request = (RegisterTraineeRequest) request;
         initialLog();
 
-        generatePassword();
-        generateUsername();
+        // check user exists by username
         createTrainee();
         buildResponse();
 
@@ -48,28 +43,17 @@ public class TraineeSignUpProcessor {
         log.info("Signing up new trainee: {} {}, birth date: {}, address: {}, process's UUID: {}", request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), traineeUuid);
     }
 
-    private void generatePassword() {
-        password = utils.generatePassword();
-    }
-
-    private void generateUsername() {
-        username = utils.generateUsername(request.getFirstName(), request.getLastName(), traineeService);
-    }
-
     private void createTrainee() {
         trainee = new Trainee();
         mapper.toEntity(request, trainee);
 
-        trainee.setPassword(password);
-        trainee.setUsername(username);
-
         trainee.setActive(true);
 
-        traineeService.create(trainee);
+        trainee = repository.create(trainee);
     }
 
     private void buildResponse() {
-        this.response = mapper.toUserSignUpResponse(trainee);
+        this.response = mapper.toRegisterTraineeResponse(trainee);
     }
 
     private void finalLog() {
