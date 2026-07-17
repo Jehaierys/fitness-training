@@ -40,6 +40,11 @@ public class CoachRepository {
     }
 
     public Coach update(Coach coach) {
+        if (coach.getId() == null || !existsById(coach.getId())) {
+            log.warn("Coach with id: {} not found for update", coach.getId());
+            throw new IllegalArgumentException("Coach must have an ID and exist in the database to be updated.");
+        }
+
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
