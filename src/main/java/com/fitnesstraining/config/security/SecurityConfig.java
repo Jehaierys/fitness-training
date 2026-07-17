@@ -72,7 +72,7 @@ public class SecurityConfig {
                 "/css/**",
                 "/js/**",
                 "/images/**",
-                "/favicon.ico",
+                "/favicon.svg",
 
                 // Swagger
                 "/swagger-ui/**",
