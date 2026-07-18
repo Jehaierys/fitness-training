@@ -1,10 +1,14 @@
-package com.fitnesstraining.testUtils;
+package com.fitnesstraining.testUtils.entity;
 
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Trainee;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
+
+// All these users are valid by default
 
 public final class Users {
 

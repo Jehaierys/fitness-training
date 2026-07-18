@@ -1,4 +1,4 @@
-package com.fitnesstraining.testUtils;
+package com.fitnesstraining.testUtils.entity;
 
 import com.fitnesstraining.domain.entity.SessionType;
 
