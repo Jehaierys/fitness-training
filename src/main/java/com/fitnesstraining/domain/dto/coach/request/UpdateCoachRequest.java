@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,5 +19,5 @@ import java.util.Set;
 public class UpdateCoachRequest extends UpdateUserRequest {
 
     @NotEmpty(message = "Specializations list cannot be empty")
-    Set<SessionType> specialization;
+    List<SessionType> specialization;
 }
