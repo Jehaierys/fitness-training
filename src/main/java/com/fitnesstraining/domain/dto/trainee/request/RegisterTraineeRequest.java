@@ -6,11 +6,13 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@SuperBuilder
 public class RegisterTraineeRequest extends RegisterUserRequest {
 
     @Past(message = "Birth date must be in the past and represent a realistic age")
