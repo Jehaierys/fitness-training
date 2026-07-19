@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 public final class UpdateTraineeRequests {
 
+    private UpdateTraineeRequests() {}
+
     public static final class Valid {
 
         private Valid() {}
