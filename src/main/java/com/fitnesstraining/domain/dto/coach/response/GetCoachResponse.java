@@ -5,17 +5,18 @@ import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Set;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GetCoachResponse extends GetUserResponse {
 
-    private Set<SessionType> specialization;
+    Set<SessionType> specialization;
     // todo: fn, ln, username
-    private Set<Trainee> trainees;
+    Set<Trainee> trainees;
 }

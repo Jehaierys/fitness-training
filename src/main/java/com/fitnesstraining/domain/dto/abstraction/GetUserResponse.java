@@ -1,14 +1,17 @@
 package com.fitnesstraining.domain.dto.abstraction;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class GetUserResponse {
+public abstract class GetUserResponse {
+
     String username;
-    String password;
     boolean isActive;
+
 }

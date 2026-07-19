@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateTraineeRequest extends UpdateUserRequest {
 
     @NotNull(message = "Birth date cannot be null")

@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -13,6 +15,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @SuperBuilder
+@NoArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class RegisterTraineeRequest extends RegisterUserRequest {
 
     @Past(message = "Birth date must be in the past and represent a realistic age")

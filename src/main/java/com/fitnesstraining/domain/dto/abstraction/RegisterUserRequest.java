@@ -3,7 +3,6 @@ package com.fitnesstraining.domain.dto.abstraction;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,6 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public abstract class RegisterUserRequest {
 

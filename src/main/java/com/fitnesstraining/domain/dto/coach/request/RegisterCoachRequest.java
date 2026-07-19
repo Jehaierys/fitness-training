@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -16,10 +17,11 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class RegisterCoachRequest extends RegisterUserRequest {
 
     // todo: this is not a String
     @NotBlank(message = "Specialization cannot be blank")
-    private List<SessionType> specialization;
+
+    List<SessionType> specialization;
 }

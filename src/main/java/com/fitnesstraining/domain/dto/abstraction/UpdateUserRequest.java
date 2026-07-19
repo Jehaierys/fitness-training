@@ -15,7 +15,6 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public abstract class UpdateUserRequest {
 

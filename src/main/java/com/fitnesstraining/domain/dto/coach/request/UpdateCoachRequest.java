@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateCoachRequest extends UpdateUserRequest {
 
     @NotEmpty(message = "Specializations list cannot be empty")

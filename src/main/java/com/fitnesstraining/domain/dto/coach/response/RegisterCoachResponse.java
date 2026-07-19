@@ -12,7 +12,5 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class RegisterCoachResponse extends RegisterUserResponse {
-    Long userId;
-    String username;
-    String password;
+    // this is ok. All the fields are in UserRegistrationResponse
 }

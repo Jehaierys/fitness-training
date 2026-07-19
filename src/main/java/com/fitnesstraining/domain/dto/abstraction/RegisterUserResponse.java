@@ -1,7 +1,7 @@
 package com.fitnesstraining.domain.dto.abstraction;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
@@ -9,9 +9,10 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @SuperBuilder
-@AllArgsConstructor
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@NoArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public abstract class RegisterUserResponse {
+    Long userId;
     String username;
     String password;
 }
