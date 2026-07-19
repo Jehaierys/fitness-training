@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface CoachMapper {
 
+    @Mapping(target = "isActive", source = "active") // ???
     GetCoachResponse toGetCoachResponse(Coach coach);
 
     RegisterCoachResponse toRegisterCoachResponse(Coach coach);
