@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.Set;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GetCoachResponse extends GetUserResponse {
 
-    Set<SessionType> specialization;
+    List<SessionType> specialization;
     // todo: fn, ln, username
     Set<Trainee> trainees;
 }
