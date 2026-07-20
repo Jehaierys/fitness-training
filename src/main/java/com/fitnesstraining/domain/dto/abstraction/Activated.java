@@ -1,5 +1,6 @@
 package com.fitnesstraining.domain.dto.abstraction;
 
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,11 +16,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class Activated {
 
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Username can only contain letters, numbers, dots, and underscores")
+    @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+    @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
     String username;
 
-    @NotNull
+    @NotNull(message = ValidationErrorMessages.IS_ACTIVE_CANNOT_BE_NULL)
     Boolean isActive;
 }

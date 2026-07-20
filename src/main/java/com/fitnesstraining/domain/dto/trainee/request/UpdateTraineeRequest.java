@@ -1,11 +1,10 @@
 package com.fitnesstraining.domain.dto.trainee.request;
 
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,11 +20,11 @@ import java.time.LocalDate;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateTraineeRequest extends UpdateUserRequest {
 
-    @Past(message = "Birth date must be in the past and represent a realistic age")
+    @Past(message = ValidationErrorMessages.BirthDate.PAST)
     @Schema(description = "Trainee's birth date", example = "1995-05-15", minimum = "1900-01-01")
     LocalDate birthDate;
 
-    @Size(max = 255, message = "Address is too long")
+    @Size(min = 5, max = 255, message = ValidationErrorMessages.Address.SIZE)
     String address;
 
 }

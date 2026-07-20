@@ -2,8 +2,8 @@ package com.fitnesstraining.domain.dto.coach.request;
 
 import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
 import com.fitnesstraining.domain.entity.SessionType;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +19,6 @@ import java.util.List;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateCoachRequest extends UpdateUserRequest {
 
-    @NotEmpty(message = "Specializations list cannot be empty")
+    @NotEmpty(message = ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY)
     List<SessionType> specialization;
 }
