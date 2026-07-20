@@ -61,5 +61,15 @@ public final class UpdateCoachRequests {
                     .specialization(List.of(SessionTypes.cardio()))
                     .build();
         }
+
+        public static UpdateCoachRequest forbiddenCharacters() {
+            return UpdateCoachRequest.builder()
+                    .firstName("Carlos@") // forbidden character
+                    .lastName("Santana#") // forbidden character
+                    .username("carlos.santana!") // forbidden character
+                    .isActive(true)
+                    .specialization(List.of(SessionTypes.cardio()))
+                    .build();
+        }
     }
 }

@@ -79,7 +79,7 @@ public final class RegisterTraineeRequests {
                     .build();
         }
 
-        public static RegisterTraineeRequest forbiddenCharacter() {
+        public static RegisterTraineeRequest forbiddenCharacters() {
             return RegisterTraineeRequest.builder()
                     .username("@@@@") // size OK, pattern fails
                     .password("password123")

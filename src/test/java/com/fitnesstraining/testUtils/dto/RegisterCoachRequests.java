@@ -56,12 +56,12 @@ public final class RegisterCoachRequests {
                     .firstName("A".repeat(51)) // max 50
                     .lastName("B".repeat(51)) // max 50
                     .username("C".repeat(51)) // max 50
-                    .password("D".repeat(51)) // max 50
+                    .password("D".repeat(101)) // max 50
                     .specialization(List.of(SessionTypes.cardio()))
                     .build();
         }
 
-        public static RegisterCoachRequest invalidSymbols() {
+        public static RegisterCoachRequest forbiddenCharacters() {
             return RegisterCoachRequest.builder()
                     .firstName("John123") // pattern fails
                     .lastName("Smith!") // pattern fails
