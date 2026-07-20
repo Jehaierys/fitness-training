@@ -7,7 +7,6 @@ import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
-import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.facade.TraineeFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TraineeController implements TraineeControllerApi {
 
     private final TraineeFacade facade;
-    private final TraineeService service;
 
 
     public ResponseEntity<RegisterUserResponse> register(RegisterTraineeRequest request) {
@@ -40,7 +38,7 @@ public class TraineeController implements TraineeControllerApi {
 
     public ResponseEntity<HttpStatus> delete(String username) {
         log.info("Received delete request for trainee: {}", username);
-        service.deleteByUsername(username);
+        facade.deleteByUsername(username);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 

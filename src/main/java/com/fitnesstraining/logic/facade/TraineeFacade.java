@@ -49,6 +49,11 @@ public class TraineeFacade implements UserFacade {
         service.update(user);
     }
 
+    @Transactional
+    public void deleteByUsername(String username) {
+        service.deleteByUsername(username);
+    }
+
 //    @Transactional
 //    public Trainee updateCoaches(UpdateTraineeCoachesRequest request) {
 //        Trainee trainee = traineeService.getById(request.getTraineeId());
