@@ -11,6 +11,7 @@ import com.fitnesstraining.logic.facade.TraineeFacade;
 import com.fitnesstraining.testUtils.TestMapper;
 import com.fitnesstraining.testUtils.dto.RegisterTraineeRequests;
 import com.fitnesstraining.testUtils.dto.UpdateTraineeRequests;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -154,13 +155,13 @@ public class TraineeControllerTest {
                             .content(objectMapper.writeValueAsString(registerRequest)))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.firstName")
-                            .value("First name cannot be blank"))
+                            .value(ValidationErrorMessages.FirstName.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.lastName")
-                            .value("Last name cannot be blank"))
+                            .value(ValidationErrorMessages.LastName.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.username")
-                            .value("Username cannot be blank"))
+                            .value(ValidationErrorMessages.Username.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.password")
-                            .value("Password cannot be blank"));
+                            .value(ValidationErrorMessages.Password.CANNOT_BE_BLANK));
         }
     }
 }
