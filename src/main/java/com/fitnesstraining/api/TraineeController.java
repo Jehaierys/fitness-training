@@ -44,7 +44,7 @@ public class TraineeController implements TraineeControllerApi {
 
     public ResponseEntity<GetTraineeResponse> findByUsername(String username) {
         log.info("Received find by username request for trainee: {}", username);
-        return ResponseEntity.ok((GetTraineeResponse) facade.findByUsername(username));
+        return ResponseEntity.ok(facade.findByUsername(username));
     }
 
     public ResponseEntity<HttpStatus> setActive(Activated request) {

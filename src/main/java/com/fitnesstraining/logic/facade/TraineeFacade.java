@@ -1,6 +1,7 @@
 package com.fitnesstraining.logic.facade;
 
 import com.fitnesstraining.domain.dto.abstraction.*;
+import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
@@ -38,7 +39,7 @@ public class TraineeFacade implements UserFacade {
         return updater.update(request);
     }
 
-    public GetUserResponse findByUsername(String username) {
+    public GetTraineeResponse findByUsername(String username) {
         return mapper.toGetTraineeResponse((Trainee) service.findByUsername(username));
     }
 
