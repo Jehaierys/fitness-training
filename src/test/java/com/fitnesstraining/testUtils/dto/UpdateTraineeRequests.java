@@ -83,7 +83,7 @@ public final class UpdateTraineeRequests {
                     .build();
         }
 
-        public static UpdateTraineeRequest invalidSymbols() {
+        public static UpdateTraineeRequest forbiddenCharacter() {
             return UpdateTraineeRequest.builder()
                     .username("ol!v!@") // invalid symbol
                     .firstName("Olivi@") // invalid symbol
