@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // Checks proper validation
 // And correct response status
 
-// register, update, setActive operations are covered
+// register, update operations are covered
 // todo: delete and findByUsername are up to be covered
 
 // CHECKSTYLE.OFF
@@ -170,7 +170,7 @@ public class TraineeControllerTest {
 
         @Test
         void forbiddenCharacter() throws Exception {
-            registerRequest = RegisterTraineeRequests.Invalid.forbiddenCharacter();
+            registerRequest = RegisterTraineeRequests.Invalid.forbiddenCharacters();
 
             mockMvc.perform(template(registerRequest))
                     .andExpect(status().isBadRequest())
@@ -248,7 +248,7 @@ public class TraineeControllerTest {
 
         @Test
         void forbiddenCharacter() throws Exception {
-            updateRequest = UpdateTraineeRequests.Invalid.forbiddenCharacter();
+            updateRequest = UpdateTraineeRequests.Invalid.forbiddenCharacters();
 
             mockMvc.perform(template(updateRequest))
                     .andExpect(status().isBadRequest())
