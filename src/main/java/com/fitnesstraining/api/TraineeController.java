@@ -1,6 +1,5 @@
 package com.fitnesstraining.api;
 
-import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
 import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
 import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
@@ -45,11 +44,5 @@ public class TraineeController implements TraineeControllerApi {
     public ResponseEntity<GetTraineeResponse> findByUsername(String username) {
         log.info("Received find by username request for trainee: {}", username);
         return ResponseEntity.ok(facade.findByUsername(username));
-    }
-
-    public ResponseEntity<HttpStatus> setActive(Activated request) {
-        log.info("Received set active request for trainee: {}", request.getUsername());
-        facade.setActive(request);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 }

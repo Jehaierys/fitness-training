@@ -5,7 +5,6 @@ import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
 import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
@@ -41,13 +40,6 @@ public class TraineeFacade implements UserFacade {
 
     public GetTraineeResponse findByUsername(String username) {
         return mapper.toGetTraineeResponse((Trainee) service.findByUsername(username));
-    }
-
-    @Transactional
-    public void setActive(Activated request) {
-        final User user = service.findByUsername(request.getUsername());
-        user.setActive(request.getIsActive());
-        service.update(user);
     }
 
     @Transactional
