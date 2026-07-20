@@ -166,8 +166,12 @@ public interface CoachControllerApi {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-    // todo: to @PathVariable
-    @GetMapping("/available")
+
+    // My convention:
+    // GET /trainings?available - ok
+    // GET /trainings?available=true - forbidden
+    // GET /trainings?available=false - forbidden
+    @GetMapping(params = "available")
     ResponseEntity<List<CoachDto>> findAvailableCoaches(
             @Parameter(hidden = true)
             @AuthenticationPrincipal User user
