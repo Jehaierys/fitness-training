@@ -21,7 +21,6 @@ import java.time.LocalDate;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateTraineeRequest extends UpdateUserRequest {
 
-    @NotNull(message = "Birth date cannot be null")
     @Past(message = "Birth date must be in the past and represent a realistic age")
     @Schema(description = "Trainee's birth date", example = "1995-05-15", minimum = "1900-01-01")
     LocalDate birthDate;
