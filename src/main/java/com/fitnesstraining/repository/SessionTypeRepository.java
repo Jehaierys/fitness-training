@@ -2,7 +2,6 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.logic.exception.SessionNotFoundException;
-import com.fitnesstraining.repository.abstration.SessionTypeRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultSessionTypeRepository implements SessionTypeRepository {
+public class SessionTypeRepository {
 
     private final EntityManager entityManager;
 

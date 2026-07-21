@@ -1,8 +1,8 @@
 package com.fitnesstraining.logic.service;
 
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.repository.abstration.SessionTypeRepository;
 import com.fitnesstraining.logic.abstraction.SessionTypeService;
+import com.fitnesstraining.repository.SessionTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.SessionTypeNotFound;
 @RequiredArgsConstructor
 public class DefaultSessionTypeService implements SessionTypeService {
 
-    private SessionTypeRepository repository;
+    private final SessionTypeRepository repository;
 
 
     public List<SessionType> findAll() {

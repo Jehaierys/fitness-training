@@ -1,7 +1,6 @@
 package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.*;
-import com.fitnesstraining.repository.abstration.SessionRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DefaultSessionRepository implements SessionRepository {
+public class SessionRepository {
 
     private final EntityManager entityManager;
 
