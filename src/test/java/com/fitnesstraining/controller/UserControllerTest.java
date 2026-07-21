@@ -6,7 +6,6 @@ import com.fitnesstraining.config.JacksonTestConfig;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.service.UserService;
-import com.fitnesstraining.testUtils.TestMapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,9 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
@@ -27,8 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
+@Import({JacksonTestConfig.class})
 @AutoConfigureMockMvc(addFilters = false)
-@Import({TestMapper.class, JacksonTestConfig.class})
 public class UserControllerTest {
 
     @Autowired
@@ -44,15 +46,15 @@ public class UserControllerTest {
         @Test
         void onValidActivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(service).setActive(eq("username"), eq(true), any(User.class));
+            doNothing().when(service).setActive(any(String.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch("/v1-0-0/users")
-                            .param("username", "username")
+                            .param("username", "username123")
                             .param("active", "true"))
                     .andExpect(status().isOk());
 
             verify(service).setActive(
-                    eq("username"),
+                    eq("username123"),
                     eq(true),
                     isNull()
             );
@@ -61,15 +63,15 @@ public class UserControllerTest {
         @Test
         void onValidDeactivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(service).setActive(eq("username"), eq(false), any(User.class));
+            doNothing().when(service).setActive(any(String.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch("/v1-0-0/users")
-                            .param("username", "username")
+                            .param("username", "username123")
                             .param("active", "false"))
                     .andExpect(status().isOk());
 
             verify(service).setActive(
-                    eq("username"),
+                    eq("username123"),
                     eq(false),
                     isNull()
             );
@@ -83,7 +85,7 @@ public class UserControllerTest {
         @Test
         void onValidActivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(service).setActive(eq(100L), eq(true), any(User.class));
+            doNothing().when(service).setActive(any(Long.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch("/v1-0-0/users/100")
                             .param("active", "true"))
@@ -99,7 +101,7 @@ public class UserControllerTest {
         @Test
         void onValidDeactivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(service).setActive(eq(100L), eq(false), any(User.class));
+            doNothing().when(service).setActive(any(Long.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch("/v1-0-0/users/100")
                             .param("active", "false"))
@@ -116,18 +118,24 @@ public class UserControllerTest {
 
 
     // todo
-    @Test
     @Disabled
+    @Test
     void principal() throws Exception {
 
         Trainee principal = Trainee.builder()
                 .id(1L)
-                .username("admin")
+                .username("username")
                 .build();
+
+        Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(
+                principal,
+                null,
+                Collections.emptyList()
+        );
 
         mockMvc.perform(patch("/v1-0-0/users/100")
                         .param("active", "true")
-                        .principal(new TestingAuthenticationToken(principal, null)))
+                        .principal(authentication))
                 .andExpect(status().isOk());
 
         ArgumentCaptor<Trainee> captor = ArgumentCaptor.forClass(Trainee.class);
@@ -138,7 +146,7 @@ public class UserControllerTest {
                 captor.capture()
         );
 
-        assertEquals("admin", captor.getValue().getUsername());
+        assertEquals("username", captor.getValue().getUsername());
         assertEquals(1L, captor.getValue().getId());
     }
 }

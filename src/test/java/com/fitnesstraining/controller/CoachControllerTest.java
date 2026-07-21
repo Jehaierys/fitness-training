@@ -6,6 +6,7 @@ import com.fitnesstraining.api.CoachController;
 import com.fitnesstraining.config.JacksonTestConfig;
 import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import com.fitnesstraining.testUtils.TestMapper;
 import com.fitnesstraining.testUtils.dto.RegisterCoachRequests;
@@ -22,6 +23,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,6 +67,7 @@ public class CoachControllerTest {
                     .andExpect(status().isCreated());
         }
 
+
         @Test
         void updateRequest_shouldNotThrowExceptions() throws Exception {
             updateRequest = UpdateCoachRequests.valid();
@@ -73,8 +77,6 @@ public class CoachControllerTest {
                     .content(objectMapper.writeValueAsString(updateRequest)))
                     .andExpect(status().isOk());
         }
-
-
     }
 
 
@@ -87,9 +89,13 @@ public class CoachControllerTest {
                     .content(objectMapper.writeValueAsString(request));
         }
 
+
         @Test
         void missingCrucialData() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.missingCrucialData();
+
+            when(facade.register(any(RegisterCoachRequest.class)))
+                    .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
                     .andExpect(status().isBadRequest())
@@ -103,6 +109,8 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.Password.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.specialization")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
+
+            verify(facade, never()).register(any(RegisterCoachRequest.class));
         }
 
 
@@ -110,6 +118,9 @@ public class CoachControllerTest {
         void tooShort() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.tooShort();
 
+            when(facade.register(any(RegisterCoachRequest.class)))
+                    .thenReturn(null);
+
             mockMvc.perform(template(registerRequest))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.username")
@@ -120,12 +131,17 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.LastName.SIZE))
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.SIZE));
+
+            verify(facade, never()).register(any(RegisterCoachRequest.class));
         }
 
         @Test
         void tooLong() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.tooLong();
 
+            when(facade.register(any(RegisterCoachRequest.class)))
+                    .thenReturn(null);
+
             mockMvc.perform(template(registerRequest))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.username")
@@ -136,11 +152,16 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.LastName.SIZE))
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.SIZE));
+
+            verify(facade, never()).register(any(RegisterCoachRequest.class));
         }
 
         @Test
         void forbiddenCharacter() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.forbiddenCharacters();
+
+            when(facade.register(any(RegisterCoachRequest.class)))
+                    .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
                     .andExpect(status().isBadRequest())
@@ -150,6 +171,8 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.FirstName.PATTERN))
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
+
+            verify(facade, never()).register(any(RegisterCoachRequest.class));
         }
     }
 
@@ -166,6 +189,9 @@ public class CoachControllerTest {
         void missingCrucialData() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.missingCrucialData();
 
+            when(facade.update(any(UpdateCoachRequest.class)))
+                    .thenReturn(null);
+
             mockMvc.perform(template(updateRequest))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.firstName")
@@ -178,12 +204,17 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.IS_ACTIVE_CANNOT_BE_NULL))
                     .andExpect(jsonPath("$.details.specialization")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
+
+            verify(facade, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void tooShort() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.tooShort();
 
+            when(facade.update(any(UpdateCoachRequest.class)))
+                    .thenReturn(null);
+
             mockMvc.perform(template(updateRequest))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.username")
@@ -192,12 +223,17 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.FirstName.SIZE))
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.SIZE));
+
+            verify(facade, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void tooLong() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.tooLong();
 
+            when(facade.update(any(UpdateCoachRequest.class)))
+                    .thenReturn(null);
+
             mockMvc.perform(template(updateRequest))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.details.username")
@@ -206,11 +242,16 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.FirstName.SIZE))
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.SIZE));
+
+            verify(facade, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void forbiddenCharacter() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.forbiddenCharacters();
+
+            when(facade.update(any(UpdateCoachRequest.class)))
+                    .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
                     .andExpect(status().isBadRequest())
@@ -220,6 +261,8 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.FirstName.PATTERN))
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
+
+            verify(facade, never()).update(any(UpdateCoachRequest.class));
         }
     }
 }
