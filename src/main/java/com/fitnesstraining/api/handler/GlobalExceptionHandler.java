@@ -35,17 +35,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleHandlerMethodValidationException(
             HandlerMethodValidationException ex
     ) {
-        Map<String, String> errors = new HashMap<>();
+        final Map<String, String> errors = new HashMap<>();
 
         ex.getParameterValidationResults().forEach(result -> {
-            String parameterName = result.getMethodParameter().getParameterName();
+            final String parameterName = result.getMethodParameter().getParameterName();
 
             result.getResolvableErrors().forEach(error ->
                     errors.put(parameterName, error.getDefaultMessage())
             );
         });
 
-        ErrorResponse response = ErrorResponse.builder()
+        final ErrorResponse response = ErrorResponse.builder()
                 .message("Validation failed")
                 .details(errors)
                 .build();
