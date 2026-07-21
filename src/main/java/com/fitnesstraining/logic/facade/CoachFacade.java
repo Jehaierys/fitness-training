@@ -1,10 +1,12 @@
 package com.fitnesstraining.logic.facade;
 
-import com.fitnesstraining.domain.dto.abstraction.*;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.GetUserResponse;
+import com.fitnesstraining.domain.dto.request.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.CoachMapper;
@@ -50,10 +52,4 @@ public class CoachFacade implements UserFacade {
         return searcher.findAvailable(traineeId);
     }
 
-    @Transactional
-    public void setActive(Activated request) {
-        final User user = service.findByUsername(request.getUsername());
-        user.setActive(request.getIsActive());
-        service.update(user);
-    }
 }

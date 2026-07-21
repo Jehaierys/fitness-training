@@ -10,6 +10,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "session_types")

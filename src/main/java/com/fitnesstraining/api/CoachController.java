@@ -1,20 +1,18 @@
 package com.fitnesstraining.api;
 
-import com.fitnesstraining.domain.dto.abstraction.Activated;
 import com.fitnesstraining.api.openapi.CoachControllerApi;
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.CoachFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,23 +33,13 @@ public class CoachController implements CoachControllerApi {
         );
     }
 
-    public ResponseEntity<UpdateCoachResponse> update(UpdateUserRequest request) {
+    public ResponseEntity<UpdateCoachResponse> update(UpdateCoachRequest request) {
         return ResponseEntity.ok(facade.update(request));
     }
 
     public ResponseEntity<GetCoachResponse> findByUsername(String username) {
         log.info("Received find by username request for coach: {}", username);
         return ResponseEntity.ok((GetCoachResponse) facade.findByUsername(username));
-    }
-
-    public ResponseEntity<HttpStatus> setActive(Activated request, UserDetails principal) {
-        if (!request.getUsername().equals(principal.getUsername())) {
-            throw new RuntimeException("Unauthorized request");
-        }
-
-        log.info("Received set active request for coach: {}", request.getUsername());
-        facade.setActive(request);
-        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     public ResponseEntity<List<CoachDto>> findAvailableCoaches(User user) {

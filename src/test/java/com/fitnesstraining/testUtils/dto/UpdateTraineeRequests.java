@@ -1,10 +1,12 @@
 package com.fitnesstraining.testUtils.dto;
 
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 
 import java.time.LocalDate;
 
 public final class UpdateTraineeRequests {
+
+    private UpdateTraineeRequests() {}
 
     public static final class Valid {
 
@@ -81,7 +83,7 @@ public final class UpdateTraineeRequests {
                     .build();
         }
 
-        public static UpdateTraineeRequest invalidSymbols() {
+        public static UpdateTraineeRequest forbiddenCharacters() {
             return UpdateTraineeRequest.builder()
                     .username("ol!v!@") // invalid symbol
                     .firstName("Olivi@") // invalid symbol

@@ -1,6 +1,6 @@
 package com.fitnesstraining.testUtils.dto;
 
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
 import com.fitnesstraining.testUtils.entity.SessionTypes;
 
 import java.util.List;
@@ -57,6 +57,16 @@ public final class UpdateCoachRequests {
                     .firstName("A".repeat(51)) // max 50
                     .lastName("B".repeat(51)) // max 50
                     .username("C".repeat(51)) // max 50
+                    .isActive(true)
+                    .specialization(List.of(SessionTypes.cardio()))
+                    .build();
+        }
+
+        public static UpdateCoachRequest forbiddenCharacters() {
+            return UpdateCoachRequest.builder()
+                    .firstName("Carlos@") // forbidden character
+                    .lastName("Santana#") // forbidden character
+                    .username("carlos.santana!") // forbidden character
                     .isActive(true)
                     .specialization(List.of(SessionTypes.cardio()))
                     .build();

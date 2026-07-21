@@ -2,14 +2,12 @@ package com.fitnesstraining.testUtils.entity;
 
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Trainee;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 // All these users are valid by default
 
+// CHECKSTYLE.OFF
 public final class Users {
 
     private Users() {}
@@ -25,12 +23,6 @@ public final class Users {
                 .username("carlos")
                 .password("password123")
                 .isActive(true)
-                .specialization(
-                        List.of(
-                                SessionTypes.cardio(),
-                                SessionTypes.yoga()
-                        )
-                )
                 .build();
     }
 
@@ -42,13 +34,6 @@ public final class Users {
                 .username("alice")
                 .password("password123")
                 .isActive(true)
-                .specialization(
-                        List.of(
-                                SessionTypes.yoga(),
-                                SessionTypes.pilates(),
-                                SessionTypes.cardio()
-                        )
-                )
                 .build();
     }
 
@@ -60,12 +45,6 @@ public final class Users {
                 .username("bob")
                 .password("password123")
                 .isActive(true)
-                .specialization(
-                        List.of(
-                                SessionTypes.zumba(),
-                                SessionTypes.yoga()
-                        )
-                )
                 .build();
     }
 
@@ -77,13 +56,6 @@ public final class Users {
                 .username("david")
                 .password("password123")
                 .isActive(true)
-                .specialization(
-                        List.of(
-                                SessionTypes.cardio(),
-                                SessionTypes.crossfit(),
-                                SessionTypes.strengthTraining()
-                        )
-                )
                 .build();
     }
 
@@ -95,12 +67,6 @@ public final class Users {
                 .username("emma")
                 .password("password123")
                 .isActive(true)
-                .specialization(
-                        List.of(
-                                SessionTypes.strengthTraining(),
-                                SessionTypes.zumba()
-                        )
-                )
                 .build();
     }
 

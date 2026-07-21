@@ -1,7 +1,9 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.SessionControllerApi;
-import com.fitnesstraining.domain.dto.session.*;
+import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.SessionFacade;
 import lombok.RequiredArgsConstructor;

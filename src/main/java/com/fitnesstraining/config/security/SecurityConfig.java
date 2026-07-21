@@ -54,8 +54,8 @@ public class SecurityConfig {
             // Registration endpoints
             .requestMatchers(
                     HttpMethod.POST,
-                    "/trainees",
-                    "/coaches"
+                    "/**/trainees",
+                    "/**/coaches"
             ).permitAll()
 
             // Everything else requires authentication

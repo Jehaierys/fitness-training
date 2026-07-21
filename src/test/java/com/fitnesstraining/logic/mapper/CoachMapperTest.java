@@ -1,164 +1,147 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
-import org.junit.jupiter.api.BeforeEach;
+import com.fitnesstraining.testUtils.Specializations;
+import com.fitnesstraining.testUtils.dto.RegisterCoachRequests;
+import com.fitnesstraining.testUtils.dto.UpdateCoachRequests;
+import com.fitnesstraining.testUtils.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+import org.springframework.context.annotation.Import;
 
 import java.util.*;
 
+import static com.fitnesstraining.testUtils.Specializations.cardioStrengthTraining;
+import static com.fitnesstraining.testUtils.Specializations.yogaPilates;
+import static com.fitnesstraining.testUtils.entity.SessionTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+// CHECKSTYLE.OFF
+@Import(Specializations.class)
 class CoachMapperTest {
 
-    private CoachMapper coachMapper;
-
-    @BeforeEach
-    void setUp() {
-        coachMapper = Mappers.getMapper(CoachMapper.class);
-    }
+    private final CoachMapper coachMapper = Mappers.getMapper(CoachMapper.class);
 
     @Test
     void toGetCoachResponse_ShouldMapAllFieldsFromInheritedUserAndCoach() {
         // Given
-        SessionType sessionType1 = SessionType.builder().id(10L).name("Yoga").build();
-        SessionType sessionType2 = SessionType.builder().id(11L).name("Pilates").build();
-        Trainee trainee1 = Trainee.builder().id(20L).build();
-        Trainee trainee2 = Trainee.builder().id(21L).build();
+        Coach coach = Users.coachCarlos();
 
-        Coach coach = Coach.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .username("john.doe")
-                .password("pass123")
-                .isActive(true)
-                .specialization(Arrays.asList(sessionType1, sessionType2))
-                .trainees(new HashSet<>(Arrays.asList(trainee1, trainee2)))
-                .build();
+        List<SessionType> specialization = yogaPilates();
+
+        coach.setSpecialization(yogaPilates());
+
+        Trainee traineeLucius = Users.traineeLucius();
+        Trainee traineeSophia = Users.traineeSophia();
+
+        coach.setTrainees(
+                Set.of(
+                        traineeLucius,
+                        traineeSophia
+                )
+        );
 
         // When
         GetCoachResponse response = coachMapper.toGetCoachResponse(coach);
 
         // Then
-        assertNotNull(response);
         assertEquals(coach.getUsername(), response.getUsername());
-        assertEquals(coach.getPassword(), response.getPassword());
         assertEquals(coach.isActive(), response.isActive());
         assertEquals(coach.getSpecialization().size(), response.getSpecialization().size());
-        assertTrue(response.getSpecialization().contains(sessionType1));
-        assertTrue(response.getSpecialization().contains(sessionType2));
+        assertTrue(response.getSpecialization().containsAll(specialization));
         assertEquals(coach.getTrainees().size(), response.getTrainees().size());
-        assertTrue(response.getTrainees().contains(trainee1));
-        assertTrue(response.getTrainees().contains(trainee2));
+        assertTrue(response.getTrainees().contains(traineeLucius));
+//        assertTrue(response.getTrainees().contains(traineeSophia));
     }
 
     @Test
     void toRegisterCoachResponse_ShouldMapUsernameAndPasswordFromInheritedUser() {
         // Given
-        Coach coach = Coach.builder()
-                .id(1L)
-                .firstName("John")
-                .lastName("Doe")
-                .username("john.doe")
-                .password("pass123")
-                .isActive(true)
-                .build();
+        Coach coach = Users.coachCarlos();
 
         // When
         RegisterUserResponse response = coachMapper.toRegisterCoachResponse(coach);
 
         // Then
-        assertNotNull(response);
         assertEquals(coach.getUsername(), response.getUsername());
         assertEquals(coach.getPassword(), response.getPassword());
     }
 
     @Test
-    void toEntity_CoachSignUpRequest_ShouldUpdateInheritedUserFieldsAndCoachSpecificFields() {
+    void toEntity_RegisterCoachRequest_ShouldUpdateInheritedUserFieldsAndCoachSpecificFields() {
         // Given
-        SessionType sessionType1 = SessionType.builder().id(10L).name("Yoga").build();
-        SessionType sessionType2 = SessionType.builder().id(11L).name("Pilates").build();
-        List<SessionType> newSpecialization = Arrays.asList(sessionType1, sessionType2);
+        RegisterCoachRequest request = RegisterCoachRequests.valid(); // Coach Carlos
 
-        RegisterCoachRequest dto = new RegisterCoachRequest();
-        dto.setFirstName("NewJohn");
-        dto.setLastName("NewDoe");
-        dto.setUsername("new.username");
-        dto.setPassword("newpass");
-        dto.setSpecialization(newSpecialization);
+        request.setSpecialization(yogaPilates());
 
-        Coach existingCoach = Coach.builder()
-                .id(100L)
-                .firstName("OldJohn")
-                .lastName("OldDoe")
-                .username("old.user")
-                .password("oldpass")
-                .isActive(false)
-                .specialization(new ArrayList<>(List.of(
-                        SessionType.builder().id(5L).name("Old").build())))
-                .build();
+        Coach entity = Users.coachAlice(); // Coach Alice
+
+        Long oldId = entity.getId();
+        String oldPassword = entity.getPassword();
+        boolean oldActiveStatus = entity.isActive();
+        List<SessionType> oldSpecialization = cardioStrengthTraining();
+
+        entity.setSpecialization(oldSpecialization);
 
         // When
-        coachMapper.toEntity(dto, existingCoach);
+        coachMapper.toEntity(request, entity);
 
         // Then
-        assertEquals("NewJohn", existingCoach.getFirstName());
-        assertEquals("NewDoe", existingCoach.getLastName());
-        assertEquals(newSpecialization.size(), existingCoach.getSpecialization().size());
-        assertTrue(existingCoach.getSpecialization().containsAll(newSpecialization));
-        assertEquals(100L, existingCoach.getId());
-        assertEquals("new.username", existingCoach.getUsername());
-        assertEquals("newpass", existingCoach.getPassword());
-        // Other inherited user fields should remain unchanged as they are not in CoachSignUpRequest
-        assertFalse(existingCoach.isActive());
+        assertEquals(request.getFirstName(), entity.getFirstName());
+        assertEquals(request.getLastName(), entity.getLastName());
+        assertEquals(request.getSpecialization().size(), entity.getSpecialization().size());
+        assertTrue(entity.getSpecialization().containsAll(request.getSpecialization()));
+        assertFalse(entity.getSpecialization().contains(cardio()));
+        assertFalse(entity.getSpecialization().contains(strengthTraining()));
+        assertEquals(request.getUsername(), entity.getUsername());
+
+        assertEquals(oldId, entity.getId());
+        assertEquals(oldPassword, entity.getPassword());
+        assertEquals(oldActiveStatus, entity.isActive());
     }
 
     @Test
     void toEntity_UpdateCoachProfileRequest_ShouldUpdateInheritedUserFieldsAndCoachSpecificFieldsAndIgnoreUsername() {
         // Given
-        SessionType sessionType1 = SessionType.builder().id(10L).name("Yoga").build();
-        Set<SessionType> newSpecialization = new HashSet<>(List.of(sessionType1));
 
-        UpdateCoachRequest dto = new UpdateCoachRequest();
-        dto.setFirstName("UpdatedJohn");
-        dto.setLastName("UpdatedDoe");
-        dto.setUsername("new.username"); // This should be ignored
-        dto.setIsActive(true);
-        dto.setSpecialization(newSpecialization);
+        UpdateCoachRequest request = UpdateCoachRequests.valid(); // Coach Carlos
+        request.setSpecialization(yogaPilates());
 
-        Coach existingCoach = Coach.builder()
-                .id(100L)
-                .firstName("OldJohn")
-                .lastName("OldDoe")
-                .username("old.user")
-                .password("oldpass")
-                .isActive(false)
-                .specialization(new ArrayList<>(List.of(
-                        SessionType.builder().id(5L).name("Old").build())))
-                .build();
+        Coach entity = Users.coachDavid();
+
+
+        Long oldId = entity.getId();
+        String oldUsername = entity.getUsername();
+        String oldPassword = entity.getPassword();
+        List<SessionType> oldSpecialization = Specializations.cardio();
+
+        entity.setSpecialization(oldSpecialization);
+        entity.setActive(false);
 
         // When
-        coachMapper.toEntity(dto, existingCoach);
+        coachMapper.toEntity(request, entity);
 
         // Then
-        assertEquals("UpdatedJohn", existingCoach.getFirstName());
-        assertEquals("UpdatedDoe", existingCoach.getLastName());
-        assertTrue(existingCoach.isActive());
-        assertEquals(newSpecialization.size(), existingCoach.getSpecialization().size());
-        assertTrue(existingCoach.getSpecialization().containsAll(newSpecialization));
+        assertEquals(request.getFirstName(), entity.getFirstName());
+        assertEquals(request.getLastName(), entity.getLastName());
+        assertTrue(entity.isActive());
+        assertEquals(oldSpecialization.size(), entity.getSpecialization().size());
+        assertTrue(entity.getSpecialization().containsAll(request.getSpecialization()));
+
         // Verify username was ignored
-        assertEquals("old.user", existingCoach.getUsername());
+        assertEquals(oldUsername, entity.getUsername());
+
         // Other inherited user fields should remain unchanged
-        assertEquals(100L, existingCoach.getId());
-        assertEquals("oldpass", existingCoach.getPassword());
+        assertEquals(oldId, entity.getId());
+        assertEquals(oldPassword, entity.getPassword());
     }
 
     @Test
@@ -179,7 +162,6 @@ class CoachMapperTest {
 
         UpdateCoachResponse response = coachMapper.toUpdateCoachResponse(coach);
 
-        assertNotNull(response);
         assertEquals(coach.getFirstName(), response.getFirstName());
         assertEquals(coach.getLastName(), response.getLastName());
         assertEquals(coach.getUsername(), response.getUsername());

@@ -1,6 +1,6 @@
 package com.fitnesstraining.logic.processor;
 
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.repository.dsl.Criteria;

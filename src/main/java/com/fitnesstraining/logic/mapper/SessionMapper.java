@@ -1,7 +1,7 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
-import com.fitnesstraining.domain.dto.session.SessionDto;
+import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.Session;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

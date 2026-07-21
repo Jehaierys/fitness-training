@@ -1,8 +1,8 @@
 package com.fitnesstraining.logic.processor;
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
 import com.fitnesstraining.repository.TraineeRepository;

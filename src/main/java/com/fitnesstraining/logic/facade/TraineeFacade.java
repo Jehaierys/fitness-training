@@ -1,10 +1,11 @@
 package com.fitnesstraining.logic.facade;
 
-import com.fitnesstraining.domain.dto.abstraction.*;
-import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.request.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.RegisterTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.abstraction.UserFacade;
 import com.fitnesstraining.logic.mapper.TraineeMapper;
@@ -38,15 +39,13 @@ public class TraineeFacade implements UserFacade {
         return updater.update(request);
     }
 
-    public GetUserResponse findByUsername(String username) {
+    public GetTraineeResponse findByUsername(String username) {
         return mapper.toGetTraineeResponse((Trainee) service.findByUsername(username));
     }
 
     @Transactional
-    public void setActive(Activated request) {
-        final User user = service.findByUsername(request.getUsername());
-        user.setActive(request.getIsActive());
-        service.update(user);
+    public void deleteByUsername(String username) {
+        service.deleteByUsername(username);
     }
 
 //    @Transactional
