@@ -5,9 +5,7 @@ import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
@@ -15,8 +13,10 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@ToString
 @SuperBuilder
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class UpdateTraineeRequest extends UpdateUserRequest {
 
