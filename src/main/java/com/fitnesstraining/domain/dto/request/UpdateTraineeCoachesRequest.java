@@ -1,4 +1,4 @@
-package com.fitnesstraining.domain.dto.trainee;
+package com.fitnesstraining.domain.dto.request;
 
 import lombok.Builder;
 import lombok.Value;

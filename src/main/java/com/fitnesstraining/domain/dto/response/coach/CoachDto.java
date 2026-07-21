@@ -1,4 +1,4 @@
-package com.fitnesstraining.domain.dto.coach.response;
+package com.fitnesstraining.domain.dto.response.coach;
 
 import com.fitnesstraining.domain.entity.SessionType;
 import lombok.Getter;

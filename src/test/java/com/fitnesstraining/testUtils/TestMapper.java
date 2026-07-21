@@ -1,11 +1,11 @@
 package com.fitnesstraining.testUtils;
 
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.RegisterCoachResponse;
-import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.RegisterCoachResponse;
+import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.response.trainee.RegisterTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import org.springframework.boot.test.context.TestComponent;
 
 @TestComponent

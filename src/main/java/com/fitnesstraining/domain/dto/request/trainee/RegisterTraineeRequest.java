@@ -1,6 +1,6 @@
-package com.fitnesstraining.domain.dto.trainee.request;
+package com.fitnesstraining.domain.dto.request.trainee;
 
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.request.RegisterUserRequest;
 import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Past;

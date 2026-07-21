@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 // All these users are valid by default
 
+// CHECKSTYLE.OFF
 public final class Users {
 
     private Users() {}

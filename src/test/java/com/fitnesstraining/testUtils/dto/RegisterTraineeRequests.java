@@ -1,6 +1,6 @@
 package com.fitnesstraining.testUtils.dto;
 
-import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 
 import java.time.LocalDate;
 

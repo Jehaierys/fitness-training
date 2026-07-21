@@ -1,4 +1,4 @@
-package com.fitnesstraining.domain.dto.session;
+package com.fitnesstraining.domain.dto.response;
 
 import com.fitnesstraining.domain.entity.SessionType;
 

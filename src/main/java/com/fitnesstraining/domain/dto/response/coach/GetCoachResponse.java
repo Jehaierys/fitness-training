@@ -1,6 +1,6 @@
-package com.fitnesstraining.domain.dto.coach.response;
+package com.fitnesstraining.domain.dto.response.coach;
 
-import com.fitnesstraining.domain.dto.abstraction.GetUserResponse;
+import com.fitnesstraining.domain.dto.response.GetUserResponse;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
 import lombok.*;

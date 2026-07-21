@@ -1,4 +1,4 @@
-package com.fitnesstraining.domain.dto.abstraction;
+package com.fitnesstraining.domain.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

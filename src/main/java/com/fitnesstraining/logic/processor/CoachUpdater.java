@@ -1,9 +1,9 @@
 package com.fitnesstraining.logic.processor;
 
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.logic.mapper.CoachMapper;
 import com.fitnesstraining.repository.CoachRepository;

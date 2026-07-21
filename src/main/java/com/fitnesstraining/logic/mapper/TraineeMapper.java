@@ -1,10 +1,10 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.RegisterTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.RegisterTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

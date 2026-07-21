@@ -1,7 +1,7 @@
 package com.fitnesstraining.logic.processor;
 
-import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
-import com.fitnesstraining.domain.dto.session.SessionDto;
+import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.Trainee;

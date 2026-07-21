@@ -1,11 +1,11 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.TraineeControllerApi;
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import com.fitnesstraining.logic.facade.TraineeFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

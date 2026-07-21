@@ -1,6 +1,6 @@
-package com.fitnesstraining.domain.dto.coach.request;
+package com.fitnesstraining.domain.dto.request.coach;
 
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.request.RegisterUserRequest;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.utils.ValidationErrorMessages;
 import jakarta.validation.constraints.NotEmpty;

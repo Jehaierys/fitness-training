@@ -1,6 +1,6 @@
-package com.fitnesstraining.domain.dto.trainee.response;
+package com.fitnesstraining.domain.dto.response.trainee;
 
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

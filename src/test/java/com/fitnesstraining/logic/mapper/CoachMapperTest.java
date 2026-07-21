@@ -1,17 +1,16 @@
 package com.fitnesstraining.logic.mapper;
 
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.testUtils.Specializations;
 import com.fitnesstraining.testUtils.dto.RegisterCoachRequests;
 import com.fitnesstraining.testUtils.dto.UpdateCoachRequests;
-import com.fitnesstraining.testUtils.entity.SessionTypes;
 import com.fitnesstraining.testUtils.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;

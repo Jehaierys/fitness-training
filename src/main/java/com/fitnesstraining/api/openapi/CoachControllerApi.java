@@ -1,12 +1,12 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

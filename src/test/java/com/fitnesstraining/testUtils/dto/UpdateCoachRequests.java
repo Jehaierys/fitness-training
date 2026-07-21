@@ -1,6 +1,6 @@
 package com.fitnesstraining.testUtils.dto;
 
-import com.fitnesstraining.domain.dto.coach.request.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
 import com.fitnesstraining.testUtils.entity.SessionTypes;
 
 import java.util.List;

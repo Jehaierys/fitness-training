@@ -7,6 +7,7 @@ import com.fitnesstraining.testUtils.entity.SessionTypes;
 import java.util.ArrayList;
 import java.util.List;
 
+// CHECKSTYLE.OFF
 public final class Specializations {
 
     private Specializations() {}

@@ -1,8 +1,11 @@
 package com.fitnesstraining.logic.facade;
 
-import com.fitnesstraining.domain.dto.abstraction.*;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.GetUserResponse;
+import com.fitnesstraining.domain.dto.request.RegisterUserRequest;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.logic.abstraction.CoachService;
 import com.fitnesstraining.logic.abstraction.UserFacade;

@@ -1,4 +1,4 @@
-package com.fitnesstraining.domain.dto.session;
+package com.fitnesstraining.domain.dto.request.session;
 
 import jakarta.validation.constraints.*;
 import lombok.*;

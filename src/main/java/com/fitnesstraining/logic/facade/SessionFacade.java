@@ -1,6 +1,8 @@
 package com.fitnesstraining.logic.facade;
 
-import com.fitnesstraining.domain.dto.session.*;
+import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.logic.processor.SessionCreator;
 import com.fitnesstraining.logic.processor.SessionSearcher;
 import jakarta.transaction.Transactional;

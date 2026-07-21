@@ -1,6 +1,6 @@
-package com.fitnesstraining.domain.dto.trainee.response;
+package com.fitnesstraining.domain.dto.response.trainee;
 
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserResponse;
+import com.fitnesstraining.domain.dto.response.UpdateUserResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import lombok.Getter;
 import lombok.Setter;
