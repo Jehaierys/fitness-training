@@ -20,8 +20,12 @@ import java.time.LocalDate;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class RegisterTraineeRequest extends RegisterUserRequest {
 
-    @Past(message = "Birth date must be in the past and represent a realistic age")
-    @Schema(description = "Trainee's birth date", example = "1990-01-01", minimum = "1900-01-01")
+    @Past(message = ValidationErrorMessages.BirthDate.PAST)
+    @Schema(
+            description = "Trainee's birth date",
+            example = "1990-01-01",
+            minimum = "1900-01-01"
+    )
     LocalDate birthDate;
 
     @Size(min = 5, max = 255, message = ValidationErrorMessages.Address.SIZE)

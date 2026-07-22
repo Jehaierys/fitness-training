@@ -1,5 +1,6 @@
 package com.fitnesstraining.domain.dto.request.session;
 
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,14 +17,14 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SessionRegistrationRequest {
 
-    @NotBlank(message = "Trainee username cannot be blank")
-    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Username can only contain letters, numbers, dots, and underscores")
+    @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+    @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
     String traineeUsername;
 
-    @NotBlank(message = "Coach username cannot be blank")
-    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Username can only contain letters, numbers, dots, and underscores")
+    @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+    @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
     String coachUsername;
 
     @NotBlank(message = "Session type name cannot be blank")
