@@ -1,15 +1,27 @@
 package com.fitnesstraining.repository;
 
 
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.PostgreSQLR2DBCDatabaseContainer;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 public interface PostgresTestContainer {
 
+    // todo: credentials?
     @Container
-    PostgreSQLR2DBCDatabaseContainer container
-            = new PostgreSQLR2DBCDatabaseContainer(
-                    new PostgreSQLContainer<>("postgres:15.3")
-    );
+    @ServiceConnection
+    PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:16-bookworm")
+            .withDatabaseName("fitness")
+            .withUsername("postgres")
+            .withPassword("1234");
+
+//     todo: what's this?
+//    @DynamicPropertySource
+//    static void configureProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
+//        registry.add("spring.datasource.username", POSTGRES::getUsername);
+//        registry.add("spring.datasource.password", POSTGRES::getPassword);
+//    }
 }
