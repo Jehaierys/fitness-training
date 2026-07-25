@@ -36,8 +36,10 @@ public class Criteria<T> {
 
 
     public Criteria<T> root(Class<T> entityClass) {
+
         this.criteriaQuery = criteriaBuilder.createQuery(entityClass);
         this.root = criteriaQuery.from(entityClass);
+
         return this;
     }
 
@@ -66,35 +68,48 @@ public class Criteria<T> {
     }
 
     public Criteria<T> limit(int limit) {
+
         if (paginationApplied) {
             throw new IllegalStateException("Pagination already applied");
         }
+
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be non-negative");
         }
+
+        this.limit = limit;
+
         paginationApplied = true;
-        this. limit = limit;
+
         return this;
     }
 
     public Criteria<T> offset(int offset) {
+
         if (offset < 0) {
             throw new IllegalArgumentException("Offset must be non-negative");
         }
+
         this.offset = offset;
+
         return this;
     }
 
     public Criteria<T> page(int page, int size) {
+
         if (paginationApplied) {
             throw new IllegalStateException("Pagination already applied");
         }
+
         if (page < 0 || size < 0) {
             throw new IllegalArgumentException("Page and size must be non-negative");
         }
+
         this.offset = page * size;
         this.limit = size;
+
         this.paginationApplied = true;
+
         return this;
     }
 
