@@ -31,8 +31,9 @@ public class CoachRepository {
         return mergedCoach;
     }
 
-    public Optional<Coach> findById(Long id) {
-        return Optional.ofNullable(entityManager.find(Coach.class, id));
+    public Coach findById(Long id) {
+        return Optional.ofNullable(entityManager.find(Coach.class, id))
+                .orElseThrow(CoachNotFound("Coach not found with id: " + id));
     }
 
     public Coach findByUsername(String username) {
