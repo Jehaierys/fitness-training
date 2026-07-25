@@ -22,6 +22,7 @@ import java.util.Set;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
+
 @Testcontainers
 @DataJpaTest(showSql = false)
 @Import(SessionRepository.class)
