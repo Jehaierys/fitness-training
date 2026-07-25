@@ -58,6 +58,12 @@ public class SecurityConfig {
                     "/**/coaches"
             ).permitAll()
 
+            // Actuator
+            .requestMatchers("/actuator/health/**").permitAll()
+            // todo: restrict
+            .requestMatchers("/actuator/prometheus").permitAll()
+            .requestMatchers("/actuator/**").hasRole("ADMIN")
+
             // Everything else requires authentication
             .anyRequest().authenticated();
 

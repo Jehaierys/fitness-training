@@ -1,5 +1,6 @@
 package com.fitnesstraining.domain.dto.request.session;
 
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,29 +32,29 @@ public class SessionSearchCriteria {
     LocalDateTime to;
 
 
-    @Size(min = 4, max = 30, message = "Coach username must be between 4 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Coach username can only contain letters, numbers, dots, and underscores")
+    @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
     String coachUsername;
 
-    @Size(min = 4, max = 30, message = "Trainee username must be between 4 and 30 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = "Trainee username can only contain letters, numbers, dots, and underscores")
+    @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+    @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
     String traineeUsername;
 
 
-    @Size(min = 2, max = 50, message = "Coach first name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "Coach first name can only contain letters, hyphens, and spaces")
+    @Size(min = 2, max = 50, message = ValidationErrorMessages.FirstName.SIZE)
+    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = ValidationErrorMessages.FirstName.PATTERN)
     String coachFirstName;
 
-    @Size(min = 2, max = 50, message = "Coach last name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "Coach last name can only contain letters, hyphens, and spaces")
+    @Size(min = 2, max = 50, message = ValidationErrorMessages.LastName.SIZE)
+    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = ValidationErrorMessages.LastName.PATTERN)
     String coachLastName;
 
-    @Size(min = 2, max = 50, message = "Coach first name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "Coach first name can only contain letters, hyphens, and spaces")
+    @Size(min = 2, max = 50, message = ValidationErrorMessages.FirstName.SIZE)
+    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = ValidationErrorMessages.FirstName.PATTERN)
     String traineeFirstName;
 
-    @Size(min = 2, max = 50, message = "Coach last name must be between 2 and 50 characters")
-    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = "Coach last name can only contain letters, hyphens, and spaces")
+    @Size(min = 2, max = 50, message = ValidationErrorMessages.LastName.SIZE)
+    @Pattern(regexp = "^[\\p{L}'\\-\\s]+$", message = ValidationErrorMessages.LastName.PATTERN)
     String traineeLastName;
 
 }
