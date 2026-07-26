@@ -2,6 +2,7 @@ package com.fitnesstraining.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -25,6 +26,9 @@ public final class Configurers {
 
     private final GrantedAuthority roleTrainee = new SimpleGrantedAuthority("ROLE_TRAINEE");
 
+    @Value("${app.cors.allowed-origins}")
+    private String[] allowedOrigins;
+
 
     void cors(CorsConfigurer<HttpSecurity> request) {
 
@@ -39,7 +43,7 @@ public final class Configurers {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowedOrigins(List.of(
-                "http://localhost:8080"
+                allowedOrigins
         ));
 
         corsConfiguration.setAllowedMethods(List.of(
@@ -49,6 +53,8 @@ public final class Configurers {
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setExposedHeaders(List.of("Location"));
         corsConfiguration.setAllowCredentials(true);
+
+        corsConfiguration.setMaxAge(3600L); // keep in browser for 1 hour
 
         return corsConfiguration;
     }
