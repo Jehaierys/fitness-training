@@ -1,5 +1,6 @@
 package com.fitnesstraining.config.security;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,5 +52,10 @@ public class SecurityConfiguration {
             AuthenticationConfiguration configuration
     ) {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public Dotenv dotenv() {
+        return Dotenv.load();
     }
 }
