@@ -1,50 +1,63 @@
 package com.fitnesstraining.config.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 
+@Component
+public final class Configurers {
 
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-public class SecurityConfig {
 
     private final GrantedAuthority roleCoach = new SimpleGrantedAuthority("ROLE_COACH");
+
     private final GrantedAuthority roleTrainee = new SimpleGrantedAuthority("ROLE_TRAINEE");
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
+    void cors(CorsConfigurer<HttpSecurity> request) {
 
-                .authorizeHttpRequests(authorizationRules::accept)
+        final CorsConfigurer<HttpSecurity> corsConfigurer = new CorsConfigurer<>();
 
-                // UsernamePasswordAuthenticationFilter enabled on POST /login:
-                .formLogin(formLoginConfiguration::accept)
+        corsConfigurer.configurationSource(this::corsConfiguration);
 
-                .httpBasic(AbstractHttpConfigurer::disable)
+    }
 
-                .build();
+    private CorsConfiguration corsConfiguration(HttpServletRequest request) {
+
+        final CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        corsConfiguration.setAllowedOrigins(List.of(
+                "http://localhost:8080"
+        ));
+
+        corsConfiguration.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "PATCH", "DELETE", "QUERY"
+        ));
+
+        corsConfiguration.setAllowedHeaders(List.of("*"));
+        corsConfiguration.setExposedHeaders(List.of("Location"));
+        corsConfiguration.setAllowCredentials(true);
+
+        return corsConfiguration;
+    }
+
+
+    void authorizationRules(
+            AuthorizeHttpRequestsConfigurer.AuthorizationManagerRequestMatcherRegistry auth
+    ) {
+        authorizationRules.accept(auth);
     }
 
     private final Consumer<AuthorizeHttpRequestsConfigurer<HttpSecurity>
@@ -66,6 +79,7 @@ public class SecurityConfig {
 
             // Everything else requires authentication
             .anyRequest().authenticated();
+
 
     private String[] whileList() {
         return new String[] {
@@ -92,6 +106,11 @@ public class SecurityConfig {
         };
     }
 
+    void formLogin(FormLoginConfigurer<HttpSecurity> configurer) {
+        formLoginConfiguration.accept(configurer);
+    }
+
+
     private final AuthenticationSuccessHandler authenticationSuccessHandler =
             (request, response, authentication) -> {
 
@@ -113,16 +132,4 @@ public class SecurityConfig {
             .usernameParameter("username")
             .passwordParameter("password")
             .successHandler(authenticationSuccessHandler);
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration
-    ) {
-        return configuration.getAuthenticationManager();
-    }
 }
