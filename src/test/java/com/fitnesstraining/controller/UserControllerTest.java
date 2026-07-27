@@ -3,6 +3,8 @@ package com.fitnesstraining.controller;
 
 import com.fitnesstraining.api.UserController;
 import com.fitnesstraining.config.JacksonTestConfig;
+import com.fitnesstraining.config.TestSecurityConfiguration;
+import com.fitnesstraining.config.security.JwtProcessor;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.service.UserService;
@@ -29,8 +31,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-@Import({JacksonTestConfig.class})
 @AutoConfigureMockMvc(addFilters = false)
+@Import({TestSecurityConfiguration.class, JacksonTestConfig.class})
 public class UserControllerTest {
 
     @Autowired

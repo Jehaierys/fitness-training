@@ -3,6 +3,8 @@ package com.fitnesstraining.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fitnesstraining.api.TraineeController;
 import com.fitnesstraining.config.JacksonTestConfig;
+import com.fitnesstraining.config.TestSecurityConfiguration;
+import com.fitnesstraining.config.security.JwtProcessor;
 import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 import com.fitnesstraining.logic.facade.TraineeFacade;
@@ -40,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // CHECKSTYLE.OFF
 @WebMvcTest(TraineeController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@Import({TestMapper.class, JacksonTestConfig.class})
+@Import({TestSecurityConfiguration.class, TestMapper.class, JacksonTestConfig.class})
 public class TraineeControllerTest {
 
     @Autowired
