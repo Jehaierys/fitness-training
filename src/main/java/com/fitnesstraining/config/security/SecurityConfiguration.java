@@ -2,8 +2,10 @@ package com.fitnesstraining.config.security;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,15 +15,21 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final Configurers configurers;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    public SecurityConfiguration(Configurers configurers, @Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.configurers = configurers;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
 
     @Bean
@@ -36,6 +44,11 @@ public class SecurityConfiguration {
                 // UsernamePasswordAuthenticationFilter enabled on POST /login:
                 .formLogin(configurers::formLogin)
 
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .build();
@@ -43,7 +56,7 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -55,6 +68,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    @Lazy
     public Dotenv dotenv() {
         return Dotenv.load();
     }
