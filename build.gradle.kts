@@ -34,10 +34,19 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.postgresql:postgresql")
+
+
+
+    // JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.12.7")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
 
 
 
@@ -46,13 +55,14 @@ dependencies {
 //    implementation("org.flywaydb:flyway-database-postgresql")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 //    testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
-//    testImplementation("org.springframework.security:spring-security-test")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
 
 
     // Test
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("org.springframework.security:spring-security-test")
 
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
