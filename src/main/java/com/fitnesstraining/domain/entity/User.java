@@ -47,4 +47,9 @@ public abstract class User implements UserDetails {
     public String getPassword() {
         return this.password;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActive;
+    }
 }
