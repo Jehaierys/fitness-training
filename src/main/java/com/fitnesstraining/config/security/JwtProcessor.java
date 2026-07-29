@@ -1,6 +1,7 @@
 package com.fitnesstraining.config.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,7 @@ import java.util.Date;
 public class JwtProcessor {
 
     private final UserDetailsService userDetailsService;
+//    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -53,20 +56,32 @@ public class JwtProcessor {
                 log.info("{} authenticated", username);
 
             }
-        } else {
-            // todo: throw anything
         }
     }
 
     private void extractClaims() {
-        final Claims claims =  Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
 
-        this.username = claims.getSubject();
-        this.expiration = claims.getExpiration();
+        try {
+            final Claims claims =  Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            this.username = claims.getSubject();
+            this.expiration = claims.getExpiration();
+
+        } catch (JwtException e) {
+            onMalformedJwt(e);
+        }
+    }
+
+    // todo
+    private void onMalformedJwt(JwtException exception) {
+
+        SecurityContextHolder.clearContext();
+        log.error("Error occurred while parsing JWT token", exception);
+        throw exception;
     }
 
     private void loadUSerDetails() {
