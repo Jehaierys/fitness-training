@@ -93,7 +93,7 @@ dependencies {
 
 
     // .env
-    implementation("io.github.cdimascio:java-dotenv:5.2.2")
+    implementation("me.paulschwarz:spring-dotenv:4.0.0")
 }
 
 dependencyManagement {

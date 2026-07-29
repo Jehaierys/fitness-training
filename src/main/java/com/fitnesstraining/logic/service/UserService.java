@@ -1,18 +1,18 @@
 package com.fitnesstraining.logic.service;
 
+import com.fitnesstraining.config.security.BruteForceProtector;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.repository.UserRepository;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,9 +30,12 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
+    private final BruteForceProtector bruteForceProtector;
     private final UserRepository repository;
     private final PasswordEncoder encoder;
-    private final Dotenv dotenv;
+
+    @Value("${jwt.secret}")
+    private static String jwtSecret;
 
 
     @Override
@@ -108,7 +111,7 @@ public class UserService implements UserDetailsService {
 
     private SecretKey getSigningKey() {
         // todo: I'll remake it later
-        byte[] keyBytes = Decoders.BASE64.decode(dotenv.get("JWT_SECRET"));
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
 
         return Keys.hmacShaKeyFor(keyBytes);
     }

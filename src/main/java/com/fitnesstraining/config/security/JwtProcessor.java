@@ -1,6 +1,5 @@
 package com.fitnesstraining.config.security;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -8,7 +7,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,24 +20,18 @@ import java.util.Date;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtProcessor {
 
     private final UserDetailsService userDetailsService;
-    private final String jwtSecret;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     private String token;
     private String username;
     private UserDetails userDetails;
     private Date expiration;
-
-
-    public JwtProcessor(
-            @Autowired UserDetailsService userDetailsService,
-            @Autowired Dotenv dotenv
-    ) {
-        this.userDetailsService = userDetailsService;
-        this.jwtSecret = dotenv.get("JWT_SECRET");
-    }
 
 
     public synchronized void process(String token, HttpServletRequest request) {
