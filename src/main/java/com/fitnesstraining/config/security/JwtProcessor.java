@@ -43,9 +43,9 @@ public class JwtProcessor {
 
 
     public synchronized void process(String token, HttpServletRequest request) {
-
         // todo: is it too big for logs?
         log.info("Processing JWT token: {}", token);
+
         this.token = token;
 
         extractClaims();
@@ -61,6 +61,8 @@ public class JwtProcessor {
                 log.info("{} authenticated", username);
 
             }
+        } else {
+            // todo: throw anything
         }
     }
 
