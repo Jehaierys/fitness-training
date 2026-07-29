@@ -1,10 +1,14 @@
 package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
+import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
+import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +24,11 @@ public class AuthenticationController implements AuthenticationControllerApi {
     @PutMapping("/password")
     public void changePassword(User user, String newPassword) {
         userService.changePassword(user, newPassword);
+    }
+
+    // todo: openapi
+    @PostMapping("/authentication")
+    public ResponseEntity<JwtAuthenticationResponse> login(UsernamePasswordAuthenticationRequest dto) {
+        return ResponseEntity.ok(userService.login(dto));
     }
 }

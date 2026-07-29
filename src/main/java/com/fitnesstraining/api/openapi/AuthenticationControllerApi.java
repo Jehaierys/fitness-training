@@ -1,6 +1,8 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
+import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
+import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,4 +49,26 @@ public interface AuthenticationControllerApi {
             @RequestParam String newPassword
     );
 
+
+
+    @Operation(
+            summary = "Authenticate user",
+            description = "Authenticates user with username and password and returns JWT access token"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Authentication successful",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = JwtAuthenticationResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Invalid username or password"
+            )
+    })
+    @PostMapping("/authentication")
+    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody UsernamePasswordAuthenticationRequest dto);
 }
