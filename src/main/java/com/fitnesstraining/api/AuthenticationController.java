@@ -4,31 +4,28 @@ import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.service.UserService;
+import com.fitnesstraining.logic.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthenticationController implements AuthenticationControllerApi {
 
-    // todo: move to facade
-    private final UserService userService;
+    private final UserFacade facade;
 
-
-    @PutMapping("/password")
     public void changePassword(User user, String newPassword) {
-        userService.changePassword(user, newPassword);
+        facade.changePassword(user, newPassword);
     }
 
-    // todo: openapi
-    @PostMapping("/authentication")
-    public ResponseEntity<JwtAuthenticationResponse> login(UsernamePasswordAuthenticationRequest dto) {
-        return ResponseEntity.ok(userService.login(dto));
+    public ResponseEntity<JwtAuthenticationResponse> login(
+            UsernamePasswordAuthenticationRequest dto,
+            String ip
+    ) {
+        return ResponseEntity.ok(facade.authenticate(dto));
     }
 }

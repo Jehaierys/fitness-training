@@ -69,6 +69,9 @@ public interface AuthenticationControllerApi {
                     description = "Invalid username or password"
             )
     })
-    @PostMapping("/authentication")
-    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody UsernamePasswordAuthenticationRequest dto);
+    @PostMapping()
+    public ResponseEntity<JwtAuthenticationResponse> login(
+            @RequestBody UsernamePasswordAuthenticationRequest dto,
+            @RequestHeader("X-Forwarded-For") String ip
+    );
 }
