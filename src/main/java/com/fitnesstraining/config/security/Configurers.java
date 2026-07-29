@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.fitnesstraining.utils.Paths.*;
+
 @Component
 public final class Configurers {
 
@@ -93,8 +95,8 @@ public final class Configurers {
                 // Public static resources
                 "/",
                 "/index.html",
-                "/authentication.html",
-                "/registration.html",
+                AUTHENTICATION_PAGE_URL,
+                REGISTRATION_PAGE_URL,
                 "/css/**",
                 "/js/**",
                 "/images/**",
@@ -111,31 +113,4 @@ public final class Configurers {
                 "/logout"
         };
     }
-
-    void formLogin(FormLoginConfigurer<HttpSecurity> configurer) {
-        formLoginConfiguration.accept(configurer);
-    }
-
-
-    private final AuthenticationSuccessHandler authenticationSuccessHandler =
-            (request, response, authentication) -> {
-
-                final Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
-
-                if (roles.contains(roleTrainee)) {
-                    response.sendRedirect("/trainee.html");
-                } else if (roles.contains(roleCoach)) {
-                    response.sendRedirect("/coach.html");
-                } else {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                }
-            };
-
-    private final Consumer<FormLoginConfigurer<HttpSecurity>> formLoginConfiguration = form -> form
-            .loginPage("/authentication.html")
-            .loginProcessingUrl("/login")
-            .permitAll()
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .successHandler(authenticationSuccessHandler);
 }

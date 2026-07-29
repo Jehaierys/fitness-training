@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +16,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
 @Configuration
@@ -23,10 +27,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private final Configurers configurers;
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfiguration(Configurers configurers, @Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
+
+    public SecurityConfiguration(
+            Configurers configurers,
+            @Lazy JwtAuthenticationFilter jwtAuthenticationFilter
+    ) {
         this.configurers = configurers;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
@@ -36,20 +43,21 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
 
                 .cors(configurers::cors)
 
-                .authorizeHttpRequests(configurers::authorizationRules)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(STATELESS)
+                )
 
-                // UsernamePasswordAuthenticationFilter enabled on POST /login:
-                .formLogin(configurers::formLogin)
+                .authorizeHttpRequests(configurers::authorizationRules)
 
                 .addFilterBefore(
                         jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
+                        AuthorizationFilter.class
                 )
-
-                .httpBasic(AbstractHttpConfigurer::disable)
 
                 .build();
     }
