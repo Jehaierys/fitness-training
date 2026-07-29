@@ -34,13 +34,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.postgresql:postgresql")
 
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 
     // JWT
@@ -51,6 +52,7 @@ dependencies {
 
 
     // Later
+//    implementation("org.springframework.boot:spring-boot-starter-session-data-redis")
 //    implementation("org.springframework.boot:spring-boot-starter-flyway")
 //    implementation("org.flywaydb:flyway-database-postgresql")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
@@ -73,6 +75,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-data-redis-test")
 
 
 
