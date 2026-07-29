@@ -79,43 +79,7 @@ public class UserService implements UserDetailsService {
         log.info("User with username: {} set to active: {}", user.getUsername(), active);
     }
 
-    public JwtAuthenticationResponse login(UsernamePasswordAuthenticationRequest dto) {
-
-        final UserDetails userDetails = repository.findByUsername(dto.username());
-
-        if (!encoder.matches(dto.password(), userDetails.getPassword())) {
-            // todo: Authentication Exception
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // todo: extract to properties
-        final Duration EXPIRATION = Duration.ofHours(1);
-
-        final String jwt = Jwts.builder()
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION.toMillis()))
-                .signWith(getSigningKey())
-                .compact();
-
-        return new JwtAuthenticationResponse(jwt);
-    }
-
-    private SecretKey getSigningKey() {
-        // todo: I'll remake it later
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
-
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
+    // todo: delete
     // Or else
 //    public String login(UsernamePasswordDto dto) {
 //
