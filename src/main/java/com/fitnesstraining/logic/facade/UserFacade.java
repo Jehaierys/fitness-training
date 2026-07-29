@@ -23,4 +23,11 @@ public class UserFacade {
         userService.changePassword(user, newPassword);
     }
 
+    public void setActive(Long id, Boolean active, User principal) {
+        userService.setActive(id, active, principal);
+    }
+
+    public void setActive(String username, Boolean active, User principal) {
+        userService.setActive(username, active, principal);
+    }
 }

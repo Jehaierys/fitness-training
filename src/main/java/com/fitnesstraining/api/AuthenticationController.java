@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequ
 import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.UserFacade;
+import com.fitnesstraining.logic.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,15 @@ public class AuthenticationController implements AuthenticationControllerApi {
             String ip
     ) {
         return ResponseEntity.ok(facade.authenticate(dto));
+    }
+
+    public ResponseEntity<Void> setActive(Long id, Boolean active, User principal) {
+        facade.setActive(id, active, principal);
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<Void> setActive(String username, Boolean active, User principal) {
+        facade.setActive(username, active, principal);
+        return ResponseEntity.ok().build();
     }
 }

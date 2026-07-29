@@ -8,5 +8,8 @@ public final class Paths {
 
     public  static final String REGISTRATION_PAGE_URL = "/registration.html";
 
+    public static final String BASE_AUTHENTICATION_CONTROLLER_URL = "/v1-0-0/authentication";
+
+
     private Paths() {}
 }
