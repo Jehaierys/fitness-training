@@ -2,16 +2,17 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Slf4j
 @Repository
-@RequiredArgsConstructor
 public class UserRepository {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public User findByUsername(String username) {
         return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
