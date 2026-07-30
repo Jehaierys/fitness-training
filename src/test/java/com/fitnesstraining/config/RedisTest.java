@@ -11,10 +11,9 @@ public class RedisTest {
     private final StringRedisTemplate redisTemplate;
 
     public void test() {
+
         redisTemplate.opsForValue().set("test", "hello");
 
         String value = redisTemplate.opsForValue().get("test");
-
-        System.out.println(value);
     }
 }
