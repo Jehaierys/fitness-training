@@ -38,7 +38,7 @@ public class BruteForceProtector {
     // ip belongs to authentication request sender
     private void checkAttemptsByIp(String ip) {
 
-        int attempts = Optional
+        final int attempts = Optional
                 .ofNullable(redis.opsForValue().get(AUTHENTICATION_ATTEMPTS_BY_IP + ip))
                 .map(Integer::parseInt)
                 .orElse(0);
@@ -51,7 +51,7 @@ public class BruteForceProtector {
     // username belongs to the account that tries to be signed in
     private void checkAttemptsByUsername(String username) {
 
-        int attempts = Optional
+        final int attempts = Optional
                 .ofNullable(redis.opsForValue().get(AUTHENTICATION_ATTEMPTS_BY_USERNAME + username))
                 .map(Integer::parseInt)
                 .orElse(0);

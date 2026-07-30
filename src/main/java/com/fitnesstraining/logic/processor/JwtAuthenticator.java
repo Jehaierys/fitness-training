@@ -79,7 +79,7 @@ public class JwtAuthenticator {
 
     private void authenticate() {
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+        final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
                 userDetails.getAuthorities()
@@ -104,7 +104,7 @@ public class JwtAuthenticator {
 
     private SecretKey getSigningKey() {
 
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        final byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
 
         return Keys.hmacShaKeyFor(keyBytes);
     }

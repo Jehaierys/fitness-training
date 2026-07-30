@@ -1,20 +1,14 @@
 package com.fitnesstraining.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -22,11 +16,6 @@ import static com.fitnesstraining.utils.Paths.*;
 
 @Component
 public final class Configurers {
-
-
-    private final GrantedAuthority roleCoach = new SimpleGrantedAuthority("ROLE_COACH");
-
-    private final GrantedAuthority roleTrainee = new SimpleGrantedAuthority("ROLE_TRAINEE");
 
     @Value("${app.cors.allowed-origins}")
     private String[] allowedOrigins;
