@@ -40,7 +40,7 @@ public final class Configurers {
         ));
 
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setExposedHeaders(List.of("Location"));
+        corsConfiguration.setExposedHeaders(List.of());
         corsConfiguration.setAllowCredentials(true);
 
         corsConfiguration.setMaxAge(3600L); // keep in browser for 1 hour

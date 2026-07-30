@@ -2,7 +2,6 @@ package com.fitnesstraining.logic.processor;
 
 import com.fitnesstraining.config.security.BruteForceProtector;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
-import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -10,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Date;
+
+import static com.fitnesstraining.utils.SharedStrings.JWT_COOKIE_NAME;
+
 
 @Slf4j
 @Service
@@ -35,13 +38,15 @@ public class JwtAuthenticator {
     private String jwtSecret;
     @Value("${jwt.expiration}")
     private Duration jwtExpiration;
+    @Value("${jwt.response.cookie.secure}")
+    private boolean jwtResponseCookieSecure;
 
     private UsernamePasswordAuthenticationRequest request;
     private UserDetails userDetails;
-    private JwtAuthenticationResponse response;
+    private ResponseCookie response;
 
 
-    public synchronized JwtAuthenticationResponse authenticate(UsernamePasswordAuthenticationRequest request) {
+    public synchronized ResponseCookie authenticate(UsernamePasswordAuthenticationRequest request) {
 
         this.request = request;
 
@@ -91,6 +96,7 @@ public class JwtAuthenticator {
     }
 
     private void buildResponse() {
+
         final String jwt = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
@@ -98,7 +104,14 @@ public class JwtAuthenticator {
                 .signWith(getSigningKey())
                 .compact();
 
-        this.response = new JwtAuthenticationResponse(jwt);
+        this.response = ResponseCookie
+                .from(JWT_COOKIE_NAME, jwt)
+                .httpOnly(true)
+                .secure(jwtResponseCookieSecure)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(Duration.ofHours(1))
+                .build();
     }
 
 

@@ -22,11 +22,7 @@
             checks="DeclarationOrder"/>
 
     <suppress
-            files=".*ValidationErrorMessages\.java"
-            checks="WhitespaceAround|DeclarationOrder"/>
-
-    <suppress
-            files=".*Paths\.java"
+            files=".*utils/.*"
             checks="WhitespaceAround|DeclarationOrder"/>
 
     <suppress

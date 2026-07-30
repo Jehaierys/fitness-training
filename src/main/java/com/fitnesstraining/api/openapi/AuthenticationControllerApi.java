@@ -22,7 +22,7 @@ import static com.fitnesstraining.utils.Paths.BASE_AUTHENTICATION_CONTROLLER_URL
 @RequestMapping(BASE_AUTHENTICATION_CONTROLLER_URL)
 @Tag(
         name = "Authentication",
-        description = "Authentication and registration"
+        description = "User access control related operations"
 )
 public interface AuthenticationControllerApi {
 
@@ -125,4 +125,18 @@ public interface AuthenticationControllerApi {
             @RequestParam(required = true) Boolean active,
             @AuthenticationPrincipal User principal
     );
+
+
+    @Operation(
+            summary = "Logout",
+            description = "Logs out the current user by deleting the JWT authentication cookie."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Successfully logged out"
+            )
+    })
+    @DeleteMapping
+    public ResponseEntity<Void> logout();
 }
