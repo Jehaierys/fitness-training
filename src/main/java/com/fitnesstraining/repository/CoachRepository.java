@@ -2,7 +2,7 @@ package com.fitnesstraining.repository;
 
 import com.fitnesstraining.domain.entity.Coach;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -13,10 +13,10 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.CoachNotFound;
 
 @Slf4j
 @Repository
-@RequiredArgsConstructor
 public class CoachRepository {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public Coach create(Coach coach) {

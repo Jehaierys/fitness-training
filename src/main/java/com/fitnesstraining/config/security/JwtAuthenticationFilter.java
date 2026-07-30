@@ -2,19 +2,17 @@ package com.fitnesstraining.config.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
+import static com.fitnesstraining.utils.SharedStrings.JWT_COOKIE_NAME;
 
 
 @Lazy
@@ -22,12 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String AUTHORIZATION = "Authorization";
-    private static final String PREFIX = "Bearer ";
-
     private final JwtProcessor processor;
-
-    private String header;
 
 
     @Override
@@ -37,21 +30,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        this.header = request.getHeader(AUTHORIZATION);
+        final String token = findJwt(request);
 
-        if (shouldNotContinue(request, response)) {
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        final String token = header.substring(PREFIX.length());
 
         processor.process(token, request);
 
         filterChain.doFilter(request, response);
     }
 
-    private boolean shouldNotContinue(HttpServletRequest request, HttpServletResponse response) {
-        return header == null || !header.startsWith(PREFIX);
+    private String findJwt(HttpServletRequest request) {
+
+        final Cookie[] cookies = request.getCookies();
+
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(JWT_COOKIE_NAME)) {
+                return cookie.getValue();
+            }
+        }
+
+        return null;
     }
 }

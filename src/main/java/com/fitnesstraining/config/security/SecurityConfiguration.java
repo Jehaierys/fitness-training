@@ -1,32 +1,30 @@
 package com.fitnesstraining.config.security;
 
-import io.github.cdimascio.dotenv.Dotenv;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
+
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 
 @Configuration
-//@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private final Configurers configurers;
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfiguration(Configurers configurers, @Lazy JwtAuthenticationFilter jwtAuthenticationFilter) {
+
+    public SecurityConfiguration(
+            Configurers configurers,
+            @Lazy JwtAuthenticationFilter jwtAuthenticationFilter
+    ) {
         this.configurers = configurers;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
@@ -36,20 +34,21 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
 
                 .cors(configurers::cors)
 
-                .authorizeHttpRequests(configurers::authorizationRules)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(STATELESS)
+                )
 
-                // UsernamePasswordAuthenticationFilter enabled on POST /login:
-                .formLogin(configurers::formLogin)
+                .authorizeHttpRequests(configurers::authorizationRules)
 
                 .addFilterBefore(
                         jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
+                        AuthorizationFilter.class
                 )
-
-                .httpBasic(AbstractHttpConfigurer::disable)
 
                 .build();
     }
@@ -65,11 +64,5 @@ public class SecurityConfiguration {
             AuthenticationConfiguration configuration
     ) {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    @Lazy
-    public Dotenv dotenv() {
-        return Dotenv.load();
     }
 }

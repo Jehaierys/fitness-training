@@ -5,27 +5,33 @@ import com.fitnesstraining.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+@Lazy
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
+    private final PasswordEncoder encoder;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) {
         log.info("Loading user by username: {}", username);
-        return (UserDetails) repository.findByUsername(username);
+        return repository.findByUsername(username);
     }
 
+
+    @Transactional
     public void changePassword(User user, String newPassword) {
-        user.setPassword(newPassword);
+        user.setPassword(encoder.encode(newPassword));
         repository.update(user);
         log.info("Password updated for user with id: {}", user.getId());
     }
@@ -45,7 +51,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void setActive(String username, Boolean active,  User principal) {
+    public void setActive(String username, Boolean active, User principal) {
 
         if (principal.getUsername().equals(username)) {
             // todo: throw proper exception

@@ -3,7 +3,7 @@ package com.fitnesstraining.repository;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.logic.exception.SessionNotFoundException;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +12,10 @@ import java.util.Optional;
 
 @Slf4j
 @Repository
-@RequiredArgsConstructor
 public class SessionTypeRepository {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     public List<SessionType> findAll() {

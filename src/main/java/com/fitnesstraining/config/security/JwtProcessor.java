@@ -1,14 +1,13 @@
 package com.fitnesstraining.config.security;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,10 +21,14 @@ import java.util.Date;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtProcessor {
 
     private final UserDetailsService userDetailsService;
-    private final String jwtSecret;
+//    private final AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     private String token;
     private String username;
@@ -33,19 +36,10 @@ public class JwtProcessor {
     private Date expiration;
 
 
-    public JwtProcessor(
-            @Autowired UserDetailsService userDetailsService,
-            @Autowired Dotenv dotenv
-    ) {
-        this.userDetailsService = userDetailsService;
-        this.jwtSecret = dotenv.get("JWT_SECRET");
-    }
-
-
     public synchronized void process(String token, HttpServletRequest request) {
-
         // todo: is it too big for logs?
         log.info("Processing JWT token: {}", token);
+
         this.token = token;
 
         extractClaims();
@@ -65,14 +59,28 @@ public class JwtProcessor {
     }
 
     private void extractClaims() {
-        final Claims claims =  Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
 
-        this.username = claims.getSubject();
-        this.expiration = claims.getExpiration();
+        try {
+            final Claims claims =  Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            this.username = claims.getSubject();
+            this.expiration = claims.getExpiration();
+
+        } catch (JwtException e) {
+            onMalformedJwt(e);
+        }
+    }
+
+    // todo
+    private void onMalformedJwt(JwtException exception) {
+
+        SecurityContextHolder.clearContext();
+        log.error("Error occurred while parsing JWT token", exception);
+        throw exception;
     }
 
     private void loadUSerDetails() {
@@ -96,7 +104,7 @@ public class JwtProcessor {
     }
 
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        final byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
 
         return Keys.hmacShaKeyFor(keyBytes);
     }

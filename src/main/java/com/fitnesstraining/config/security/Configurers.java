@@ -1,40 +1,29 @@
 package com.fitnesstraining.config.security;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.fitnesstraining.utils.Paths.*;
+
 @Component
 public final class Configurers {
-
-
-    private final GrantedAuthority roleCoach = new SimpleGrantedAuthority("ROLE_COACH");
-
-    private final GrantedAuthority roleTrainee = new SimpleGrantedAuthority("ROLE_TRAINEE");
 
     @Value("${app.cors.allowed-origins}")
     private String[] allowedOrigins;
 
 
-    void cors(CorsConfigurer<HttpSecurity> request) {
+    void cors(CorsConfigurer<HttpSecurity> cors) {
 
-        final CorsConfigurer<HttpSecurity> corsConfigurer = new CorsConfigurer<>();
-
-        corsConfigurer.configurationSource(this::corsConfiguration);
+        cors.configurationSource(this::corsConfiguration);
 
     }
 
@@ -51,7 +40,7 @@ public final class Configurers {
         ));
 
         corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setExposedHeaders(List.of("Location"));
+        corsConfiguration.setExposedHeaders(List.of());
         corsConfiguration.setAllowCredentials(true);
 
         corsConfiguration.setMaxAge(3600L); // keep in browser for 1 hour
@@ -93,8 +82,8 @@ public final class Configurers {
                 // Public static resources
                 "/",
                 "/index.html",
-                "/authentication.html",
-                "/registration.html",
+                AUTHENTICATION_PAGE_URL,
+                REGISTRATION_PAGE_URL,
                 "/css/**",
                 "/js/**",
                 "/images/**",
@@ -111,31 +100,4 @@ public final class Configurers {
                 "/logout"
         };
     }
-
-    void formLogin(FormLoginConfigurer<HttpSecurity> configurer) {
-        formLoginConfiguration.accept(configurer);
-    }
-
-
-    private final AuthenticationSuccessHandler authenticationSuccessHandler =
-            (request, response, authentication) -> {
-
-                final Collection<? extends GrantedAuthority> roles = authentication.getAuthorities();
-
-                if (roles.contains(roleTrainee)) {
-                    response.sendRedirect("/trainee.html");
-                } else if (roles.contains(roleCoach)) {
-                    response.sendRedirect("/coach.html");
-                } else {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                }
-            };
-
-    private final Consumer<FormLoginConfigurer<HttpSecurity>> formLoginConfiguration = form -> form
-            .loginPage("/authentication.html")
-            .loginProcessingUrl("/login")
-            .permitAll()
-            .usernameParameter("username")
-            .passwordParameter("password")
-            .successHandler(authenticationSuccessHandler);
 }
