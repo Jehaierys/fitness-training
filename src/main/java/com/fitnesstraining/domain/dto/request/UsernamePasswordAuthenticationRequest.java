@@ -1,3 +1,15 @@
 package com.fitnesstraining.domain.dto.request;
 
-public record UsernamePasswordAuthenticationRequest(String username, String password) { }
+import lombok.Getter;
+import lombok.Setter;
+
+
+@Getter
+@Setter
+public class UsernamePasswordAuthenticationRequest {
+
+    private String username;
+    private String password;
+    private String ip;
+
+}
