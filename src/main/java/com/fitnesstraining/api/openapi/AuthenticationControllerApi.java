@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,7 +75,7 @@ public interface AuthenticationControllerApi {
     @PostMapping()
     ResponseEntity<JwtAuthenticationResponse> login(
             @RequestBody UsernamePasswordAuthenticationRequest dto,
-            @RequestHeader("X-Forwarded-For") String ip
+            HttpServletRequest servletRequest
     );
 
 
