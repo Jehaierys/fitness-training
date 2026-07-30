@@ -26,22 +26,26 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtAuthenticator {
 
+    private final UserRepository repository;
+    private final PasswordEncoder encoder;
+    private final BruteForceProtector bruteForceProtector;
+
+
     @Value("${jwt.secret}")
     private String jwtSecret;
     @Value("${jwt.expiration}")
     private Duration jwtExpiration;
 
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
-    private final BruteForceProtector bruteForceProtector;
-
     private UsernamePasswordAuthenticationRequest request;
     private UserDetails userDetails;
     private JwtAuthenticationResponse response;
 
+
     public synchronized JwtAuthenticationResponse authenticate(UsernamePasswordAuthenticationRequest request) {
 
         this.request = request;
+
+        checkAuthenticationAttempts();
 
         loadUserDetails();
 
@@ -54,22 +58,27 @@ public class JwtAuthenticator {
         return response;
     }
 
+    private void checkAuthenticationAttempts() {
+        bruteForceProtector.checkAttempts(request);
+    }
+
     private void loadUserDetails() {
-        userDetails = repository.findByUsername(request.username());
+        userDetails = repository.findByUsername(request.getUsername());
 
         if (userDetails == null) {
-            // todo: call brute force protector
+            bruteForceProtector.blockHost(request.getIp());
         }
     }
 
     private void checkCredentials() {
-        if (!encoder.matches(request.password(), userDetails.getPassword())) {
-            // todo: call brute force protector
+        if (!encoder.matches(request.getPassword(), userDetails.getPassword())) {
+            bruteForceProtector.incrementAttempts(request);
             throw new BadCredentialsException("Invalid credentials");
         }
     }
 
     private void authenticate() {
+
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,
@@ -77,6 +86,8 @@ public class JwtAuthenticator {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        bruteForceProtector.onSuccessfulLogin(request);
     }
 
     private void buildResponse() {
