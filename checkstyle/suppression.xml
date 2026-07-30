@@ -26,6 +26,14 @@
             checks="WhitespaceAround|DeclarationOrder"/>
 
     <suppress
+            files=".*Paths\.java"
+            checks="WhitespaceAround|DeclarationOrder"/>
+
+    <suppress
+            files=".*security/Configurers\.java"
+            checks="DeclarationOrder"/>
+
+    <suppress
             files=".*/src/test/java/.*"
             checks=".*"/>
 
