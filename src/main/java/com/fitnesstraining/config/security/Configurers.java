@@ -21,11 +21,9 @@ public final class Configurers {
     private String[] allowedOrigins;
 
 
-    void cors(CorsConfigurer<HttpSecurity> request) {
+    void cors(CorsConfigurer<HttpSecurity> cors) {
 
-        final CorsConfigurer<HttpSecurity> corsConfigurer = new CorsConfigurer<>();
-
-        corsConfigurer.configurationSource(this::corsConfiguration);
+        cors.configurationSource(this::corsConfiguration);
 
     }
 
