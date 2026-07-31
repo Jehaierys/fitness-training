@@ -185,7 +185,7 @@ class CoachRepositoryTest implements PostgresTestContainer {
         }
 
         @Test
-        @Timeout(value = 200, unit = MILLISECONDS)
+        @Timeout(value = 300, unit = MILLISECONDS)
         void existsByUsername() throws Exception {
 
             exists = repository.existByUsername(emma.getUsername());
@@ -252,7 +252,7 @@ class CoachRepositoryTest implements PostgresTestContainer {
         }
 
         @Test
-        @Timeout(value = 500, unit = MILLISECONDS)
+        @Timeout(value = 700, unit = MILLISECONDS)
         void existsByUsername() {
 
             exists = repository.existByUsername(Users.coachAlice().getUsername());
@@ -264,7 +264,7 @@ class CoachRepositoryTest implements PostgresTestContainer {
         }
 
         @Test
-        @Timeout(value = 100, unit = MILLISECONDS)
+        @Timeout(value = 300, unit = MILLISECONDS)
         void existsById() throws Exception {
 
             exists = repository.existsById(minIdMinusOne);

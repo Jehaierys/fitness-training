@@ -16,8 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public abstract class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trainees_seq")
-    @SequenceGenerator(name = "trainees_seq", sequenceName = "trainees_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
+    @SequenceGenerator(name = "users_seq", sequenceName = "users_id_seq")
     private Long id;
 
     @Column(nullable = false)
@@ -46,5 +46,10 @@ public abstract class User implements UserDetails {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.isActive;
     }
 }
