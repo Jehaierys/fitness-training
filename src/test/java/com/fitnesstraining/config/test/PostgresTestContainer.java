@@ -1,4 +1,4 @@
-package com.fitnesstraining.repository;
+package com.fitnesstraining.config.test;
 
 
 import org.testcontainers.postgresql.PostgreSQLContainer;

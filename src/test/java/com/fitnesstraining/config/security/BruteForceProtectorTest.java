@@ -1,9 +1,9 @@
-package com.fitnesstraining.repository;
+package com.fitnesstraining.config.security;
 
 
-import com.fitnesstraining.config.security.BruteForceProtector;
+import com.fitnesstraining.config.test.RedisTestContainer;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
-import com.fitnesstraining.testUtils.dto.UsernamePasswordAuthenticationRequests;
+import com.fitnesstraining.utils.dto.UsernamePasswordAuthenticationRequests;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.redis.test.autoconfigure.DataRedisTest;

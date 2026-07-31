@@ -1,4 +1,4 @@
-package com.fitnesstraining.config;
+package com.fitnesstraining.config.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;

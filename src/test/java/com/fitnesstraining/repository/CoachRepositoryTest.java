@@ -1,10 +1,11 @@
 package com.fitnesstraining.repository;
 
+import com.fitnesstraining.config.test.PostgresTestContainer;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.logic.exception.CoachNotFoundException;
-import com.fitnesstraining.testUtils.Specializations;
-import com.fitnesstraining.testUtils.entity.Users;
+import com.fitnesstraining.utils.Specializations;
+import com.fitnesstraining.utils.entity.Users;
 import jakarta.persistence.EntityExistsException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

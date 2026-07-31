@@ -1,4 +1,4 @@
-package com.fitnesstraining.testUtils.dto;
+package com.fitnesstraining.utils.dto;
 
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 

@@ -1,10 +1,11 @@
 package com.fitnesstraining.repository;
 
+import com.fitnesstraining.config.test.PostgresTestContainer;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.testUtils.entity.Sessions;
-import com.fitnesstraining.testUtils.entity.Users;
+import com.fitnesstraining.utils.entity.Sessions;
+import com.fitnesstraining.utils.entity.Users;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;

@@ -1,8 +1,8 @@
-package com.fitnesstraining.testUtils;
+package com.fitnesstraining.utils;
 
 
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.testUtils.entity.SessionTypes;
+import com.fitnesstraining.utils.entity.SessionTypes;
 
 import java.util.ArrayList;
 import java.util.List;

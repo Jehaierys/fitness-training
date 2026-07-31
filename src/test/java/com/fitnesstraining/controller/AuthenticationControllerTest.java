@@ -2,8 +2,8 @@ package com.fitnesstraining.controller;
 
 
 import com.fitnesstraining.api.AuthenticationController;
-import com.fitnesstraining.config.JacksonTestConfig;
-import com.fitnesstraining.config.TestSecurityConfiguration;
+import com.fitnesstraining.config.test.JacksonTestConfig;
+import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.logic.facade.UserFacade;
