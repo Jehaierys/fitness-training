@@ -9,7 +9,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,7 +48,7 @@ public class JwtProcessor {
 
         if (shouldAuthenticate()) {
 
-            loadUSerDetails();
+            loadUseDetails();
 
             if (isTokenValid()) {
 
@@ -70,6 +72,8 @@ public class JwtProcessor {
             this.username = claims.getSubject();
             this.expiration = claims.getExpiration();
 
+            log.debug("JWT claims extracted: username - {}", username);
+
         } catch (JwtException e) {
             onMalformedJwt(e);
         }
@@ -83,12 +87,18 @@ public class JwtProcessor {
         throw exception;
     }
 
-    private void loadUSerDetails() {
+    private void loadUseDetails() {
         userDetails = userDetailsService.loadUserByUsername(username);
+        log.debug("Loaded user details for username - {}", username);
     }
 
     private boolean shouldAuthenticate() {
-        return username != null && SecurityContextHolder.getContext().getAuthentication() == null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return username != null
+                && (authentication == null
+                || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken);
     }
 
     private boolean isTokenValid() {
@@ -100,7 +110,7 @@ public class JwtProcessor {
     }
 
     public boolean tokenNotExpired() {
-        return expiration.before(new Date());
+        return expiration.after(new Date());
     }
 
     private SecretKey getSigningKey() {
