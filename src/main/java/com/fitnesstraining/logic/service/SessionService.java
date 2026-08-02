@@ -1,58 +1,57 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.logic.service;
 
 import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.logic.abstraction.SessionService;
 import com.fitnesstraining.logic.abstraction.SessionTypeService;
 import com.fitnesstraining.logic.mapper.SessionMapper;
-import com.fitnesstraining.logic.service.CoachService;
+import com.fitnesstraining.logic.processor.SessionSearcher;
 import com.fitnesstraining.repository.CoachRepository;
+import com.fitnesstraining.repository.SessionRepository;
 import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
-@Slf4j
-@Component@RequiredArgsConstructor
-public class SessionCreator {
 
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class SessionService {
+
+    private final SessionRepository sessionRepository;
     private final CoachRepository coachRepository;
     private final TraineeRepository traineeRepository;
-    private final SessionService sessionService;
     private final SessionTypeService sessionTypeService;
     private final SessionMapper mapper;
-
-    private SessionRegistrationRequest request;
-    private UUID transactionUuid;
+    private final SessionSearcher searcher;
 
 
-    public synchronized void create(SessionRegistrationRequest request) {
-        this.request = request;
-        initialLog();
+    public void create(SessionRegistrationRequest request) {
 
-        buildSession();
+        final UUID transactionUuid;
 
-        finalLog();
-    }
 
-    private void initialLog() {
         transactionUuid = UUID.randomUUID();
         log.info("Creating new session: {} {}, attempt's UUID: {}",
                 request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
-    }
 
-    private void buildSession() {
+
         final Session session = new Session();
 
         final Trainee trainee = traineeRepository.findByUsername(request.getTraineeUsername());
         session.setTrainee(trainee);
+        session.setTrainee(trainee);
 
         final Coach coach = coachRepository.findByUsername(request.getCoachUsername());
+        session.setCoach(coach);
         session.setCoach(coach);
 
         final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
@@ -60,11 +59,17 @@ public class SessionCreator {
 
         mapper.toEntity(request, session);
 
-        sessionService.create(session);
-    }
+        sessionRepository.create(session);
+        coachRepository.update(coach);
+        traineeRepository.update(trainee);
 
-    private void finalLog() {
+
         log.info("Successfully created session: {} {}, process's UUID: {}",
                 request.getTraineeUsername(), request.getCoachUsername(), transactionUuid);
+    }
+
+
+    public List<SessionDto> findSessionsByCriteria(SessionSearchCriteria criteria) {
+        return searcher.searchByCriteria(criteria);
     }
 }
