@@ -84,7 +84,7 @@ public class TraineeService {
 
         mapper.toEntity(request, trainee);
 
-        repository.update(trainee);
+        trainee = repository.update(trainee);
 
         response = mapper.toUpdateTraineeResponse(trainee);
 
