@@ -1,4 +1,3 @@
-
 plugins {
     java
     checkstyle
@@ -111,5 +110,11 @@ tasks.withType<Checkstyle>().configureEach {
     reports {
         xml.required = true
         html.required = true
+    }
+}
+
+tasks.test {
+    testLogging {
+        showStandardStreams = true
     }
 }
