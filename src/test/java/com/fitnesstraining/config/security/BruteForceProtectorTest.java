@@ -191,6 +191,7 @@ public class BruteForceProtectorTest implements RedisTestContainer {
         }
     }
 
+
     private String maxAttemptsMinusOne() {
         return String.valueOf(MAX_ATTEMPTS - 1);
     }
