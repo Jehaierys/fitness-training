@@ -121,12 +121,13 @@ public interface TraineeControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping("/{username}")
+    @GetMapping
     ResponseEntity<GetTraineeResponse> findByUsername(
             @Parameter(description = "Username of the trainee to fetch", required = true)
-            @NotBlank
-            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-            @PathVariable String username);
+            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
+            @RequestParam String username);
 
 
 }

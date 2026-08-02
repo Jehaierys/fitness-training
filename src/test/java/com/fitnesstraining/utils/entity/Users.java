@@ -1,4 +1,4 @@
-package com.fitnesstraining.testUtils.entity;
+package com.fitnesstraining.utils.entity;
 
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Trainee;

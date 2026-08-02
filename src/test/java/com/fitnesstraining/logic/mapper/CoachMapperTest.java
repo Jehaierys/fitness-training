@@ -8,19 +8,20 @@ import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.testUtils.Specializations;
-import com.fitnesstraining.testUtils.dto.RegisterCoachRequests;
-import com.fitnesstraining.testUtils.dto.UpdateCoachRequests;
-import com.fitnesstraining.testUtils.entity.Users;
+import com.fitnesstraining.utils.Specializations;
+import com.fitnesstraining.utils.dto.RegisterCoachRequests;
+import com.fitnesstraining.utils.dto.UpdateCoachRequests;
+import com.fitnesstraining.utils.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Import;
 
 import java.util.*;
 
-import static com.fitnesstraining.testUtils.Specializations.cardioStrengthTraining;
-import static com.fitnesstraining.testUtils.Specializations.yogaPilates;
-import static com.fitnesstraining.testUtils.entity.SessionTypes.*;
+import static com.fitnesstraining.utils.Specializations.cardioStrengthTraining;
+import static com.fitnesstraining.utils.Specializations.yogaPilates;
+import static com.fitnesstraining.utils.entity.SessionTypes.cardio;
+import static com.fitnesstraining.utils.entity.SessionTypes.strengthTraining;
 import static org.junit.jupiter.api.Assertions.*;
 
 

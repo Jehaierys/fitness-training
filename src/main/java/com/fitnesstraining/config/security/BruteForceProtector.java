@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+
 import java.time.Duration;
 import java.util.Optional;
 
@@ -61,7 +62,6 @@ public class BruteForceProtector {
         }
     }
 
-
     public void incrementAttempts(UsernamePasswordAuthenticationRequest request) {
 
         final String ipRecordKey = AUTHENTICATION_ATTEMPTS_BY_IP + request.getIp();
@@ -82,9 +82,11 @@ public class BruteForceProtector {
 
         final String ipRecordKey = AUTHENTICATION_ATTEMPTS_BY_IP + ip;
 
-        redis.opsForValue().set(ipRecordKey, ip, BLOCK_TIME);
-    }
+        // todo
+        redis.opsForValue().set(ipRecordKey, String.valueOf(MAX_ATTEMPTS), BLOCK_TIME);
 
+        log.warn("Blocking host with IP: {} due to suspicious JWT", ip);
+    }
 
     public void onSuccessfulLogin(UsernamePasswordAuthenticationRequest request) {
 

@@ -66,6 +66,12 @@ public final class Configurers {
                     "/**/coaches"
             ).permitAll()
 
+
+            .requestMatchers(
+                    HttpMethod.POST,
+                    "/**/authentication"
+            ).permitAll()
+
             // Actuator
             .requestMatchers("/actuator/health/**").permitAll()
             // todo: restrict

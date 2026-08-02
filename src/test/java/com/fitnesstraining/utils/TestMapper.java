@@ -1,4 +1,4 @@
-package com.fitnesstraining.testUtils;
+package com.fitnesstraining.utils;
 
 import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.response.coach.RegisterCoachResponse;
