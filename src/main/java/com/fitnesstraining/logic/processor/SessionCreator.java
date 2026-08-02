@@ -7,10 +7,10 @@ import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.logic.abstraction.SessionService;
 import com.fitnesstraining.logic.abstraction.SessionTypeService;
-import com.fitnesstraining.logic.abstraction.TraineeService;
 import com.fitnesstraining.logic.mapper.SessionMapper;
 import com.fitnesstraining.logic.service.CoachService;
 import com.fitnesstraining.repository.CoachRepository;
+import com.fitnesstraining.repository.TraineeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,9 +21,8 @@ import java.util.UUID;
 @Component@RequiredArgsConstructor
 public class SessionCreator {
 
-    private final TraineeService traineeService;
-    private final CoachService coachService;
     private final CoachRepository coachRepository;
+    private final TraineeRepository traineeRepository;
     private final SessionService sessionService;
     private final SessionTypeService sessionTypeService;
     private final SessionMapper mapper;
@@ -50,10 +49,10 @@ public class SessionCreator {
     private void buildSession() {
         final Session session = new Session();
 
-        final Trainee trainee = (Trainee) traineeService.findByUsername(request.getTraineeUsername());
+        final Trainee trainee = traineeRepository.findByUsername(request.getTraineeUsername());
         session.setTrainee(trainee);
 
-        final Coach coach = (Coach) coachRepository.findByUsername(request.getCoachUsername());
+        final Coach coach = coachRepository.findByUsername(request.getCoachUsername());
         session.setCoach(coach);
 
         final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());

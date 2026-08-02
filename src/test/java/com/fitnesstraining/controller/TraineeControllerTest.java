@@ -6,7 +6,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
-import com.fitnesstraining.logic.facade.TraineeFacade;
+import com.fitnesstraining.logic.service.TraineeService;
 import com.fitnesstraining.utils.TestMapper;
 import com.fitnesstraining.utils.dto.RegisterTraineeRequests;
 import com.fitnesstraining.utils.dto.UpdateTraineeRequests;
@@ -51,7 +51,7 @@ public class TraineeControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private TraineeFacade facade;
+    private TraineeService service;
 
     private RegisterTraineeRequest registerRequest;
     private UpdateTraineeRequest updateRequest;
@@ -73,7 +73,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Valid.fullData();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(post("/v1-0-0/trainees")
@@ -81,7 +81,7 @@ public class TraineeControllerTest {
                             .content(objectMapper.writeValueAsString(registerRequest)))
                     .andExpect(status().isCreated());
 
-            verify(facade, only()).register(any(RegisterTraineeRequest.class));
+            verify(service, only()).register(any(RegisterTraineeRequest.class));
 
         }
 
@@ -90,7 +90,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Valid.withoutAddressAndBirthdate();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(post("/v1-0-0/trainees")
@@ -98,7 +98,7 @@ public class TraineeControllerTest {
                             .content(objectMapper.writeValueAsString(registerRequest)))
                     .andExpect(status().isCreated());
 
-            verify(facade, only()).register(any(RegisterTraineeRequest.class));
+            verify(service, only()).register(any(RegisterTraineeRequest.class));
         }
 
         @Test
@@ -106,7 +106,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Valid.fullData();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(put("/v1-0-0/trainees")
@@ -114,7 +114,7 @@ public class TraineeControllerTest {
                             .content(objectMapper.writeValueAsString(updateRequest)))
                     .andExpect(status().isOk());
 
-            verify(facade, only()).update(any(UpdateTraineeRequest.class));
+            verify(service, only()).update(any(UpdateTraineeRequest.class));
         }
 
         @Test
@@ -122,14 +122,14 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Valid.withoutAddressAndBirthdate();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
             mockMvc.perform(put("/v1-0-0/trainees")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(updateRequest)))
                     .andExpect(status().isOk());
 
-            verify(facade, only()).update(any(UpdateTraineeRequest.class));
+            verify(service, only()).update(any(UpdateTraineeRequest.class));
         }
     }
 
@@ -148,7 +148,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Invalid.missingCrucialData();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -162,7 +162,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.CANNOT_BE_BLANK));
 
-            verify(facade, never()).register(any(RegisterTraineeRequest.class));
+            verify(service, never()).register(any(RegisterTraineeRequest.class));
         }
 
         // Idea generated this entire test on its own with 1 attempt
@@ -171,7 +171,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Invalid.tooShort();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -187,7 +187,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.address")
                             .value(ValidationErrorMessages.Address.SIZE));
 
-            verify(facade, never()).register(any(RegisterTraineeRequest.class));
+            verify(service, never()).register(any(RegisterTraineeRequest.class));
         }
 
         @Test
@@ -195,7 +195,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Invalid.tooLong();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -211,7 +211,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.address")
                             .value(ValidationErrorMessages.Address.SIZE));
 
-            verify(facade, never()).register(any(RegisterTraineeRequest.class));
+            verify(service, never()).register(any(RegisterTraineeRequest.class));
         }
 
         @Test
@@ -219,7 +219,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Invalid.forbiddenCharacters();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -231,7 +231,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
 
-            verify(facade, never()).register(any(RegisterTraineeRequest.class));
+            verify(service, never()).register(any(RegisterTraineeRequest.class));
         }
 
         @Test
@@ -239,7 +239,7 @@ public class TraineeControllerTest {
 
             registerRequest = RegisterTraineeRequests.Invalid.invalidDate();
 
-            when(facade.register(any(RegisterTraineeRequest.class)))
+            when(service.register(any(RegisterTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -247,7 +247,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.birthDate")
                             .value(ValidationErrorMessages.BirthDate.PAST));
 
-            verify(facade, never()).register(any(RegisterTraineeRequest.class));
+            verify(service, never()).register(any(RegisterTraineeRequest.class));
         }
     }
 
@@ -265,7 +265,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Invalid.missingCrucialData();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -277,7 +277,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.username")
                             .value(ValidationErrorMessages.Username.CANNOT_BE_BLANK));
 
-            verify(facade, never()).update(any(UpdateTraineeRequest.class));
+            verify(service, never()).update(any(UpdateTraineeRequest.class));
         }
 
         @Test
@@ -285,7 +285,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Invalid.tooShort();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -297,7 +297,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.SIZE));
 
-            verify(facade, never()).update(any(UpdateTraineeRequest.class));
+            verify(service, never()).update(any(UpdateTraineeRequest.class));
         }
 
         @Test
@@ -305,7 +305,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Invalid.tooLong();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -319,7 +319,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.address")
                             .value(ValidationErrorMessages.Address.SIZE));
 
-            verify(facade, never()).update(any(UpdateTraineeRequest.class));
+            verify(service, never()).update(any(UpdateTraineeRequest.class));
         }
 
         @Test
@@ -327,7 +327,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Invalid.forbiddenCharacters();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -339,7 +339,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
 
-            verify(facade, never()).update(any(UpdateTraineeRequest.class));
+            verify(service, never()).update(any(UpdateTraineeRequest.class));
         }
 
 
@@ -348,7 +348,7 @@ public class TraineeControllerTest {
 
             updateRequest = UpdateTraineeRequests.Invalid.futureBirthdate();
 
-            when(facade.update(any(UpdateTraineeRequest.class)))
+            when(service.update(any(UpdateTraineeRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -356,7 +356,7 @@ public class TraineeControllerTest {
                     .andExpect(jsonPath("$.details.birthDate")
                             .value(ValidationErrorMessages.BirthDate.PAST));
 
-            verify(facade, never()).update(any(UpdateTraineeRequest.class));
+            verify(service, never()).update(any(UpdateTraineeRequest.class));
         }
     }
 
@@ -378,12 +378,12 @@ public class TraineeControllerTest {
 
             final String validUsername = "validUsername213._";
 
-            doNothing().when(facade).deleteByUsername(any(String.class));
+            doNothing().when(service).deleteByUsername(any(String.class));
 
             mockMvc.perform(template(validUsername))
                     .andExpect(status().isOk());
 
-            verify(facade, times(1)).deleteByUsername(validUsername);
+            verify(service, times(1)).deleteByUsername(validUsername);
         }
 
         @Test
@@ -391,13 +391,13 @@ public class TraineeControllerTest {
 
             final String tooShort = "gfv";
 
-            doNothing().when(facade).deleteByUsername(any(String.class));
+            doNothing().when(service).deleteByUsername(any(String.class));
 
             expectBadRequest(tooShort)
                     .andExpect(jsonPath("$.details.username")
                             .value(ValidationErrorMessages.Username.SIZE));
 
-            verify(facade, times(0)).deleteByUsername(any(String.class));
+            verify(service, times(0)).deleteByUsername(any(String.class));
         }
 
         @Test
@@ -407,13 +407,13 @@ public class TraineeControllerTest {
 
             final String tooLong = "g".repeat(blueBorderPlusOne);
 
-            doNothing().when(facade).deleteByUsername(any(String.class));
+            doNothing().when(service).deleteByUsername(any(String.class));
 
             expectBadRequest(tooLong)
                     .andExpect(jsonPath("$.details.username")
                             .value(ValidationErrorMessages.Username.SIZE));
 
-            verify(facade, times(0)).deleteByUsername(any(String.class));
+            verify(service, times(0)).deleteByUsername(any(String.class));
         }
 
         @Test
@@ -426,7 +426,7 @@ public class TraineeControllerTest {
                     "username%"
             };
 
-            doNothing().when(facade).deleteByUsername(any(String.class));
+            doNothing().when(service).deleteByUsername(any(String.class));
 
             for (String invalidUsername : invalidUsernames) {
                 expectBadRequest(invalidUsername)
@@ -434,7 +434,7 @@ public class TraineeControllerTest {
                         .value(ValidationErrorMessages.Username.PATTERN));
             }
 
-            verify(facade, times(0)).deleteByUsername(any(String.class));
+            verify(service, times(0)).deleteByUsername(any(String.class));
         }
     }
 }
