@@ -8,6 +8,7 @@ import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -104,12 +106,13 @@ public interface CoachControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping("/{username}")
+    @GetMapping
     ResponseEntity<GetCoachResponse> findByUsername(
             @Parameter(description = "Username of the coach to fetch", required = true)
-            @NotBlank
-            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-            @PathVariable String username);
+            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
+            @RequestParam String username);
 
 
 
@@ -136,14 +139,9 @@ public interface CoachControllerApi {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-
-    // My convention:
-    // GET /trainings?available - ok
-    // GET /trainings?available=true - forbidden
-    // GET /trainings?available=false - forbidden
     @GetMapping(params = "available")
     ResponseEntity<List<CoachDto>> findAvailableCoaches(
-            @Parameter(hidden = true)
+            @RequestParam(required = false) Boolean available,
             @AuthenticationPrincipal User user
     );
 }

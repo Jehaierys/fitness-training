@@ -42,7 +42,9 @@ public class CoachController implements CoachControllerApi {
         return ResponseEntity.ok((GetCoachResponse) facade.findByUsername(username));
     }
 
-    public ResponseEntity<List<CoachDto>> findAvailableCoaches(User user) {
+
+    // todo: use available
+    public ResponseEntity<List<CoachDto>> findAvailableCoaches(Boolean available, User user) {
         return ResponseEntity.ok(facade.findAvailableCoaches(user.getId()));
     }
 }

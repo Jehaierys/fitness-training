@@ -25,6 +25,7 @@ public class TraineeController implements TraineeControllerApi {
     public ResponseEntity<RegisterUserResponse> register(RegisterTraineeRequest request) {
         log.info("Received signup request for trainee: {} {}", request.getFirstName(), request.getLastName());
         return new ResponseEntity<>(
+                // todo: returns null userId
                 facade.register(request),
                 HttpStatus.CREATED
         );
