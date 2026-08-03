@@ -31,7 +31,7 @@ public class Criteria<T> {
         this.predicates = new ArrayList<>();
     }
 
-    public static synchronized <T> Criteria<T> of() {
+    public static <T> Criteria<T> of() {
         return new Criteria<>();
     }
 
