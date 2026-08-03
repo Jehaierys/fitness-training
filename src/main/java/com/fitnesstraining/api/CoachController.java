@@ -8,7 +8,7 @@ import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.facade.CoachFacade;
+import com.fitnesstraining.service.CoachService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,30 +22,30 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachController implements CoachControllerApi {
 
-    private final CoachFacade facade;
+    private final CoachService service;
 
 
     public ResponseEntity<RegisterUserResponse> register(RegisterCoachRequest request) {
         log.info("Received signup request for coach: {}", request.getFirstName());
         return new ResponseEntity<>(
-                facade.register(request),
+                service.register(request),
                 HttpStatus.CREATED
         );
     }
 
     public ResponseEntity<UpdateCoachResponse> update(UpdateCoachRequest request) {
-        return ResponseEntity.ok(facade.update(request));
+        return ResponseEntity.ok(service.update(request));
     }
 
     public ResponseEntity<GetCoachResponse> findByUsername(String username) {
         log.info("Received find by username request for coach: {}", username);
-        return ResponseEntity.ok((GetCoachResponse) facade.findByUsername(username));
+        return ResponseEntity.ok(service.findByUsername(username));
     }
 
 
     // todo: use available
     public ResponseEntity<List<CoachDto>> findAvailableCoaches(Boolean available, User user) {
-        return ResponseEntity.ok(facade.findAvailableCoaches(user.getId()));
+        return ResponseEntity.ok(service.findAvailable(user.getId()));
     }
 }
 

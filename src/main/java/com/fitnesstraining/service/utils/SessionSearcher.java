@@ -1,11 +1,11 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.logic.mapper.SessionMapper;
+import com.fitnesstraining.service.mapper.SessionMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -26,43 +26,45 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public class SessionSearcher {
 
-    // don't use entityManager in this class
-    private final EntityManager entityManager;
     private final SessionMapper mapper;
 
-    private SessionSearchCriteria request;
-    private UUID transactionUuid;
-    private List<Session> sessions;
-    private List<SessionDto> response;
+
+    public List<SessionDto> searchByCriteria(SessionSearchCriteria request) {
 
 
-    public synchronized List<SessionDto> searchByCriteria(SessionSearchCriteria request) {
-        this.request = request;
-        initialLog();
+        final UUID transactionUuid;
+        final List<Session> sessions;
+        final List<SessionDto> response;
 
-        findByCriteria();
-        mapToDto();
+        // todo: message
+        transactionUuid = UUID.randomUUID();
+        log.info("Received sessions request with criteria: {}, process's UUID: {}", request, transactionUuid);
 
-        finalLog();
+
+        sessions = Criteria.<Session>of()
+                .root(Session.class)
+                .where(boundedToRequestSender(request))
+                .where(inRange(request.getFrom(), request.getTo()))
+                .join("coach", coachParam(request))
+                .join("trainee", traineeParam(request))
+                .list();
+
+
+        response = sessions
+                .stream()
+                .map(mapper::toSessionDto)
+                .toList();
+
+
+        // todo: message
+        log.info("Successfully found sessions with criteria: {}, process's UUID: {}",
+                request, transactionUuid);
+
         return response;
     }
 
-    private void initialLog() {
-        transactionUuid = UUID.randomUUID();
-        log.info("Received sessions request with criteria: {}, process's UUID: {}", request, transactionUuid);
-    }
 
-    private void findByCriteria() {
-        sessions = Criteria.<Session>of(entityManager)
-                .root(Session.class)
-                .where(boundedToRequestSender())
-                .where(inRange(request.getFrom(), request.getTo()))
-                .join("coach", coachParam())
-                .join("trainee", traineeParam())
-                .list();
-    }
-
-    private BiFunction<CriteriaBuilder, Root<Session>, Predicate> boundedToRequestSender() {
+    private BiFunction<CriteriaBuilder, Root<Session>, Predicate> boundedToRequestSender(SessionSearchCriteria request) {
         return (criteriaBuilder, session) -> criteriaBuilder.or(
                 criteriaBuilder.equal(session.get("traineeId"), request.getRequestSenderId()),
                 criteriaBuilder.equal(session.get("coachId"), request.getRequestSenderId())
@@ -72,12 +74,12 @@ public class SessionSearcher {
     private BiFunction<CriteriaBuilder, Root<Session>, Predicate> inRange(LocalDateTime from, LocalDateTime to) {
         return (cb, session) -> cb.between(
                 session.get("date"),
-                request.getFrom(),
-                request.getTo()
+                from,
+                to
         );
     }
 
-    private BiFunction<CriteriaBuilder, Join<Session, Coach>, Predicate> coachParam() {
+    private BiFunction<CriteriaBuilder, Join<Session, Coach>, Predicate> coachParam(SessionSearchCriteria request) {
         if (request.getCoachId() != null) {
             return (criteriaBuilder, coach)
                     -> criteriaBuilder.equal(coach.get("id"), request.getCoachId());
@@ -104,7 +106,7 @@ public class SessionSearcher {
         return (cb, coach) -> cb.conjunction();
     }
 
-    private BiFunction<CriteriaBuilder, Join<Session, Trainee>, Predicate> traineeParam() {
+    private BiFunction<CriteriaBuilder, Join<Session, Trainee>, Predicate> traineeParam(SessionSearchCriteria request) {
         if (request.getTraineeId() != null) {
             return (criteriaBuilder, trainee)
                     -> criteriaBuilder.equal(trainee.get("id"), request.getTraineeId());
@@ -129,16 +131,5 @@ public class SessionSearcher {
                     );
         }
         return (cb, trainee) -> cb.conjunction();
-    }
-
-    private void mapToDto() {
-        response = sessions
-                .stream()
-                .map(mapper::toSessionDto)
-                .toList();
-    }
-
-    private void finalLog() {
-        log.info("Successfully found sessions with criteria: {}, process's UUID: {}", request, transactionUuid);
     }
 }

@@ -3,6 +3,7 @@ package com.fitnesstraining.logic.processor;
 import com.fitnesstraining.config.security.BruteForceProtector;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.repository.UserRepository;
+import com.fitnesstraining.service.utils.JwtAuthenticator;
 import com.fitnesstraining.utils.dto.UsernamePasswordAuthenticationRequests;
 import com.fitnesstraining.utils.entity.Users;
 import org.junit.jupiter.api.BeforeEach;

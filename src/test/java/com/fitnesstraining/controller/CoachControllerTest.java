@@ -7,7 +7,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
-import com.fitnesstraining.logic.facade.CoachFacade;
+import com.fitnesstraining.service.CoachService;
 import com.fitnesstraining.utils.TestMapper;
 import com.fitnesstraining.utils.dto.RegisterCoachRequests;
 import com.fitnesstraining.utils.dto.UpdateCoachRequests;
@@ -48,7 +48,7 @@ public class CoachControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private CoachFacade facade;
+    private CoachService service;
 
     private RegisterCoachRequest registerRequest;
     private UpdateCoachRequest updateRequest;
@@ -94,7 +94,7 @@ public class CoachControllerTest {
         void missingCrucialData() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.missingCrucialData();
 
-            when(facade.register(any(RegisterCoachRequest.class)))
+            when(service.register(any(RegisterCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -110,7 +110,7 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.specialization")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
 
-            verify(facade, never()).register(any(RegisterCoachRequest.class));
+            verify(service, never()).register(any(RegisterCoachRequest.class));
         }
 
 
@@ -118,7 +118,7 @@ public class CoachControllerTest {
         void tooShort() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.tooShort();
 
-            when(facade.register(any(RegisterCoachRequest.class)))
+            when(service.register(any(RegisterCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -132,14 +132,14 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.SIZE));
 
-            verify(facade, never()).register(any(RegisterCoachRequest.class));
+            verify(service, never()).register(any(RegisterCoachRequest.class));
         }
 
         @Test
         void tooLong() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.tooLong();
 
-            when(facade.register(any(RegisterCoachRequest.class)))
+            when(service.register(any(RegisterCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -153,14 +153,14 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.SIZE));
 
-            verify(facade, never()).register(any(RegisterCoachRequest.class));
+            verify(service, never()).register(any(RegisterCoachRequest.class));
         }
 
         @Test
         void forbiddenCharacter() throws Exception {
             registerRequest = RegisterCoachRequests.Invalid.forbiddenCharacters();
 
-            when(facade.register(any(RegisterCoachRequest.class)))
+            when(service.register(any(RegisterCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(registerRequest))
@@ -172,7 +172,7 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
 
-            verify(facade, never()).register(any(RegisterCoachRequest.class));
+            verify(service, never()).register(any(RegisterCoachRequest.class));
         }
     }
 
@@ -189,7 +189,7 @@ public class CoachControllerTest {
         void missingCrucialData() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.missingCrucialData();
 
-            when(facade.update(any(UpdateCoachRequest.class)))
+            when(service.update(any(UpdateCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -205,14 +205,14 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.specialization")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
 
-            verify(facade, never()).update(any(UpdateCoachRequest.class));
+            verify(service, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void tooShort() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.tooShort();
 
-            when(facade.update(any(UpdateCoachRequest.class)))
+            when(service.update(any(UpdateCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -224,14 +224,14 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.SIZE));
 
-            verify(facade, never()).update(any(UpdateCoachRequest.class));
+            verify(service, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void tooLong() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.tooLong();
 
-            when(facade.update(any(UpdateCoachRequest.class)))
+            when(service.update(any(UpdateCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -243,14 +243,14 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.SIZE));
 
-            verify(facade, never()).update(any(UpdateCoachRequest.class));
+            verify(service, never()).update(any(UpdateCoachRequest.class));
         }
 
         @Test
         void forbiddenCharacter() throws Exception {
             updateRequest = UpdateCoachRequests.Invalid.forbiddenCharacters();
 
-            when(facade.update(any(UpdateCoachRequest.class)))
+            when(service.update(any(UpdateCoachRequest.class)))
                     .thenReturn(null);
 
             mockMvc.perform(template(updateRequest))
@@ -262,7 +262,7 @@ public class CoachControllerTest {
                     .andExpect(jsonPath("$.details.lastName")
                             .value(ValidationErrorMessages.LastName.PATTERN));
 
-            verify(facade, never()).update(any(UpdateCoachRequest.class));
+            verify(service, never()).update(any(UpdateCoachRequest.class));
         }
     }
 }

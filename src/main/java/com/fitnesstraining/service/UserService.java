@@ -1,11 +1,14 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
+import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.entity.User;
+import com.fitnesstraining.service.utils.JwtAuthenticator;
 import com.fitnesstraining.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
     private final PasswordEncoder encoder;
+    private final JwtAuthenticator jwtAuthenticator;
 
 
     @Override
@@ -28,6 +32,9 @@ public class UserService implements UserDetailsService {
         return repository.findByUsername(username);
     }
 
+    public ResponseCookie authenticate(UsernamePasswordAuthenticationRequest request) {
+        return jwtAuthenticator.authenticate(request);
+    }
 
     @Transactional
     public void changePassword(User user, String newPassword) {

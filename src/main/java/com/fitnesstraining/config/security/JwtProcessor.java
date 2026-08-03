@@ -93,7 +93,7 @@ public class JwtProcessor {
     }
 
     private boolean shouldAuthenticate() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         return username != null
                 && (authentication == null

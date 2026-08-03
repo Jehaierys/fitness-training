@@ -1,8 +1,8 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.logic.mapper.CoachMapper;
+import com.fitnesstraining.service.mapper.CoachMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachSearcher {
 
-    private final EntityManager entityManager;
     private final CoachMapper mapper;
 
 
@@ -26,7 +25,7 @@ public class CoachSearcher {
     }
 
     private List<Coach> fetchAvailableCoaches(Long traineeId) {
-        return Criteria.<Coach>of(entityManager)
+        return Criteria.<Coach>of()
                 .root(Coach.class)
                 .where((builder, root) -> builder.notEqual(root.get("traineeId"), traineeId))
                 .where((builder, root) -> builder.isTrue(root.get("isActive")))

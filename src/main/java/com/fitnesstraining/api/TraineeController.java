@@ -6,7 +6,7 @@ import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
-import com.fitnesstraining.logic.facade.TraineeFacade;
+import com.fitnesstraining.service.TraineeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,31 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TraineeController implements TraineeControllerApi {
 
-    private final TraineeFacade facade;
+    private final TraineeService service;
 
 
     public ResponseEntity<RegisterUserResponse> register(RegisterTraineeRequest request) {
         log.info("Received signup request for trainee: {} {}", request.getFirstName(), request.getLastName());
         return new ResponseEntity<>(
                 // todo: returns null userId
-                facade.register(request),
+                service.register(request),
                 HttpStatus.CREATED
         );
     }
 
     public ResponseEntity<UpdateTraineeResponse> update(UpdateTraineeRequest request) {
         log.info("Received update profile request for trainee: {}", request.getUsername());
-        return ResponseEntity.ok(facade.update(request));
+        return ResponseEntity.ok(service.update(request));
     }
 
     public ResponseEntity<HttpStatus> delete(String username) {
         log.info("Received delete request for trainee: {}", username);
-        facade.deleteByUsername(username);
+        service.deleteByUsername(username);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     public ResponseEntity<GetTraineeResponse> findByUsername(String username) {
         log.info("Received find by username request for trainee: {}", username);
-        return ResponseEntity.ok(facade.findByUsername(username));
+        return ResponseEntity.ok(service.findByUsername(username));
     }
 }

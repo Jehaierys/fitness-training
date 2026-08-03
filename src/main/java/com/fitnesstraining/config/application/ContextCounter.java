@@ -13,7 +13,7 @@ public class ContextCounter implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        int count = COUNTER.incrementAndGet();
+        final int count = COUNTER.incrementAndGet();
 
         System.out.println();
         System.out.println("--------------------------------");

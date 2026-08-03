@@ -5,7 +5,7 @@ import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest
 import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.facade.SessionFacade;
+import com.fitnesstraining.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,11 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SessionController implements SessionControllerApi {
 
-    private final SessionFacade facade;
+    private final SessionService service;
 
 
     public ResponseEntity<HttpStatus> create(SessionRegistrationRequest request) {
-        facade.create(request);
+        service.create(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -35,6 +35,6 @@ public class SessionController implements SessionControllerApi {
 
         criteria.setRequestSenderId(requestSenderId);
         log.info("Received sessions request for user: {}", requestSenderId);
-        return ResponseEntity.ok(facade.findSessionsByCriteria(criteria));
+        return ResponseEntity.ok(service.findSessionsByCriteria(criteria));
     }
 }

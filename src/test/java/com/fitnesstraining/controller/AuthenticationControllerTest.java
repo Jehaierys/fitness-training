@@ -6,7 +6,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.facade.UserFacade;
+import com.fitnesstraining.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ public class AuthenticationControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private UserFacade facade;
+    private UserService service;
 
 
     @Nested
@@ -49,14 +49,14 @@ public class AuthenticationControllerTest {
         @Test
         void onValidActivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(facade).setActive(any(String.class), any(Boolean.class), any(User.class));
+            doNothing().when(service).setActive(any(String.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch(BASE_AUTHENTICATION_CONTROLLER_URL)
                             .param("username", "username123")
                             .param("active", "true"))
                     .andExpect(status().isOk());
 
-            verify(facade).setActive(
+            verify(service).setActive(
                     eq("username123"),
                     eq(true),
                     isNull()
@@ -66,14 +66,14 @@ public class AuthenticationControllerTest {
         @Test
         void onValidDeactivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(facade).setActive(any(String.class), any(Boolean.class), any(User.class));
+            doNothing().when(service).setActive(any(String.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch(BASE_AUTHENTICATION_CONTROLLER_URL)
                             .param("username", "username123")
                             .param("active", "false"))
                     .andExpect(status().isOk());
 
-            verify(facade).setActive(
+            verify(service).setActive(
                     eq("username123"),
                     eq(false),
                     isNull()
@@ -88,13 +88,13 @@ public class AuthenticationControllerTest {
         @Test
         void onValidActivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(facade).setActive(any(Long.class), any(Boolean.class), any(User.class));
+            doNothing().when(service).setActive(any(Long.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch(BASE_AUTHENTICATION_CONTROLLER_URL + "/100")
                             .param("active", "true"))
                     .andExpect(status().isOk());
 
-            verify(facade).setActive(
+            verify(service).setActive(
                     eq(100L),
                     eq(true),
                     isNull()
@@ -104,13 +104,13 @@ public class AuthenticationControllerTest {
         @Test
         void onValidDeactivation_ExpectsOkAndCallsServiceWithCorrectArguments() throws Exception {
 
-            doNothing().when(facade).setActive(any(Long.class), any(Boolean.class), any(User.class));
+            doNothing().when(service).setActive(any(Long.class), any(Boolean.class), any(User.class));
 
             mockMvc.perform(patch(BASE_AUTHENTICATION_CONTROLLER_URL + "/100")
                             .param("active", "false"))
                     .andExpect(status().isOk());
 
-            verify(facade).setActive(
+            verify(service).setActive(
                     eq(100L),
                     eq(false),
                     isNull()
@@ -143,7 +143,7 @@ public class AuthenticationControllerTest {
 
         ArgumentCaptor<Trainee> captor = ArgumentCaptor.forClass(Trainee.class);
 
-        verify(facade).setActive(
+        verify(service).setActive(
                 eq(100L),
                 eq(true),
                 captor.capture()

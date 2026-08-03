@@ -3,7 +3,7 @@ package com.fitnesstraining.repository;
 import com.fitnesstraining.config.test.PostgresTestContainer;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.logic.exception.CoachNotFoundException;
+import com.fitnesstraining.service.exception.CoachNotFoundException;
 import com.fitnesstraining.utils.Specializations;
 import com.fitnesstraining.utils.entity.Users;
 import jakarta.persistence.EntityExistsException;

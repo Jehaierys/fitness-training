@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.config.security.BruteForceProtector;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
@@ -42,49 +42,29 @@ public class JwtAuthenticator {
     @Value("${jwt.response.cookie.secure}")
     private boolean jwtResponseCookieSecure;
 
-    private UsernamePasswordAuthenticationRequest request;
-    private UserDetails userDetails;
-    private ResponseCookie response;
+
+    // todo: logs
+    public ResponseCookie authenticate(UsernamePasswordAuthenticationRequest request) {
+
+        final UserDetails userDetails;
+        final ResponseCookie response;
+        final String jwt;
 
 
-    public synchronized ResponseCookie authenticate(UsernamePasswordAuthenticationRequest request) {
-
-        this.request = request;
-
-        checkAuthenticationAttempts();
-
-        loadUserDetails();
-
-        checkCredentials();
-
-        authenticate();
-
-        buildResponse();
-
-        return response;
-    }
-
-    private void checkAuthenticationAttempts() {
         bruteForceProtector.checkAttempts(request);
-    }
 
-    private void loadUserDetails() {
         userDetails = repository.findByUsername(request.getUsername());
 
         if (userDetails == null) {
             bruteForceProtector.blockHost(request.getIp());
             throw new UsernameNotFoundException("User not found");
         }
-    }
 
-    private void checkCredentials() {
         if (!encoder.matches(request.getPassword(), userDetails.getPassword())) {
             bruteForceProtector.incrementAttempts(request);
             throw new BadCredentialsException("Invalid credentials");
         }
-    }
 
-    private void authenticate() {
 
         final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails,
@@ -95,18 +75,15 @@ public class JwtAuthenticator {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         bruteForceProtector.onSuccessfulLogin(request);
-    }
 
-    private void buildResponse() {
-
-        final String jwt = Jwts.builder()
+        jwt = Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration.toMillis()))
                 .signWith(getSigningKey())
                 .compact();
 
-        this.response = ResponseCookie
+        response = ResponseCookie
                 .from(JWT_COOKIE_NAME, jwt)
                 .httpOnly(true)
                 .secure(jwtResponseCookieSecure)
@@ -114,6 +91,8 @@ public class JwtAuthenticator {
                 .path("/")
                 .maxAge(Duration.ofHours(1))
                 .build();
+
+        return response;
     }
 
 

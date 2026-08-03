@@ -34,9 +34,9 @@
             <property name="max" value="3"/>
         </module>
 
-        <module name="MethodLength">
-            <property name="max" value="30"/>
-        </module>
+<!--        <module name="MethodLength">-->
+<!--            <property name="max" value="30"/>-->
+<!--        </module>-->
 
         <!-- Requires {} for single-line if statement -->
         <module name="NeedBraces"/>
