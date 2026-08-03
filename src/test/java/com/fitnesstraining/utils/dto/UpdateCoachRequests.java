@@ -16,11 +16,10 @@ public final class UpdateCoachRequests {
                 .lastName("Santana")
                 .username("carlos.santana")
                 .isActive(true)
-                .specialization(
+                .specializationIds(
                         List.of(
-                                SessionTypes.cardio(),
-                                SessionTypes.yoga(),
-                                SessionTypes.strengthTraining()
+                                SessionTypes.cardio().getId(),
+                                SessionTypes.strengthTraining().getId()
                         )
                 )
                 .build();
@@ -38,7 +37,7 @@ public final class UpdateCoachRequests {
                     .lastName(null)
                     .username(null)
                     .isActive(null)
-                    .specialization(null)
+                    .specializationIds(null)
                     .build();
         }
 
@@ -48,7 +47,7 @@ public final class UpdateCoachRequests {
                     .lastName("B") // min 2
                     .username("abc") // min 4
                     .isActive(true)
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
 
@@ -58,7 +57,7 @@ public final class UpdateCoachRequests {
                     .lastName("B".repeat(51)) // max 50
                     .username("C".repeat(51)) // max 50
                     .isActive(true)
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
 
@@ -68,7 +67,7 @@ public final class UpdateCoachRequests {
                     .lastName("Santana#") // forbidden character
                     .username("carlos.santana!") // forbidden character
                     .isActive(true)
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
     }

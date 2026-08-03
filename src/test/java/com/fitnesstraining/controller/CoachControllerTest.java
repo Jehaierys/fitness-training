@@ -107,7 +107,7 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.Username.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.password")
                             .value(ValidationErrorMessages.Password.CANNOT_BE_BLANK))
-                    .andExpect(jsonPath("$.details.specialization")
+                    .andExpect(jsonPath("$.details.specializationIds")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
 
             verify(service, never()).register(any(RegisterCoachRequest.class));
@@ -202,7 +202,7 @@ public class CoachControllerTest {
                             .value(ValidationErrorMessages.Username.CANNOT_BE_BLANK))
                     .andExpect(jsonPath("$.details.isActive")
                             .value(ValidationErrorMessages.IS_ACTIVE_CANNOT_BE_NULL))
-                    .andExpect(jsonPath("$.details.specialization")
+                    .andExpect(jsonPath("$.details.specializationIds")
                             .value(ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY));
 
             verify(service, never()).update(any(UpdateCoachRequest.class));
