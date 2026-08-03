@@ -23,6 +23,17 @@ public class SessionTypeRepository {
                 .getResultList();
     }
 
+    public List<SessionType> findAllById(List<Integer> ids) {
+        return entityManager
+                .createQuery("""
+                    SELECT s
+                    FROM SessionType s
+                    WHERE s.id IN :ids
+                    """, SessionType.class)
+                .setParameter("ids", ids)
+                .getResultList();
+    }
+
     public Optional<SessionType> findById(Long id) {
         return Optional.ofNullable(entityManager.find(SessionType.class, id));
     }

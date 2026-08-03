@@ -7,6 +7,7 @@ import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.RegisterCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
+import com.fitnesstraining.repository.SessionTypeRepository;
 import com.fitnesstraining.service.mapper.CoachMapper;
 import com.fitnesstraining.service.utils.CoachSearcher;
 import com.fitnesstraining.repository.CoachRepository;
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class CoachService {
 
     private final CoachRepository repository;
+    private final SessionTypeRepository sessionTypeRepository;
     private final CoachMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final CoachSearcher searcher;
@@ -51,6 +53,10 @@ public class CoachService {
 
         coach.setActive(true);
 
+        coach.setSpecialization(
+                sessionTypeRepository.findAllById(request.getSpecializationIds())
+        );
+
         // todo: check user exists by username
         coach = repository.create(coach);
 
@@ -74,8 +80,8 @@ public class CoachService {
 
         // todo: message
         transactionUuid = UUID.randomUUID();
-        log.info("Updating coach: {} {}, specialization: {}, attempt's UUID: {}",
-                request.getFirstName(), request.getLastName(), request.getSpecialization(), transactionUuid);
+        log.info("Updating coach: {} {}, attempt's UUID: {}",
+                request.getFirstName(), request.getLastName(), transactionUuid);
 
 
         coach = repository.findByUsername(request.getUsername());
@@ -85,6 +91,10 @@ public class CoachService {
 
         mapper.toEntity(request, coach);
 
+        coach.setSpecialization(
+                sessionTypeRepository.findAllById(request.getSpecializationIds())
+        );
+
         coach = repository.update(coach);
 
         response = mapper.toUpdateCoachResponse(coach);
@@ -92,7 +102,7 @@ public class CoachService {
 
         // todo: message
         log.info("Successfully updated coach: {} {}, specialization: {}, userId: {} process's UUID: {}",
-                request.getFirstName(), request.getLastName(), request.getSpecialization(), coach.getId(), transactionUuid);
+                request.getFirstName(), request.getLastName(), request.getSpecializationIds(), coach.getId(), transactionUuid);
 
         return response;
     }

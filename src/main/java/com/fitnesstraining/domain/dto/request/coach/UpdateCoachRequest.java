@@ -20,5 +20,5 @@ import java.util.List;
 public class UpdateCoachRequest extends UpdateUserRequest {
 
     @NotEmpty(message = ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY)
-    List<SessionType> specialization;
+    List<Integer> specializationIds;
 }
