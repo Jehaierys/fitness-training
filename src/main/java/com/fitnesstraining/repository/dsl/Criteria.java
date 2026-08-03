@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository.dsl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 
@@ -11,7 +12,9 @@ import java.util.function.BiFunction;
 
 public class Criteria<T> {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final CriteriaBuilder criteriaBuilder;
     private final List<Predicate> predicates;
 
@@ -23,15 +26,13 @@ public class Criteria<T> {
     private boolean paginationApplied = false;
 
 
-    @SuppressWarnings("unused")
-    private Criteria(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    private Criteria() {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.predicates = new ArrayList<>();
     }
 
-    public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
-        return new Criteria<>(entityManager);
+    public static synchronized <T> Criteria<T> of() {
+        return new Criteria<>();
     }
 
 

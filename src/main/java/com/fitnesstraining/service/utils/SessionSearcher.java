@@ -26,8 +26,6 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public class SessionSearcher {
 
-    // don't use entityManager in this class
-    private final EntityManager entityManager;
     private final SessionMapper mapper;
 
 
@@ -43,7 +41,7 @@ public class SessionSearcher {
         log.info("Received sessions request with criteria: {}, process's UUID: {}", request, transactionUuid);
 
 
-        sessions = Criteria.<Session>of(entityManager)
+        sessions = Criteria.<Session>of()
                 .root(Session.class)
                 .where(boundedToRequestSender(request))
                 .where(inRange(request.getFrom(), request.getTo()))

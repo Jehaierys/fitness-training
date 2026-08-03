@@ -16,7 +16,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CoachSearcher {
 
-    private final EntityManager entityManager;
     private final CoachMapper mapper;
 
 
@@ -26,7 +25,7 @@ public class CoachSearcher {
     }
 
     private List<Coach> fetchAvailableCoaches(Long traineeId) {
-        return Criteria.<Coach>of(entityManager)
+        return Criteria.<Coach>of()
                 .root(Coach.class)
                 .where((builder, root) -> builder.notEqual(root.get("traineeId"), traineeId))
                 .where((builder, root) -> builder.isTrue(root.get("isActive")))
