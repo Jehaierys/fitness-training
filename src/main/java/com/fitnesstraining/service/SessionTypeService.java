@@ -1,7 +1,6 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.logic.abstraction.SessionTypeService;
 import com.fitnesstraining.repository.SessionTypeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import static com.fitnesstraining.utils.ExceptionSuppliers.SessionTypeNotFound;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DefaultSessionTypeService implements SessionTypeService {
+public class SessionTypeService {
 
     private final SessionTypeRepository repository;
 
@@ -23,7 +22,6 @@ public class DefaultSessionTypeService implements SessionTypeService {
         return repository.findAll();
     }
 
-    @Override
     public SessionType findByName(String name) {
         return repository.findByName(name)
                 .orElseThrow(SessionTypeNotFound("SessionType not found with name: " + name));
@@ -34,13 +32,6 @@ public class DefaultSessionTypeService implements SessionTypeService {
                 .orElseThrow(SessionTypeNotFound("SessionType not found with id: " + id));
     }
 
-    public void delete(SessionType sessionType) {
-        repository.delete(sessionType);
-    }
-
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
 
     public boolean existsById(Long id) {
         return repository.existsById(id);

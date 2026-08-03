@@ -1,8 +1,8 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.logic.mapper.CoachMapper;
+import com.fitnesstraining.service.mapper.CoachMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

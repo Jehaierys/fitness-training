@@ -1,11 +1,11 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.logic.mapper.SessionMapper;
+import com.fitnesstraining.service.mapper.SessionMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;

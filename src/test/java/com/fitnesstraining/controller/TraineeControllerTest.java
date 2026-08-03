@@ -6,7 +6,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
-import com.fitnesstraining.logic.service.TraineeService;
+import com.fitnesstraining.service.TraineeService;
 import com.fitnesstraining.utils.TestMapper;
 import com.fitnesstraining.utils.dto.RegisterTraineeRequests;
 import com.fitnesstraining.utils.dto.UpdateTraineeRequests;

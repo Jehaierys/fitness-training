@@ -5,7 +5,7 @@ import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest
 import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
 import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.service.SessionService;
+import com.fitnesstraining.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

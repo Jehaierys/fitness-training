@@ -1,8 +1,8 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.processor.JwtAuthenticator;
+import com.fitnesstraining.service.utils.JwtAuthenticator;
 import com.fitnesstraining.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

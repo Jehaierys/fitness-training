@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.exception;
+package com.fitnesstraining.service.exception;
 
 public class CoachNotFoundException extends RuntimeException {
 

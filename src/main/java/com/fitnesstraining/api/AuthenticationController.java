@@ -4,7 +4,7 @@ import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.service.UserService;
+import com.fitnesstraining.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

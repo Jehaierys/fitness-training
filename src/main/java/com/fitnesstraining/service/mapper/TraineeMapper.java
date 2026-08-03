@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.mapper;
+package com.fitnesstraining.service.mapper;
 
 import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;

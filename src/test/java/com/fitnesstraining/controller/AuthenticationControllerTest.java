@@ -6,7 +6,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.service.UserService;
+import com.fitnesstraining.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -41,9 +41,6 @@ public class AuthenticationControllerTest {
 
     @MockitoBean
     private UserService service;
-
-    @MockitoBean
-    private UserFacade facade;
 
 
     @Nested

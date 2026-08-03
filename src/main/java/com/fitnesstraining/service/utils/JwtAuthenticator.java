@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.processor;
+package com.fitnesstraining.service.utils;
 
 import com.fitnesstraining.config.security.BruteForceProtector;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;

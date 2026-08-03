@@ -8,6 +8,7 @@ import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
+import com.fitnesstraining.service.mapper.CoachMapper;
 import com.fitnesstraining.utils.Specializations;
 import com.fitnesstraining.utils.dto.RegisterCoachRequests;
 import com.fitnesstraining.utils.dto.UpdateCoachRequests;

@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
@@ -7,7 +7,7 @@ import com.fitnesstraining.domain.dto.response.trainee.RegisterTraineeResponse;
 import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
 import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.mapper.TraineeMapper;
+import com.fitnesstraining.service.mapper.TraineeMapper;
 import com.fitnesstraining.repository.TraineeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

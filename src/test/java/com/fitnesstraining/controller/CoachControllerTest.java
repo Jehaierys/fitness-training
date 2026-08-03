@@ -7,7 +7,7 @@ import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.TestSecurityConfiguration;
 import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
-import com.fitnesstraining.logic.service.CoachService;
+import com.fitnesstraining.service.CoachService;
 import com.fitnesstraining.utils.TestMapper;
 import com.fitnesstraining.utils.dto.RegisterCoachRequests;
 import com.fitnesstraining.utils.dto.UpdateCoachRequests;

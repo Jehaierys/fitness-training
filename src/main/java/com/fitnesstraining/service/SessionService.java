@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
 import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
@@ -7,9 +7,8 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.logic.abstraction.SessionTypeService;
-import com.fitnesstraining.logic.mapper.SessionMapper;
-import com.fitnesstraining.logic.processor.SessionSearcher;
+import com.fitnesstraining.service.mapper.SessionMapper;
+import com.fitnesstraining.service.utils.SessionSearcher;
 import com.fitnesstraining.repository.CoachRepository;
 import com.fitnesstraining.repository.SessionRepository;
 import com.fitnesstraining.repository.TraineeRepository;

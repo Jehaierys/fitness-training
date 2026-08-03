@@ -1,4 +1,4 @@
-package com.fitnesstraining.logic.service;
+package com.fitnesstraining.service;
 
 import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
 import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
@@ -7,8 +7,8 @@ import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.RegisterCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.Coach;
-import com.fitnesstraining.logic.mapper.CoachMapper;
-import com.fitnesstraining.logic.processor.CoachSearcher;
+import com.fitnesstraining.service.mapper.CoachMapper;
+import com.fitnesstraining.service.utils.CoachSearcher;
 import com.fitnesstraining.repository.CoachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
