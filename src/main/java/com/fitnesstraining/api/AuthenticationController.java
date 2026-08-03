@@ -4,7 +4,7 @@ import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
 import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
-import com.fitnesstraining.logic.facade.UserFacade;
+import com.fitnesstraining.logic.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +23,11 @@ import static com.fitnesstraining.utils.SharedStrings.JWT_COOKIE_NAME;
 @RequiredArgsConstructor
 public class AuthenticationController implements AuthenticationControllerApi {
 
-    private final UserFacade facade;
+    private final UserService service;
 
 
     public void changePassword(User user, String newPassword) {
-        facade.changePassword(user, newPassword);
+        service.changePassword(user, newPassword);
     }
 
     public ResponseEntity<JwtAuthenticationResponse> login(
@@ -36,19 +36,19 @@ public class AuthenticationController implements AuthenticationControllerApi {
     ) {
         request.setIp(servletRequest.getRemoteHost());
 
-        final String cookie = facade.authenticate(request).toString();
+        final String cookie = service.authenticate(request).toString();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie)
                 .build();
     }
 
     public ResponseEntity<Void> setActive(Long id, Boolean active, User principal) {
-        facade.setActive(id, active, principal);
+        service.setActive(id, active, principal);
         return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<Void> setActive(String username, Boolean active, User principal) {
-        facade.setActive(username, active, principal);
+        service.setActive(username, active, principal);
         return ResponseEntity.ok().build();
     }
 
