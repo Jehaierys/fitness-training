@@ -30,6 +30,7 @@ public class TraineeService {
     private final PasswordEncoder passwordEncoder;
 
 
+    @Transactional
     public RegisterTraineeResponse register(RegisterTraineeRequest request) {
 
         final UUID traineeUuid;
@@ -58,11 +59,11 @@ public class TraineeService {
         log.info("Successfully created trainee: {} {}, birth date: {}, address: {}, userId: {} process's UUID: {}",
                 request.getFirstName(), request.getLastName(), request.getBirthDate(), request.getAddress(), trainee.getId(), traineeUuid);
 
-
         return response;
     }
 
 
+    @Transactional
     public UpdateTraineeResponse update(UpdateTraineeRequest request) {
 
         final UUID transactionUuid;

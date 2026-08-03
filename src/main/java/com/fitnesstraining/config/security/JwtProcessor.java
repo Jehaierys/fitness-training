@@ -83,7 +83,7 @@ public class JwtProcessor {
     private void onMalformedJwt(JwtException exception) {
 
         SecurityContextHolder.clearContext();
-        log.error("Error occurred while parsing JWT token", exception);
+        log.error("Error occurred while parsing JWT token");
         throw exception;
     }
 
