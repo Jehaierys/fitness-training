@@ -2,7 +2,6 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.AuthenticationControllerApi;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
-import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,13 +29,14 @@ public class AuthenticationController implements AuthenticationControllerApi {
         service.changePassword(user, newPassword);
     }
 
-    public ResponseEntity<JwtAuthenticationResponse> login(
+    public ResponseEntity<Void> authenticate(
             UsernamePasswordAuthenticationRequest request,
             HttpServletRequest servletRequest
     ) {
         request.setIp(servletRequest.getRemoteHost());
 
         final String cookie = service.authenticate(request).toString();
+
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie)
                 .build();
