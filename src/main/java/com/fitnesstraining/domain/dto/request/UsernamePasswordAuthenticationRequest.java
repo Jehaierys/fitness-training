@@ -1,7 +1,10 @@
 package com.fitnesstraining.domain.dto.request;
 
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 
 
@@ -12,13 +15,13 @@ import lombok.*;
 @AllArgsConstructor
 public class UsernamePasswordAuthenticationRequest {
 
-    @NotNull(message = "Username cannot be null")
+    @NotNull(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
     private String username;
 
-    @NotNull(message = "Password cannot be null")
+    @NotBlank(message = ValidationErrorMessages.Password.CANNOT_BE_BLANK)
     private String password;
 
-    @Nullable
+    @Null(message = "IP field must be null here")
     private String ip;
 
 }

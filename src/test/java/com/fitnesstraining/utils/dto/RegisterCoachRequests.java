@@ -16,10 +16,10 @@ public final class RegisterCoachRequests {
                 .lastName("Santana")
                 .username("carlos.santana")
                 .password("password123")
-                .specialization(
+                .specializationIds(
                         List.of(
-                                SessionTypes.cardio(),
-                                SessionTypes.yoga()
+                                SessionTypes.cardio().getId(),
+                                SessionTypes.yoga().getId()
                         )
                 )
                 .build();
@@ -37,7 +37,7 @@ public final class RegisterCoachRequests {
                     .lastName(null)
                     .username(null)
                     .password(null)
-                    .specialization(null)
+                    .specializationIds(null)
                     .build();
         }
 
@@ -47,7 +47,7 @@ public final class RegisterCoachRequests {
                     .lastName("B") // min 2
                     .username("abc") // min 4
                     .password("123") // min 6
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
 
@@ -57,7 +57,7 @@ public final class RegisterCoachRequests {
                     .lastName("B".repeat(51)) // max 50
                     .username("C".repeat(51)) // max 50
                     .password("D".repeat(101)) // max 50
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
 
@@ -67,7 +67,7 @@ public final class RegisterCoachRequests {
                     .lastName("Smith!") // pattern fails
                     .username("@@@@") // pattern fails
                     .password("password123")
-                    .specialization(List.of(SessionTypes.cardio()))
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
                     .build();
         }
     }

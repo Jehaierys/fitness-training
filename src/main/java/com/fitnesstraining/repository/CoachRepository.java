@@ -4,6 +4,7 @@ import com.fitnesstraining.domain.entity.Coach;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,14 +38,21 @@ public class CoachRepository {
     }
 
     public Coach findByUsername(String username) {
-        final String jpql = "SELECT c FROM Coach c WHERE c.username = :username";
+        final String jpql = """
+        SELECT c
+        FROM Coach c
+        LEFT JOIN FETCH c.specialization
+        WHERE c.username = :username
+        """;
 
         return entityManager
                 .createQuery(jpql, Coach.class)
                 .setParameter("username", username)
                 .getResultStream()
                 .findFirst()
-                .orElseThrow(CoachNotFound("Coach not found with username: " + username));
+                .orElseThrow(
+                        CoachNotFound("Coach not found with username: " + username)
+                );
     }
 
     public boolean existsById(Long id) {

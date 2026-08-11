@@ -22,5 +22,5 @@ public class RegisterCoachRequest extends RegisterUserRequest {
 
     // todo: this is not a String
     @NotEmpty(message = ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY)
-    List<SessionType> specialization;
+    List<Integer> specializationIds;
 }

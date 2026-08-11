@@ -7,15 +7,19 @@ import com.fitnesstraining.domain.dto.response.coach.CoachDto;
 import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.RegisterCoachResponse;
 import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
+import com.fitnesstraining.domain.entity.SessionType;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface CoachMapper {
 
     @Mapping(target = "isActive", source = "active") // ???
+    @Mapping(target = "specializationIds", source = "specialization")
     GetCoachResponse toGetCoachResponse(Coach coach);
 
     RegisterCoachResponse toRegisterCoachResponse(Coach coach);
@@ -34,6 +38,17 @@ public interface CoachMapper {
     @Mapping(target = "firstName", source = "firstName")
     @Mapping(target = "lastName", source = "lastName")
     @Mapping(target = "username", source = "username")
-    @Mapping(target = "specialization", source = "specialization")
+    @Mapping(target = "specializationIds", source = "specialization")
     CoachDto toCoachDto(Coach coach);
+
+
+    default int[] map(List<SessionType> sessionTypes) {
+        if (sessionTypes == null) {
+            return null;
+        }
+
+        return sessionTypes.stream()
+                .mapToInt(SessionType::getId)
+                .toArray();
+    }
 }

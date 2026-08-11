@@ -2,7 +2,6 @@ package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
 import com.fitnesstraining.domain.dto.request.UsernamePasswordAuthenticationRequest;
-import com.fitnesstraining.domain.dto.response.JwtAuthenticationResponse;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -61,11 +61,7 @@ public interface AuthenticationControllerApi {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Authentication successful",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = JwtAuthenticationResponse.class)
-                    )
+                    description = "Authentication successful"
             ),
             @ApiResponse(
                     responseCode = "401",
@@ -73,7 +69,7 @@ public interface AuthenticationControllerApi {
             )
     })
     @PostMapping()
-    ResponseEntity<JwtAuthenticationResponse> login(
+    ResponseEntity<Void> authenticate(
             @RequestBody UsernamePasswordAuthenticationRequest dto,
             HttpServletRequest servletRequest
     );
@@ -95,6 +91,7 @@ public interface AuthenticationControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{id}")
     ResponseEntity<Void> setActive(
             @PathVariable Long id,

@@ -17,7 +17,7 @@ import java.util.Set;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class GetCoachResponse extends GetUserResponse {
 
-    List<SessionType> specialization;
+    int[] specializationIds;
     // todo: fn, ln, username
     Set<Trainee> trainees;
 }
