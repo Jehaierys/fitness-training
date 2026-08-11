@@ -1,6 +1,7 @@
 package com.fitnesstraining.repository.dsl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 
@@ -11,7 +12,9 @@ import java.util.function.BiFunction;
 
 public class Criteria<T> {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final CriteriaBuilder criteriaBuilder;
     private final List<Predicate> predicates;
 
@@ -23,21 +26,21 @@ public class Criteria<T> {
     private boolean paginationApplied = false;
 
 
-    @SuppressWarnings("unused")
-    private Criteria(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    private Criteria() {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.predicates = new ArrayList<>();
     }
 
-    public static synchronized <T> Criteria<T> of(EntityManager entityManager) {
-        return new Criteria<>(entityManager);
+    public static <T> Criteria<T> of() {
+        return new Criteria<>();
     }
 
 
     public Criteria<T> root(Class<T> entityClass) {
+
         this.criteriaQuery = criteriaBuilder.createQuery(entityClass);
         this.root = criteriaQuery.from(entityClass);
+
         return this;
     }
 
@@ -66,35 +69,48 @@ public class Criteria<T> {
     }
 
     public Criteria<T> limit(int limit) {
+
         if (paginationApplied) {
             throw new IllegalStateException("Pagination already applied");
         }
+
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be non-negative");
         }
+
+        this.limit = limit;
+
         paginationApplied = true;
-        this. limit = limit;
+
         return this;
     }
 
     public Criteria<T> offset(int offset) {
+
         if (offset < 0) {
             throw new IllegalArgumentException("Offset must be non-negative");
         }
+
         this.offset = offset;
+
         return this;
     }
 
     public Criteria<T> page(int page, int size) {
+
         if (paginationApplied) {
             throw new IllegalStateException("Pagination already applied");
         }
+
         if (page < 0 || size < 0) {
             throw new IllegalArgumentException("Page and size must be non-negative");
         }
+
         this.offset = page * size;
         this.limit = size;
+
         this.paginationApplied = true;
+
         return this;
     }
 

@@ -18,7 +18,12 @@ import java.util.*;
 @Table(name = "coaches")
 public class Coach extends User {
 
-    @ManyToMany(mappedBy = "coaches")
+    @ManyToMany
+    @JoinTable(
+            name = "coach_session_type",
+            inverseJoinColumns = @JoinColumn(name = "session_type_id"),
+            joinColumns = @JoinColumn(name = "coach_id")
+    )
     @Builder.Default
     private List<SessionType> specialization = new ArrayList<>();
 

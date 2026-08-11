@@ -1,9 +1,9 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
-import com.fitnesstraining.domain.dto.session.SessionRegistrationRequest;
-import com.fitnesstraining.domain.dto.session.SessionSearchCriteria;
-import com.fitnesstraining.domain.dto.session.SessionDto;
+import com.fitnesstraining.domain.dto.request.session.SessionRegistrationRequest;
+import com.fitnesstraining.domain.dto.request.session.SessionSearchCriteria;
+import com.fitnesstraining.domain.dto.response.SessionDto;
 import com.fitnesstraining.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

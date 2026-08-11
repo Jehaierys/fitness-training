@@ -1,0 +1,24 @@
+package com.fitnesstraining.domain.dto.request.coach;
+
+import com.fitnesstraining.domain.dto.request.UpdateUserRequest;
+import com.fitnesstraining.domain.entity.SessionType;
+import com.fitnesstraining.utils.ValidationErrorMessages;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
+
+import java.util.List;
+
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
+public class UpdateCoachRequest extends UpdateUserRequest {
+
+    @NotEmpty(message = ValidationErrorMessages.SPECIALIZATION_CANNOT_BE_EMPTY)
+    List<Integer> specializationIds;
+}

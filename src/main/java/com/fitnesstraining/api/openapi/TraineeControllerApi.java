@@ -1,11 +1,11 @@
 package com.fitnesstraining.api.openapi;
 
-import com.fitnesstraining.domain.dto.abstraction.Activated;
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.trainee.request.RegisterTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.request.UpdateTraineeRequest;
-import com.fitnesstraining.domain.dto.trainee.response.GetTraineeResponse;
-import com.fitnesstraining.domain.dto.trainee.response.UpdateTraineeResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
+import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
+import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
+import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,12 +93,13 @@ public interface TraineeControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @DeleteMapping("/{username}")
+    @DeleteMapping
     ResponseEntity<HttpStatus> delete(
             @Parameter(description = "Username of the trainee to be deleted", required = true)
-            @NotBlank
-            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-            @PathVariable String username);
+            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
+            @RequestParam String username);
 
 
 
@@ -119,37 +121,13 @@ public interface TraineeControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping("/{username}")
+    @GetMapping
     ResponseEntity<GetTraineeResponse> findByUsername(
             @Parameter(description = "Username of the trainee to fetch", required = true)
-            @NotBlank
-            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-            @PathVariable String username);
-
-
-
-
-    @Operation(
-            summary = "Set trainee active status",
-            description = "Toggles the active/inactive status of a trainee profile."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Status successfully updated"),
-            @ApiResponse(
-                    responseCode = "400", description = "Invalid request data",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "404", description = "Trainee not found",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    @PatchMapping()
-    ResponseEntity<HttpStatus> setActive(@Valid @RequestBody Activated request);
+            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
+            @RequestParam String username);
 
 
 }

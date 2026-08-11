@@ -10,6 +10,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "session_types")
@@ -18,17 +19,12 @@ public class SessionType {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "session_type_seq")
     @SequenceGenerator(name = "session_type_seq", sequenceName = "session_type_id_seq", allocationSize = 1)
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "coach_session_type",
-            joinColumns = @JoinColumn(name = "session_type_id"),
-            inverseJoinColumns = @JoinColumn(name = "coach_id")
-    )
+    @ManyToMany(mappedBy = "specialization")
     @Builder.Default
     private Set<Coach> coaches = new HashSet<>();
 

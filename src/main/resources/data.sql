@@ -248,6 +248,6 @@ ON CONFLICT (id) DO NOTHING;
 
 -- Update the sequence to start after the last manually inserted ID
 -- This is important if you use GenerationType.SEQUENCE and manually insert IDs
-SELECT setval('trainees_id_seq', (SELECT GREATEST(COALESCE((SELECT MAX(id) FROM coaches), 0), COALESCE((SELECT MAX(id) FROM trainees), 0))));
+SELECT setval('users_id_seq', (SELECT GREATEST(COALESCE((SELECT MAX(id) FROM coaches), 0), COALESCE((SELECT MAX(id) FROM trainees), 0))));
 SELECT setval('session_type_id_seq', (SELECT MAX(id) FROM session_types));
 SELECT setval('session_id_seq', (SELECT MAX(id) FROM sessions));

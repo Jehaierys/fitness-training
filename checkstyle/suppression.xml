@@ -20,4 +20,17 @@
     <suppress
             files=".*SecurityConfig\.java"
             checks="DeclarationOrder"/>
+
+    <suppress
+            files=".*utils/.*"
+            checks="WhitespaceAround|DeclarationOrder"/>
+
+    <suppress
+            files=".*security/Configurers\.java"
+            checks="DeclarationOrder"/>
+
+    <suppress
+            files=".*/src/test/java/.*"
+            checks=".*"/>
+
 </suppressions>

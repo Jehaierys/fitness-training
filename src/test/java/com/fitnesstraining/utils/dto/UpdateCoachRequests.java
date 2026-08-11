@@ -1,0 +1,74 @@
+package com.fitnesstraining.utils.dto;
+
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.utils.entity.SessionTypes;
+
+import java.util.List;
+
+public final class UpdateCoachRequests {
+
+    private UpdateCoachRequests() {}
+
+
+    public static UpdateCoachRequest valid() {
+        return UpdateCoachRequest.builder()
+                .firstName("Carlos")
+                .lastName("Santana")
+                .username("carlos.santana")
+                .isActive(true)
+                .specializationIds(
+                        List.of(
+                                SessionTypes.cardio().getId(),
+                                SessionTypes.strengthTraining().getId()
+                        )
+                )
+                .build();
+    }
+
+
+
+    public static final class Invalid {
+
+        private Invalid() {}
+
+        public static UpdateCoachRequest missingCrucialData() {
+            return UpdateCoachRequest.builder()
+                    .firstName(null)
+                    .lastName(null)
+                    .username(null)
+                    .isActive(null)
+                    .specializationIds(null)
+                    .build();
+        }
+
+        public static UpdateCoachRequest tooShort() {
+            return UpdateCoachRequest.builder()
+                    .firstName("A") // min 2
+                    .lastName("B") // min 2
+                    .username("abc") // min 4
+                    .isActive(true)
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
+                    .build();
+        }
+
+        public static UpdateCoachRequest tooLong() {
+            return UpdateCoachRequest.builder()
+                    .firstName("A".repeat(51)) // max 50
+                    .lastName("B".repeat(51)) // max 50
+                    .username("C".repeat(51)) // max 50
+                    .isActive(true)
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
+                    .build();
+        }
+
+        public static UpdateCoachRequest forbiddenCharacters() {
+            return UpdateCoachRequest.builder()
+                    .firstName("Carlos@") // forbidden character
+                    .lastName("Santana#") // forbidden character
+                    .username("carlos.santana!") // forbidden character
+                    .isActive(true)
+                    .specializationIds(List.of(SessionTypes.cardio().getId()))
+                    .build();
+        }
+    }
+}

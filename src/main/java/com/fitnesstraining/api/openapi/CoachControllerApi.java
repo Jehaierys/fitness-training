@@ -1,14 +1,14 @@
 package com.fitnesstraining.api.openapi;
 
 import com.fitnesstraining.api.handler.ErrorResponse;
-import com.fitnesstraining.domain.dto.abstraction.Activated;
-import com.fitnesstraining.domain.dto.abstraction.RegisterUserResponse;
-import com.fitnesstraining.domain.dto.abstraction.UpdateUserRequest;
-import com.fitnesstraining.domain.dto.coach.request.RegisterCoachRequest;
-import com.fitnesstraining.domain.dto.coach.response.CoachDto;
-import com.fitnesstraining.domain.dto.coach.response.GetCoachResponse;
-import com.fitnesstraining.domain.dto.coach.response.UpdateCoachResponse;
+import com.fitnesstraining.domain.dto.response.RegisterUserResponse;
+import com.fitnesstraining.domain.dto.request.coach.RegisterCoachRequest;
+import com.fitnesstraining.domain.dto.request.coach.UpdateCoachRequest;
+import com.fitnesstraining.domain.dto.response.coach.CoachDto;
+import com.fitnesstraining.domain.dto.response.coach.GetCoachResponse;
+import com.fitnesstraining.domain.dto.response.coach.UpdateCoachResponse;
 import com.fitnesstraining.domain.entity.User;
+import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -19,11 +19,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -85,7 +84,7 @@ public interface CoachControllerApi {
             )
     })
     @PutMapping()
-    ResponseEntity<UpdateCoachResponse> update(@Valid @RequestBody UpdateUserRequest request);
+    ResponseEntity<UpdateCoachResponse> update(@Valid @RequestBody UpdateCoachRequest request);
 
 
 
@@ -107,39 +106,13 @@ public interface CoachControllerApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping("/{username}")
+    @GetMapping
     ResponseEntity<GetCoachResponse> findByUsername(
             @Parameter(description = "Username of the coach to fetch", required = true)
-            @NotBlank
-            @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
-            @PathVariable String username);
-
-
-
-    @Operation(
-            summary = "Set coach active status",
-            description = "Toggles the active/inactive status of a coach profile."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Status successfully updated"),
-            @ApiResponse(
-                    responseCode = "400", description = "Invalid request data",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            ),
-            @ApiResponse(
-                    responseCode = "404", description = "Coach not found",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
-            )
-    })
-    @PatchMapping()
-    ResponseEntity<HttpStatus> setActive(
-            @Valid @RequestBody Activated request,
-            @AuthenticationPrincipal UserDetails principal
-    );
+            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
+            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
+            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
+            @RequestParam String username);
 
 
 
@@ -166,10 +139,9 @@ public interface CoachControllerApi {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-    // todo: to @PathVariable
-    @GetMapping("/available")
+    @GetMapping(params = "available")
     ResponseEntity<List<CoachDto>> findAvailableCoaches(
-            @Parameter(hidden = true)
+            @RequestParam(required = false) Boolean available,
             @AuthenticationPrincipal User user
     );
 }

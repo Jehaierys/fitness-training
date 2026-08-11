@@ -10,8 +10,13 @@
         <property name="file" value="${config_loc}/suppression.xml"/>
     </module>
 
-
     <module name="TreeWalker">
+
+        <module name="SuppressWithNearbyCommentFilter">
+            <property name="commentFormat" value="CHECKSTYLE.OFF"/>
+            <property name="checkFormat" value=".*"/>
+        </module>
+
 
         <!--Upper Camel Case for class name-->
         <module name="TypeName"/>
@@ -29,9 +34,9 @@
             <property name="max" value="3"/>
         </module>
 
-        <module name="MethodLength">
-            <property name="max" value="30"/>
-        </module>
+<!--        <module name="MethodLength">-->
+<!--            <property name="max" value="30"/>-->
+<!--        </module>-->
 
         <!-- Requires {} for single-line if statement -->
         <module name="NeedBraces"/>

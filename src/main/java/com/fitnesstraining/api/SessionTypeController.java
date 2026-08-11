@@ -2,7 +2,7 @@ package com.fitnesstraining.api;
 
 import com.fitnesstraining.api.openapi.SessionTypeControllerApi;
 import com.fitnesstraining.domain.entity.SessionType;
-import com.fitnesstraining.logic.abstraction.SessionTypeService;
+import com.fitnesstraining.service.SessionTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
