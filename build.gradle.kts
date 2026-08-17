@@ -50,6 +50,10 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
 
 
+    // Eureka Client
+    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+
 
     // Later
 //    implementation("org.springframework.boot:spring-boot-starter-session-data-redis")
