@@ -58,7 +58,6 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-
     expose:
       - "9092"
     healthcheck:
@@ -101,14 +100,14 @@ services:
       test:
         [
           "CMD-SHELL",
-          "curl -f http://localhost:8080/q/health/ready || exit 1"
+          "curl -f http://localhost:8082/q/health/ready || exit 1"
         ]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 20s
     expose:
-      - "8080"
+      - "8082"
     networks:
       - app-network
 
