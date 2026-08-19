@@ -50,8 +50,11 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
 
 
+    // Cloud
     // Eureka Client
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+    // Circuit Breaker
+    implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
 
 
 
