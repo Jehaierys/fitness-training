@@ -13,6 +13,8 @@ public class CoachWorkloadProducer {
 
     private final KafkaTemplate<String, CoachWorkload> kafkaTemplate;
 
+
+    // Kafka producer is prepared, but not used
     public void send(CoachWorkload message) {
         kafkaTemplate.send(TOPIC, message);
     }

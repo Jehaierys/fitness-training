@@ -7,6 +7,7 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
+import com.fitnesstraining.repository.rest.AnalyticsRestClient;
 import com.fitnesstraining.service.mapper.SessionMapper;
 import com.fitnesstraining.service.utils.SessionSearcher;
 import com.fitnesstraining.repository.CoachRepository;
@@ -32,6 +33,7 @@ public class SessionService {
     private final SessionTypeService sessionTypeService;
     private final SessionMapper mapper;
     private final SessionSearcher searcher;
+    private final AnalyticsRestClient analyticsRestClient;
 
 
     @Transactional
@@ -54,6 +56,14 @@ public class SessionService {
         final Coach coach = coachRepository.findByUsername(request.getCoachUsername());
         session.setCoach(coach);
         session.setCoach(coach);
+
+        // todo: delete
+        // ---
+        analyticsRestClient.sendCoachWorkload(
+                request,
+                coach
+        );
+        // ---
 
         final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
         session.setSessionType(sessionType);
