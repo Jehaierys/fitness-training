@@ -7,7 +7,8 @@ import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Session;
 import com.fitnesstraining.domain.entity.SessionType;
 import com.fitnesstraining.domain.entity.Trainee;
-import com.fitnesstraining.repository.rest.AnalyticsRestClient;
+import com.fitnesstraining.domain.message.CoachWorkload;
+import com.fitnesstraining.repository.producer.CoachWorkloadProducer;
 import com.fitnesstraining.service.mapper.SessionMapper;
 import com.fitnesstraining.service.utils.SessionSearcher;
 import com.fitnesstraining.repository.CoachRepository;
@@ -33,7 +34,7 @@ public class SessionService {
     private final SessionTypeService sessionTypeService;
     private final SessionMapper mapper;
     private final SessionSearcher searcher;
-    private final AnalyticsRestClient analyticsRestClient;
+    private final CoachWorkloadProducer producer;
 
 
     @Transactional
@@ -57,13 +58,14 @@ public class SessionService {
         session.setCoach(coach);
         session.setCoach(coach);
 
-        // todo: delete
-        // ---
-        analyticsRestClient.sendCoachWorkload(
-                request,
-                coach
+        final CoachWorkload message = new CoachWorkload(
+                session.getDate().getMonth().getValue(),
+                session.getDate().getYear(),
+                Math.toIntExact(session.getDuration().getSeconds() / 60),
+                coach.getId()
         );
-        // ---
+
+        producer.send(message);
 
         final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
         session.setSessionType(sessionType);
