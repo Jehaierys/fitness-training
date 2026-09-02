@@ -1,0 +1,10 @@
+./gradlew clean
+
+./gradlew build --stacktrace -x checkstyleMain -x checkstyleTest
+
+./gradlew bootJar
+
+docker rmi main:latest
+
+docker build -t main:latest .
+
