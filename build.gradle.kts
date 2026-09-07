@@ -86,6 +86,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-redis-test")
 
+    testImplementation("io.cucumber:cucumber-java:7.18.1")
+    testImplementation("io.cucumber:cucumber-spring:7.18.1")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine:7.18.1")
+
+    testImplementation("org.junit.platform:junit-platform-suite")
+
+
 
 
     // Lombok & MapStruct
