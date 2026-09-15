@@ -51,7 +51,7 @@ public class JwtTestHelper {
         final String token = Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration( new Date(System.currentTimeMillis() + 3_600_000) )
+                .expiration(new Date(System.currentTimeMillis() + 3_600_000))
                 .claim("roles", List.of("ROLE_TRAINEE"))
                 .signWith(key)
                 .compact();
