@@ -101,7 +101,7 @@ public final class Users {
 
     public static Trainee traineeEthan() {
         return Trainee.builder()
-                .id(107L)
+                .id(null)
                 .firstName("Ethan")
                 .lastName("Davis")
                 .username("ethan")
