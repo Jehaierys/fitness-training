@@ -1,6 +1,7 @@
 package com.fitnesstraining.intergation;
 
 import com.fitnesstraining.config.test.JacksonTestConfig;
+import com.fitnesstraining.config.test.KafkaTestContainer;
 import com.fitnesstraining.config.test.PostgresTestContainer;
 import io.cucumber.java.AfterAll;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +18,11 @@ import org.springframework.test.context.DynamicPropertySource;
 @Import({
         JacksonTestConfig.class
 })
-public class IntegrationTestConfiguration implements PostgresTestContainer {
+public class IntegrationTestConfiguration implements PostgresTestContainer, KafkaTestContainer {
 
     static {
         POSTGRES.start();
+        KAFKA.start();
     }
 
     @DynamicPropertySource
@@ -28,10 +30,13 @@ public class IntegrationTestConfiguration implements PostgresTestContainer {
         registry.add("spring.datasource.url", POSTGRES::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRES::getUsername);
         registry.add("spring.datasource.password", POSTGRES::getPassword);
+
+        registry.add("spring.kafka.bootstrap-servers", KAFKA::getBootstrapServers);
     }
 
     @AfterAll
     public static void stopContainers() {
         POSTGRES.stop();
+        KAFKA.stop();
     }
 }
