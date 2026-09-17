@@ -21,8 +21,6 @@ import java.util.*;
 
 import static com.fitnesstraining.utils.Specializations.cardioStrengthTraining;
 import static com.fitnesstraining.utils.Specializations.yogaPilates;
-import static com.fitnesstraining.utils.entity.SessionTypes.cardio;
-import static com.fitnesstraining.utils.entity.SessionTypes.strengthTraining;
 import static org.junit.jupiter.api.Assertions.*;
 
 
