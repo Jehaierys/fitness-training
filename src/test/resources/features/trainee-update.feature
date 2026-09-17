@@ -1,4 +1,3 @@
-
 Feature: Trainee update
 
   Scenario: Update trainee with full data
