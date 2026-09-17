@@ -32,6 +32,17 @@ public class IntegrationTestConfiguration implements PostgresTestContainer, Kafk
         registry.add("spring.datasource.password", POSTGRES::getPassword);
 
         registry.add("spring.kafka.bootstrap-servers", KAFKA::getBootstrapServers);
+
+
+        registry.add(
+                "spring.kafka.producer.key-serializer",
+                () -> "org.apache.kafka.common.serialization.StringSerializer"
+        );
+
+        registry.add(
+                "spring.kafka.producer.value-serializer",
+                () -> "org.springframework.kafka.support.serializer.JsonSerializer"
+        );
     }
 
     @AfterAll
