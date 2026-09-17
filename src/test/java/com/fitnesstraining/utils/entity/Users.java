@@ -2,6 +2,7 @@ package com.fitnesstraining.utils.entity;
 
 import com.fitnesstraining.domain.entity.Coach;
 import com.fitnesstraining.domain.entity.Trainee;
+import com.fitnesstraining.utils.Specializations;
 
 import java.time.LocalDate;
 
@@ -67,6 +68,20 @@ public final class Users {
                 .username("emma")
                 .password("password123")
                 .isActive(true)
+                .build();
+    }
+
+    public static Coach coachJohn() {
+        return Coach.builder()
+                .id(null)
+                .firstName("John")
+                .lastName("Snow")
+                .username("john.snow")
+                .password("password123")
+                .isActive(true)
+                .specialization(
+                        Specializations.cardio()
+                )
                 .build();
     }
 
