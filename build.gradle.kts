@@ -44,10 +44,12 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 
+
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.7")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.7")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.7")
+
 
 
     // Cloud
@@ -55,6 +57,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     // Circuit Breaker
     implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+
 
 
 
@@ -68,15 +71,11 @@ dependencies {
 
 
 
+
     // Test
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("org.springframework.security:spring-security-test")
-
-    testImplementation("com.redis:testcontainers-redis:2.2.4")
-    testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
-    testImplementation("org.testcontainers:testcontainers-postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-kafka-test")
     testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
@@ -85,6 +84,20 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-starter-data-redis-test")
+
+    testImplementation("io.cucumber:cucumber-java:7.18.1")
+    testImplementation("io.cucumber:cucumber-spring:7.18.1")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine:7.18.1")
+
+    testImplementation("org.junit.platform:junit-platform-suite")
+
+    // Testcontainers
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-postgresql")
+    testImplementation("com.redis:testcontainers-redis:2.2.4")
+    testImplementation("org.testcontainers:kafka:1.21.4")
+
 
 
 
@@ -98,6 +111,7 @@ dependencies {
 
     implementation("org.mapstruct:mapstruct:1.6.3")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
+
 
 
 

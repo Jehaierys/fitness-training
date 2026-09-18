@@ -6,6 +6,7 @@ import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
+import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.service.TraineeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,9 @@ public class TraineeController implements TraineeControllerApi {
         return ResponseEntity.ok(service.update(request));
     }
 
-    public ResponseEntity<HttpStatus> delete(String username) {
+    public ResponseEntity<HttpStatus> delete(User user) {
+        // todo: check whether it's a trainee or a coach
+        final String username = user.getUsername();
         log.info("Received delete request for trainee: {}", username);
         service.deleteByUsername(username);
         return ResponseEntity.ok(HttpStatus.OK);

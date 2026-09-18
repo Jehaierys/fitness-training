@@ -52,11 +52,11 @@ public class SessionService {
 
         final Trainee trainee = traineeRepository.findByUsername(request.getTraineeUsername());
         session.setTrainee(trainee);
-        session.setTrainee(trainee);
 
         final Coach coach = coachRepository.findByUsername(request.getCoachUsername());
         session.setCoach(coach);
-        session.setCoach(coach);
+
+        mapper.toEntity(request, session);
 
         final CoachWorkload message = new CoachWorkload(
                 session.getDate().getMonth().getValue(),
@@ -69,8 +69,6 @@ public class SessionService {
 
         final SessionType sessionType = sessionTypeService.findByName(request.getSessionTypeName());
         session.setSessionType(sessionType);
-
-        mapper.toEntity(request, session);
 
         sessionRepository.create(session);
         coachRepository.update(coach);

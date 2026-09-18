@@ -2,7 +2,9 @@ package com.fitnesstraining.utils.entity;
 
 import com.fitnesstraining.domain.entity.SessionType;
 
+// todo: delete
 // CHECKSTYLE.OFF
+@Deprecated(forRemoval = true)
 public final class SessionTypes {
 
     private SessionTypes() {}

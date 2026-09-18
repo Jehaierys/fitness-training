@@ -28,7 +28,6 @@ public class SessionSearchCriteria {
     @Past(message = "From date must be in the past")
     LocalDateTime from;
 
-    @PastOrPresent(message = "To date must be in the past or present")
     LocalDateTime to;
 
 

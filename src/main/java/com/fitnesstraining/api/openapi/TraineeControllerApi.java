@@ -5,6 +5,7 @@ import com.fitnesstraining.domain.dto.request.trainee.RegisterTraineeRequest;
 import com.fitnesstraining.domain.dto.request.trainee.UpdateTraineeRequest;
 import com.fitnesstraining.domain.dto.response.trainee.GetTraineeResponse;
 import com.fitnesstraining.domain.dto.response.trainee.UpdateTraineeResponse;
+import com.fitnesstraining.domain.entity.User;
 import com.fitnesstraining.utils.ValidationErrorMessages;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,6 +20,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,12 +96,7 @@ public interface TraineeControllerApi {
             )
     })
     @DeleteMapping
-    ResponseEntity<HttpStatus> delete(
-            @Parameter(description = "Username of the trainee to be deleted", required = true)
-            @NotBlank(message = ValidationErrorMessages.Username.CANNOT_BE_BLANK)
-            @Size(min = 4, max = 30, message = ValidationErrorMessages.Username.SIZE)
-            @Pattern(regexp = "^[a-zA-Z0-9._]+$", message = ValidationErrorMessages.Username.PATTERN)
-            @RequestParam String username);
+    ResponseEntity<HttpStatus> delete(@AuthenticationPrincipal User user);
 
 
 

@@ -8,6 +8,7 @@ import com.fitnesstraining.domain.entity.Trainee;
 import com.fitnesstraining.service.mapper.SessionMapper;
 import com.fitnesstraining.repository.dsl.Criteria;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -26,8 +27,9 @@ import java.util.function.BiFunction;
 @RequiredArgsConstructor
 public class SessionSearcher {
 
+    @PersistenceContext
+    private EntityManager entityManager;
     private final SessionMapper mapper;
-
 
     public List<SessionDto> searchByCriteria(SessionSearchCriteria request) {
 
@@ -41,7 +43,7 @@ public class SessionSearcher {
         log.info("Received sessions request with criteria: {}, process's UUID: {}", request, transactionUuid);
 
 
-        sessions = Criteria.<Session>of()
+        sessions = Criteria.<Session>of(entityManager)
                 .root(Session.class)
                 .where(boundedToRequestSender(request))
                 .where(inRange(request.getFrom(), request.getTo()))

@@ -12,7 +12,6 @@ import java.util.function.BiFunction;
 
 public class Criteria<T> {
 
-    @PersistenceContext
     private EntityManager entityManager;
 
     private final CriteriaBuilder criteriaBuilder;
@@ -26,13 +25,14 @@ public class Criteria<T> {
     private boolean paginationApplied = false;
 
 
-    private Criteria() {
+    private Criteria(EntityManager entityManager) {
+        this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
         this.predicates = new ArrayList<>();
     }
 
-    public static <T> Criteria<T> of() {
-        return new Criteria<>();
+    public static <T> Criteria<T> of(EntityManager entityManager) {
+        return new Criteria<>(entityManager);
     }
 
 
