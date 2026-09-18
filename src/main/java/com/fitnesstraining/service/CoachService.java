@@ -116,5 +116,4 @@ public class CoachService {
     public List<CoachDto> findAvailable(Long traineeId) {
         return searcher.findAvailable(traineeId);
     }
-
 }
