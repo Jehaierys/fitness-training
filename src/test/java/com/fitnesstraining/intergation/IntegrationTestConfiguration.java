@@ -3,6 +3,7 @@ package com.fitnesstraining.intergation;
 import com.fitnesstraining.config.test.JacksonTestConfig;
 import com.fitnesstraining.config.test.KafkaTestContainer;
 import com.fitnesstraining.config.test.PostgresTestContainer;
+import com.fitnesstraining.config.test.TestUtils;
 import io.cucumber.java.AfterAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -16,7 +17,8 @@ import org.springframework.test.context.DynamicPropertySource;
 @AutoConfigureMockMvc
 @CucumberContextConfiguration
 @Import({
-        JacksonTestConfig.class
+        JacksonTestConfig.class,
+        TestUtils.class
 })
 public class IntegrationTestConfiguration implements PostgresTestContainer, KafkaTestContainer {
 
